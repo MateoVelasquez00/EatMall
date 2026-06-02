@@ -1,0 +1,121 @@
+﻿/* --- ESTILOS UNIFICADOS EATMALL --- */
+body {
+	background-color: #f0f2f5;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+}
+
+/* Agregamos .login-container y .registro-container para que hereden el estilo */
+.auth-container, .login-container, .registro-container {
+	position: relative;
+	width: 400px;
+	background: #ffffff;
+	padding: 40px 30px;
+	border-radius: 25px;
+	box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+	text-align: center;
+}
+
+/* Para centrar el login-page si lo usas de envoltorio */
+.login-page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.logo {
+	width: 100px;
+	margin-bottom: 15px;
+}
+
+h2 {
+	color: #1a2a3a;
+	font-weight: 800;
+	font-size: 24px;
+	margin-bottom: 30px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.form-group {
+	text-align: left; /* Alinea los labels a la izquierda */
+	margin-bottom: 15px;
+}
+
+.form-label-custom {
+	font-size: 13px;
+	font-weight: 600;
+	color: #4a4a4a;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.input-estilo {
+	width: 100%;
+	padding: 15px;
+	border: 2px solid transparent;
+	border-radius: 15px;
+	background-color: #fff5eb;
+	color: #333;
+	box-sizing: border-box;
+	outline: none;
+	transition: 0.3s;
+}
+
+	.input-estilo:focus {
+		background-color: #ffe8d1;
+		border: 2px solid #f5821f;
+	}
+
+/* Unificamos los 3 nombres de botones que usas */
+.btn-principal, .btn-ingresar, .btn-registrar {
+	width: 100%;
+	padding: 15px;
+	background-color: #f5821f;
+	color: white;
+	border: none;
+	border-radius: 30px;
+	font-weight: bold;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.3s;
+	margin-top: 10px;
+	box-shadow: 0 4px 10px rgba(245, 130, 31, 0.3);
+}
+
+	.btn-principal:hover, .btn-ingresar:hover, .btn-registrar:hover {
+		background-color: #e67300;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 15px rgba(245, 130, 31, 0.4);
+	}
+
+.btn-volver-link {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+	text-decoration: none;
+	color: #6c757d;
+	font-size: 20px;
+	transition: 0.3s;
+	z-index: 10;
+}
+
+	.btn-volver-link:hover {
+		color: #f5821f;
+		transform: scale(1.1);
+	}
+
+.text-orange {
+	color: #f5821f;
+}
+
+.forgot-link {
+	font-size: 13px;
+	color: #6c757d;
+	text-decoration: none;
+}
