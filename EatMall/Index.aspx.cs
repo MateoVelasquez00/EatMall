@@ -1,11 +1,12 @@
-﻿using EatMall.Logica;
-using EatMall.Modelo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EatMall.Logica;
+using EatMall.Modelo;
 
 namespace EatMall
 {
@@ -42,5 +43,13 @@ namespace EatMall
 				Response.Write("Error al cargar datos: " + ex.Message);
 			}
 		}
+
+		[WebMethod]
+		public static List<CentroComercial> MtObtenerPuntos()
+		{
+			CentroComercialL oCentroL = new CentroComercialL();
+			return oCentroL.MtListarCentrosComercial();
+		}
+
 	}
 }
