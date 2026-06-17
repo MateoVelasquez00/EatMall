@@ -3,71 +3,110 @@
     MasterPageFile="~/Vista/Admin.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentBody" runat="server">
-    <%-- Tu contenido aquí --%>
-    <asp:Panel ID="pnlBuscador"
-        runat="server"
-        DefaultButton="btnBuscar"
-        CssClass="flex-grow-1"
-        Style="max-width: 500px;">
 
-        <div class="input-group">
-            <span class="input-group-text"
-                style="border-radius: 50px 0 0 50px; background-color: #f1f3f4; border: none; padding-left: 20px;">
-                <i class="bi bi-search" style="color: #aaa;"></i>
-            </span>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
-            <asp:TextBox ID="txtBusqueda"
-                runat="server"
-                CssClass="form-control"
-                placeholder="Buscar Usuario"
-                Style="background-color: #f1f3f4; border: none; height: 45px; box-shadow: none;" />
+    <style>
+        #gvUsuarios th {
+            background-color: #FFA94D !important;
+            color: white !important;
+        }
 
-            <asp:LinkButton ID="btnBuscar"
-                runat="server"
-                CssClass="btn btn-warning d-flex align-items-center"
-                Style="border-radius: 0 50px 50px 0; padding-right: 20px; padding-left: 15px; background-color: #FFA94D; color: white;"
-                OnClick="btnBuscar_Click">
+        .panel-roles {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 6px;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
 
-            <span class="d-none d-md-inline me-1">Buscar</span>
-            <i class="bi bi-arrow-right-short"
-                style="font-size: 1.2rem;"></i>
-            </asp:LinkButton>
-        </div>
-    </asp:Panel>
-    <br />
-    <!-- TABLA -->
+        .btn-rol-toggle {
+            white-space: nowrap;
+        }
+    </style>
+
+    <h4 class="mb-3">Usuarios</h4>
+
     <asp:GridView
         ID="gvUsuarios"
         runat="server"
+        ClientIDMode="Static"
+        AllowPaging="false"
+        AllowSorting="false"
+        DataKeyNames="Id"
+        OnRowDataBound="gvUsuarios_RowDataBound"
         CssClass="table table-bordered table-striped"
         AutoGenerateColumns="false">
 
         <Columns>
-            <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
+            <asp:BoundField DataField="Nombre"    HeaderText="Nombre" />
+            <asp:BoundField DataField="Apellido"  HeaderText="Apellido" />
             <asp:BoundField DataField="Documento" HeaderText="Documento" />
-            <asp:BoundField DataField="Email" HeaderText="Email" />
-            <asp:BoundField DataField="Rol.Nombre" HeaderText="Rol" />
+            <asp:BoundField DataField="Email"     HeaderText="Email" />
+
+            <asp:TemplateField HeaderText="Rol">
+                <ItemTemplate>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-rol-toggle"
+                        onclick="toggleRoles(this)">
+                        <%# Eval("Rol.Nombre") %> ▾
+                    </button>
+
+                    <div class="panel-roles" style="display:none;">
+                        <asp:CheckBoxList ID="chkRoles" runat="server" />
+
+                        <div class="mt-2 d-flex gap-2">
+                            <asp:Button ID="btnGuardarRol" runat="server"
+                                Text="Guardar"
+                                CssClass="btn btn-sm btn-success"
+                                CommandArgument='<%# Eval("Id") %>'
+                                OnClick="btnGuardarRol_Click" />
+
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                onclick="cancelarRoles(this)">Cancelar</button>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:TemplateField>
         </Columns>
     </asp:GridView>
 
-    <!-- PAGINACIÓN -->
-    <div class="d-flex justify-content-between mt-3">
-        <asp:Button
-            ID="btnAnterior"
-            runat="server"
-            Text="Anterior"
-            CssClass="btn btn-outline-dark"
-            OnClick="btnAnterior_Click" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-        <asp:Button
-            ID="btnSiguiente"
-            runat="server"
-            Text="Siguiente"
-            CssClass="btn btn-outline-dark"
-            OnClick="btnSiguiente_Click" />
-    </div>
+    <script>
+        function toggleRoles(btn) {
+            // El panel está dos elementos abajo del botón dentro de la misma celda
+            var panel = $(btn).closest('td').find('.panel-roles');
+            panel.toggle();
+        }
 
+        function cancelarRoles(btn) {
+            $(btn).closest('.panel-roles').hide();
+        }
+
+        $(document).ready(function () {
+            $('#gvUsuarios tr:first').wrap('<thead></thead>');
+
+            if ($.fn.dataTable.isDataTable('#gvUsuarios')) {
+                $('#gvUsuarios').DataTable().destroy();
+            }
+
+            $('#gvUsuarios').DataTable({
+                language: {
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ usuarios",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    zeroRecords: "No se encontraron resultados"
+                }
+            });
+        });
+    </script>
 
 </asp:Content>
-

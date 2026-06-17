@@ -21,5 +21,17 @@ namespace EatMall.Logica
         {
             return datos.ObtenerPedidosPorCliente(idCliente);
         }
+        public List<Rol> MtObtenerTodosLosRoles()
+        {
+            return datos.MtObtenerTodosLosRoles();
+        }
+        public List<Rol> MtObtenerRolesPorUsuario(int idUsuario)
+        {
+            return datos.MtObtenerRolesPorUsuario(idUsuario);
+        }
+        public void MtCambiarRol(int idUsuario, int idRol, bool asignar)
+        {
+            datos.MtCambiarRol(idUsuario, idRol, asignar);
+        }
     }
 }
