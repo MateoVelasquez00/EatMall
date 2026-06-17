@@ -34,7 +34,9 @@ namespace EatMall.Datos
                                 Estado = dr["Estado"].ToString(),
                                 Descripcion = dr["Descripcion"].ToString(),
                                 Ubicacion = dr["Direccion"].ToString(),
-                                Ciudad = new Ciudad()
+								Latitud = Convert.ToDecimal(dr["Latitud"]),
+								Longitud = Convert.ToDecimal(dr["Longitud"]),
+								Ciudad = new Ciudad()
                                 {
                                     Id = Convert.ToInt32(dr["IdCiudad"]),
                                     NombreCiudad = dr["Ciudad"].ToString(),
