@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.Remoting.Messaging;
 
 namespace EatMall.Datos
 {
@@ -113,11 +114,11 @@ namespace EatMall.Datos
             {
                 cn.Open();
                 string consulta = @"
-                    SELECT U.Id, U.Nombre, U.Apellido, U.Documento, U.Email, STRING_AGG(R.NombreRol, ', ') AS Roles
+                    SELECT U.Id, U.Nombre, U.Apellido, U.Documento, U.Email,U.Estado, STRING_AGG(R.NombreRol, ', ') AS Roles
                     FROM Usuario U
                     JOIN RolUsuario RU ON RU.IdUsuario = U.Id
                     JOIN Rol R ON R.Id = RU.IdRol
-                    GROUP BY U.Id, U.Nombre, U.Apellido, U.Documento, U.Email
+                    GROUP BY U.Id, U.Nombre, U.Apellido, U.Documento, U.Email,U.Estado
                     ORDER BY U.Id";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
@@ -133,6 +134,7 @@ namespace EatMall.Datos
                                 Apellido = dr["Apellido"].ToString(),
                                 Documento = dr["Documento"].ToString(),
                                 Email = dr["Email"].ToString(),
+                                Estado = Convert.ToBoolean(dr["Estado"]),
                                 Rol = new Rol()
                                 {
                                     Nombre = dr["Roles"].ToString()
@@ -216,6 +218,55 @@ namespace EatMall.Datos
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+        public int MtCrearUsuario(Cliente oCliente)
+        {
+            int idGenerado = 0;
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string consulta = @"INSERT INTO Usuario (Nombre, Apellido, Documento, Email, Telefono, Contraseña, Estado)
+                    VALUES (@Nombre, @Apellido, @Documento, @Email, @Telefono, @Contraseña, @Estado);
+                    SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", oCliente.Nombre);
+                    cmd.Parameters.AddWithValue("@Apellido", oCliente.Apellido);
+                    cmd.Parameters.AddWithValue("@Documento", oCliente.Documento);
+                    cmd.Parameters.AddWithValue("@Email", oCliente.Email);
+                    cmd.Parameters.AddWithValue("@Telefono", oCliente.Telefono);
+                    cmd.Parameters.AddWithValue("@Contraseña", oCliente.Contraseña);
+                    cmd.Parameters.AddWithValue("@Estado", true);
+                    idGenerado = (int)cmd.ExecuteScalar();
+                }
+            }
+            return idGenerado;
+        }
+        public bool MtCambiarEstadoUsuario(int idUsuario, bool estado)
+        {
+            bool resultado = false;
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string sql = @"
+            UPDATE Usuario
+            SET Estado = @Estado
+            WHERE Id = @Id";
+
+                SqlCommand cmd = new SqlCommand(sql, cn);
+
+                cmd.Parameters.AddWithValue("@Id", idUsuario);
+                cmd.Parameters.AddWithValue("@Estado", estado);
+
+                resultado = cmd.ExecuteNonQuery() > 0;
+            }
+
+            return resultado;
         }
     }
 }

@@ -10,77 +10,124 @@ using EatMall.Modelo;
 
 namespace EatMall.Vista
 {
-	public partial class Admin : System.Web.UI.MasterPage
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			if (Session["Usuario"] != null)
-			{
-				UsuarioLogin oUsuario = (UsuarioLogin)Session["Usuario"];
+    public partial class Admin : System.Web.UI.MasterPage
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["Usuario"] != null)
+            {
+                UsuarioLogin oUsuario = (UsuarioLogin)Session["Usuario"];
 
-				if (oUsuario.IdRol >= 1 && oUsuario.IdRol <= 4)
-				{
-					string nombreRol = "";
-					switch (oUsuario.IdRol)
-					{
-						case 1: 
-							nombreRol = "Administrador"; 
-							break;
-						case 2: 
-							nombreRol = "AdministradorCC"; 
-							break;
-						case 3: 
-							nombreRol = "Local"; 
-							break;
-						case 4: 
-							nombreRol = "Cajero"; 
-							break;
-					}
-					lblUsuario.Text = $"{oUsuario.Nombre} ({nombreRol})";
+                if (oUsuario.IdRol >= 1 && oUsuario.IdRol <= 4)
+                {
+                    string nombreRol = "";
+                    string colorRol = "";
+                    string colorLight = "";
 
-					if (!IsPostBack)
-						CargarMenu(nombreRol);
-				}
-				else
-				{
-					//Si no es se ingresa como un administrador
-					Response.Redirect("~/Index.aspx");
-				}
-			}
-			else
-			{
-				//Si no hay usuario en sesión, redirigir al login
-				Response.Redirect("~/Vista/Auth/Login.aspx");
-			}
-		}
+                    switch (oUsuario.IdRol)
+                    {
+                        case 1:
+                            nombreRol = "Administrador";
+                            colorRol = "#006948";
+                            colorLight = "#adedd3";
+                            break;
+                        case 2:
+                            nombreRol = "AdministradorCC";
+                            colorRol = "#1d4ed8";
+                            colorLight = "#dbeafe";
+                            break;
+                        case 3:
+                            nombreRol = "Local";
+                            colorRol = "#7c3aed";
+                            colorLight = "#ede9fe";
+                            break;
+                        case 4:
+                            nombreRol = "Cajero";
+                            colorRol = "#0e7490";
+                            colorLight = "#cffafe";
+                            break;
+                    }
 
-		private void CargarMenu(string rol)
-		{
-			MenuD menuD = new MenuD();
-			List<Modelo.Menu> menus = menuD.ObtenerMenuPorRol(rol);
+                    // Nombre en el label
+                    string[] partes = oUsuario.Nombre.Split(' ');
+                    string iniciales = partes.Length >= 2
+                        ? $"{partes[0][0]}{partes[1][0]}"
+                        : $"{partes[0][0]}";
 
-            string html = "<ul class='nav flex-column'>";
+                    lblUsuario.Text = oUsuario.Nombre;
+                    lblRolSidebar.InnerText = nombreRol.ToUpper();
+                    avatarInicial.InnerText = iniciales.ToUpper();
+
+                    // Aplica colores del rol via CSS variable
+                    Page.ClientScript.RegisterStartupScript(
+                        this.GetType(), "colorRol",
+                        $@"document.documentElement.style.setProperty('--color-rol', '{colorRol}');
+                   document.documentElement.style.setProperty('--color-rol-light', '{colorLight}');
+                   document.querySelector('.sidebar-user-avatar').style.background = '{colorRol}';",
+                        true
+                    );
+
+                    if (!IsPostBack)
+                        CargarMenu(nombreRol);
+                }
+                else
+                {
+                    Response.Redirect("~/Index.aspx");
+                }
+            }
+            else
+            {
+                Response.Redirect("~/Vista/Auth/Login.aspx");
+            }
+        }
+
+        private void CargarMenu(string rol)
+        {
+            MenuD menuD = new MenuD();
+            List<Modelo.Menu> menus = menuD.ObtenerMenuPorRol(rol);
+
+            string html = "";
 
             foreach (var item in menus.Where(m => m.IdPadre == null))
-			{
-                html += $"<li class='nav-item'><a class='nav-link text-white' href='{item.Ruta}'>{item.Nombre}</a></li>";
+            {
+                string icono = ObtenerIconoPorNombre(item.Nombre);
+                html += $@"<a href='{item.Ruta}' class='menu-link'>
+                       <span class='material-symbols-outlined'>{icono}</span>
+                       <span>{item.Nombre}</span>
+                   </a>";
 
                 foreach (var hijo in menus.Where(m => m.IdPadre == item.Id))
-				{
-					html += $"<li class='nav-item ps-3'><a class='nav-link text-white' href='{hijo.Ruta}'>— {hijo.Nombre}</a></li>";
-				}
-			}
+                {
+                    string iconoHijo = ObtenerIconoPorNombre(hijo.Nombre);
+                    html += $@"<a href='{hijo.Ruta}' class='menu-link menu-hijo'>
+                           <span class='material-symbols-outlined'>{iconoHijo}</span>
+                           <span>{hijo.Nombre}</span>
+                       </a>";
+                }
+            }
 
-			html += "</ul>";
-			MenuRol.InnerHtml = html;
-		}
-		protected void lbCerrar_Click(object sender, EventArgs e)
-		{
-			Session.Clear();
-			Session.Abandon();
-			Response.Redirect("~/Vista/Auth/Login.aspx");
-		}
-	}
+            MenuRol.InnerHtml = html;
+        }
 
+        private string ObtenerIconoPorNombre(string nombre)
+        {
+            switch (nombre)
+            {
+                case "Usuarios": return "group";
+                case "Mi Perfil": return "person";
+                case "Menu Administrador": return "admin_panel_settings";
+                case "Menu AdministradorCC": return "store";
+                case "Menu Local": return "storefront";
+                case "Menu Cajero": return "point_of_sale";
+                default: return "circle";
+            }
+        }
+        protected void lbCerrar_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("~/Vista/Auth/Login.aspx");
+        }
+    }
 }
 

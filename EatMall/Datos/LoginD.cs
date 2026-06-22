@@ -25,6 +25,7 @@ namespace EatMall.Datos
 							U.Id, 
 							U.Nombre, 
 							U.Email, 
+							U.Estado,
 							RU.IdRol, 
 							M.Ruta AS RutaInicio 
 						FROM Usuario U
@@ -32,9 +33,9 @@ namespace EatMall.Datos
 						INNER JOIN MenuRol MR ON RU.IdRol = MR.IdRol 
 						INNER JOIN Menu M ON MR.IdMenu = M.Id       
 						WHERE U.Email = @Email AND U.Contraseña = @Clave  
-
 						AND (
-							(@EsFunc = 1 AND RU.IdRol BETWEEN 1 AND 4) OR 
+							(@EsFunc = 1 AND RU.IdRol BETWEEN 1 AND 4) 
+							OR 
 							(@EsFunc = 0 AND RU.IdRol = 5)
 						)
 						ORDER BY RU.IdRol ASC";
@@ -54,8 +55,9 @@ namespace EatMall.Datos
 								Id = Convert.ToInt32(dr["Id"]),
 								Nombre = dr["Nombre"].ToString(),
 								IdRol = Convert.ToInt32(dr["IdRol"]),
-								UrlInicio = dr["RutaInicio"].ToString()
-							};
+								UrlInicio = dr["RutaInicio"].ToString(),
+								Estado = Convert.ToBoolean(dr["Estado"])
+                            };
 						}
 					}
 				}
