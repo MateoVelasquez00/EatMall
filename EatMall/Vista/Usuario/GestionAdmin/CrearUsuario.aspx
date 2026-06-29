@@ -128,7 +128,10 @@
         }
     </style>
 
-    <h4 class="page-titulo"><i class="bi bi-person-plus me-2"></i>Crear Usuario</h4>
+    <h4 class="page-titulo" id="lblTituloPagina" runat="server">
+        <span class="material-symbols-outlined">person_add</span>
+        Crear Usuario
+    </h4>
 
     <p class="seccion-titulo">Información personal</p>
 

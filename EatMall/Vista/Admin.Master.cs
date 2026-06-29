@@ -49,10 +49,15 @@ namespace EatMall.Vista
                     }
 
                     // Nombre en el label
-                    string[] partes = oUsuario.Nombre.Split(' ');
-                    string iniciales = partes.Length >= 2
-                        ? $"{partes[0][0]}{partes[1][0]}"
-                        : $"{partes[0][0]}";
+                    string[] partes = oUsuario.Nombre.Trim().Split(' ');
+                    string iniciales = "";
+
+                    if (partes.Length >= 2 && partes[1].Length > 0)
+                        iniciales = $"{partes[0][0]}{partes[1][0]}";
+                    else if (partes[0].Length > 0)
+                        iniciales = $"{partes[0][0]}";
+                    else
+                        iniciales = "?";
 
                     lblUsuario.Text = oUsuario.Nombre;
                     lblRolSidebar.InnerText = nombreRol.ToUpper();
@@ -113,12 +118,14 @@ namespace EatMall.Vista
         {
             switch (nombre)
             {
+                case "Inicio / Bienvenida": return "home";
+                case "Centros Comerciales": return "store";
                 case "Usuarios": return "group";
                 case "Mi Perfil": return "person";
-                case "Menu Administrador": return "admin_panel_settings";
-                case "Menu AdministradorCC": return "store";
+                case "Menu AdministradorCC": return "business";
                 case "Menu Local": return "storefront";
                 case "Menu Cajero": return "point_of_sale";
+                case "Index": return "home";
                 default: return "circle";
             }
         }

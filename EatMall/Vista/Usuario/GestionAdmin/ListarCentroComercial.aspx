@@ -1,6 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GestionUsuarios.aspx.cs"
-    Inherits="EatMall.Vista.Usuario.GestionAdmin.GestionUsuarios"
-    MasterPageFile="~/Vista/Admin.Master" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="ListarCentroComercial.aspx.cs" Inherits="EatMall.Vista.Usuario.GestionAdmin.ListarCentroComercial" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentBody" runat="server">
 
@@ -14,7 +12,7 @@
         }
 
         /* CONTENEDOR GENERAL */
-        #gvUsuarios_wrapper {
+        #gvCentroComercial_wrapper {
             background: white;
             border: 1px solid #bccac0;
             border-radius: 16px;
@@ -60,12 +58,12 @@
                 }
 
         /* TABLA */
-        #gvUsuarios {
+        #gvCentroComercial {
             border: none !important;
             width: 100% !important;
         }
 
-            #gvUsuarios thead th {
+            #gvCentroComercial thead th {
                 background: var(--color-rol) !important;
                 color: white !important;
                 border: none !important;
@@ -75,16 +73,16 @@
                 padding: 14px !important;
             }
 
-            #gvUsuarios tbody td {
+            #gvCentroComercial tbody td {
                 padding: 14px !important;
                 vertical-align: middle;
             }
 
-            #gvUsuarios tbody tr {
+            #gvCentroComercial tbody tr {
                 transition: all .15s ease;
             }
 
-                #gvUsuarios tbody tr:hover {
+                #gvCentroComercial tbody tr:hover {
                     background: #f5faf7 !important;
                 }
 
@@ -126,43 +124,8 @@
                 border-color: var(--color-rol) !important;
             }
 
-        /* PANEL ROLES */
-        .panel-roles {
-            border: 1px solid var(--color-rol);
-            border-radius: 10px;
-            padding: 14px;
-            margin-top: 8px;
-            background: #f8fffb;
-        }
-
-        /* BOTÓN ROL */
-        .btn-rol-toggle {
-            border: 1px solid var(--color-rol) !important;
-            background: white !important;
-            color: var(--color-rol) !important;
-            border-radius: 8px !important;
-            font-weight: 600;
-            font-size: .8rem;
-        }
-
-            .btn-rol-toggle:hover {
-                background: var(--color-rol-light) !important;
-            }
-
-        /* BOTÓN GUARDAR */
-        .btn-guardar-rol {
-            background: var(--color-rol) !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 8px !important;
-        }
-
-            .btn-guardar-rol:hover {
-                opacity: .9;
-            }
-
         /* BOTÓN NUEVO USUARIO */
-        .btn-nuevo-usuario {
+        .btn-nuevo-centroComercial {
             background: var(--color-rol);
             color: white !important;
             border-radius: 10px;
@@ -175,13 +138,13 @@
             transition: .2s;
         }
 
-            .btn-nuevo-usuario:hover {
+            .btn-nuevo-centroComercial:hover {
                 transform: translateY(-2px);
                 color: white !important;
             }
 
         /* CABECERA */
-        .cabecera-usuarios {
+        .cabecera-centrosComerciales {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -221,6 +184,14 @@
             font-weight: 600;
         }
 
+        .img-cc {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
         .badge-activo {
             background: #dcfce7;
             color: #166534;
@@ -230,74 +201,60 @@
             background: #fee2e2;
             color: #991b1b;
         }
+
+        .img-local {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
     </style>
 
-    <div class="cabecera-usuarios">
+    <div class="cabecera-centrosComerciales">
         <h4 class="page-titulo mb-0">
-            <i class="bi bi-people me-2"></i>
-            Gestión de Usuarios
+            <span class="material-symbols-outlined">store</span>
+            Gestión de Centros Comerciales
         </h4>
 
-        <a href="CrearUsuario.aspx" class="btn-nuevo-usuario">
+        <a href="CrearCentroComercial.aspx" class="btn-nuevo-centroComercial">
             <i class="bi bi-plus-lg"></i>
-            Nuevo Usuario
+            Nuevo Centro Comercial
         </a>
     </div>
 
     <asp:GridView
-        ID="gvUsuarios"
+        ID="gvCentroComercial"
         runat="server"
         ClientIDMode="Static"
         AllowPaging="false"
         AllowSorting="false"
         DataKeyNames="Id"
-        OnRowDataBound="gvUsuarios_RowDataBound"
         CssClass="table table-bordered table-striped"
         AutoGenerateColumns="false">
 
         <Columns>
+            <asp:TemplateField HeaderText="Imagen">
+                <ItemTemplate>
+                    <img src='<%# Eval("Imagen") %>'
+                        class="img-cc"
+                        onerror="this.src='https://via.placeholder.com/80x60?text=CC'" />
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
-            <asp:BoundField DataField="Documento" HeaderText="Documento" />
-            <asp:BoundField DataField="Email" HeaderText="Email" />
+            <asp:BoundField DataField="Ciudad.NombreCiudad" HeaderText="Ciudad" />
+            <asp:BoundField DataField="Direccion" HeaderText="Dirección" />
+            <asp:BoundField DataField="Descripcion" HeaderText="Descripción" />
+            <asp:BoundField DataField="Administrador" HeaderText="Administrador" />
             <asp:TemplateField HeaderText="Estado">
                 <ItemTemplate>
                     <span class='<%# Convert.ToBoolean(Eval("Estado"))
-                        ? "badge-estado badge-activo"
-                        : "badge-estado badge-inactivo" %>'>
+            ? "badge-estado badge-activo"
+            : "badge-estado badge-inactivo" %>'>
                         <%# Convert.ToBoolean(Eval("Estado"))
-                        ? "Activo"
-                        : "Inactivo" %>
+            ? "Activo"
+            : "Inactivo" %>
                     </span>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField HeaderText="Rol">
-                <ItemTemplate>
-                    <button type="button" class="btn btn-sm btn-rol-toggle"
-                        onclick="toggleRoles(this)">
-                        <i class="bi bi-shield me-1"></i><%# Eval("Rol.Nombre") %> ▾
-                    </button>
-
-                    <div class="panel-roles" style="display: none;">
-                        <p style="font-size: 0.78rem; font-weight: 700; color: #FFA94D; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
-                            Asignar roles
-                        </p>
-                        <asp:CheckBoxList ID="chkRoles" runat="server" />
-
-                        <div class="mt-2 d-flex gap-2">
-                            <asp:Button ID="btnGuardarRol" runat="server"
-                                Text="Guardar"
-                                CssClass="btn btn-sm btn-guardar-rol"
-                                CommandArgument='<%# Eval("Id") %>'
-                                OnClick="btnGuardarRol_Click" />
-
-                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                style="border-radius: 6px; font-size: 0.8rem;"
-                                onclick="cancelarRoles(this)">
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Acciones">
@@ -315,7 +272,7 @@
 
                             <li>
                                 <a class="dropdown-item"
-                                    href='CrearUsuario.aspx?id=<%# Eval("Id") %>'>
+                                    href='CrearCentroComercial.aspx?id=<%# Eval("Id") %>'>
                                     <i class="bi bi-pencil-square me-2"></i>
                                     Editar
                                 </a>
@@ -329,8 +286,8 @@
                                     <i class='bi <%# Convert.ToBoolean(Eval("Estado")) ? "bi-person-x" : "bi-person-check" %> me-2'></i>
 
                                     <%# Convert.ToBoolean(Eval("Estado"))
-                                        ? "Desactivar"
-                                        : "Activar" %>
+                            ? "Desactivar"
+                            : "Activar" %>
                                 </button>
                             </li>
 
@@ -348,25 +305,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-
-        function toggleRoles(btn) {
-            var panel = $(btn).closest('td').find('.panel-roles');
-            panel.toggle();
-        }
-
-        function cancelarRoles(btn) {
-            $(btn).closest('.panel-roles').hide();
-        }
-
-        function cambiarEstado(idUsuario, estadoActual) {
+        function cambiarEstado(idCentroComercial, estadoActual) {
 
             let accion = estadoActual ? "desactivar" : "activar";
 
             Swal.fire({
-                title: '¿Deseas ' + accion + ' este usuario?',
+                title: '¿Deseas ' + accion + ' este centro comercial?',
                 text: estadoActual
-                    ? 'El usuario no podrá iniciar sesión.'
-                    : 'El usuario podrá iniciar sesión nuevamente.',
+                    ? 'El centro comercial no podrá ser visitado.'
+                    : 'El centro comercial podrá ser visitado nuevamente.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí',
@@ -376,8 +323,8 @@
                 if (result.isConfirmed) {
 
                     window.location =
-                        'GestionUsuarios.aspx?estado=' +
-                        idUsuario +
+                        'ListarCentroComercial.aspx?estado=' +
+                        idCentroComercial +
                         '&valor=' +
                         (!estadoActual);
                 }
@@ -386,20 +333,20 @@
 
         $(document).ready(function () {
 
-            $('#gvUsuarios tr:first').wrap('<thead></thead>');
+            $('#gvCentroComercial tr:first').wrap('<thead></thead>');
 
-            if ($.fn.dataTable.isDataTable('#gvUsuarios')) {
-                $('#gvUsuarios').DataTable().destroy();
+            if ($.fn.dataTable.isDataTable('#gvCentroComercial')) {
+                $('#gvCentroComercial').DataTable().destroy();
             }
 
-            $('#gvUsuarios').DataTable({
+            $('#gvCentroComercial').DataTable({
                 language: {
                     search: "",
-                    searchPlaceholder: "Buscar usuario...",
+                    searchPlaceholder: "Buscar centro comercial...",
                     lengthMenu: "Mostrar _MENU_ registros",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ usuarios",
-                    infoEmpty: "Mostrando 0 a 0 de 0 usuarios",
-                    infoFiltered: "(filtrado de _MAX_ usuarios en total)",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ centros comerciales",
+                    infoEmpty: "Mostrando 0 a 0 de 0 centros comerciales",
+                    infoFiltered: "(filtrado de _MAX_ centros comerciales en total)",
                     zeroRecords: "No se encontraron resultados",
                     paginate: {
                         first: "Primero",
@@ -411,7 +358,6 @@
             });
 
         });
-
     </script>
-
 </asp:Content>
+

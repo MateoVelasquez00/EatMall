@@ -3,6 +3,7 @@ using EatMall.Logica;
 using EatMall.Modelo;
 using EatMall.Vista.Pago;
 using System;
+using System.Security.Cryptography;
 using System.Web.UI.WebControls;
 
 namespace EatMall.Vista.Local
@@ -18,19 +19,30 @@ namespace EatMall.Vista.Local
         {
             if (!IsPostBack)
             {
-                //Si la URL trae el idPlazoleta y no está vacío, guárdalo en la variable de sesión
                 if (!string.IsNullOrEmpty(Request.QueryString["idPlazoleta"]))
                     Session["IdPlazoleta"] = Request.QueryString["idPlazoleta"];
 
                 if (!string.IsNullOrEmpty(Request.QueryString["idCC"]))
                     Session["IdCC"] = Request.QueryString["idCC"];
 
-                //si lo de la izquierda es null, usa lo de la derecha
                 string idPlazoleta = Request.QueryString["idPlazoleta"] ?? Session["IdPlazoleta"]?.ToString();
                 string idCC = Request.QueryString["idCC"] ?? Session["IdCC"]?.ToString();
 
                 btnVolverLocal.NavigateUrl =
                     "~/Vista/Local/Local.aspx?idPlazoleta=" + idPlazoleta + "&idCC=" + idCC;
+
+                // Valida que el CC esté activo
+                if (!string.IsNullOrEmpty(idCC))
+                {
+                    CentroComercialL logicaCC = new CentroComercialL();
+                    CentroComercial cc = logicaCC.MtObtenerCentroComercialPorId(Convert.ToInt32(idCC));
+
+                    if (cc == null)
+                    {
+                        Response.Redirect("~/Index.aspx");
+                        return;
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(Request.QueryString["idLocal"]))
                 {
@@ -40,7 +52,6 @@ namespace EatMall.Vista.Local
                 }
                 else if (Session["IdLocal"] != null)
                 {
-                    //Recupera la sesion y carga informacion del local
                     int idLocal = (int)Session["IdLocal"];
                     CargarInformacionLocal(idLocal);
                 }
