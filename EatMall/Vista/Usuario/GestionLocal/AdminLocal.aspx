@@ -1,15 +1,15 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="Administrador.aspx.cs" Inherits="EatMall.Vista.Usuario.Administrador" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="AdminLocal.aspx.cs" Inherits="EatMall.Vista.Usuario.AdminLocal" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head2" runat="server">
-    <%-- Este va vacío o con meta tags si necesitas --%>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentBody" runat="server">
+
     <style>
         .bienvenida-titulo {
             font-size: 26px;
             font-weight: 700;
-            color: #006948;
+            color: var(--color-rol);
             margin-bottom: 28px;
         }
 
@@ -48,23 +48,24 @@
                     width: 6px;
                     height: 6px;
                     border-radius: 50%;
-                    background: #006948;
+                    background: var(--color-rol);
                     flex-shrink: 0;
                     margin-top: 8px;
                 }
 
         .sugerencia-box {
-            background: #f0fdf4;
-            border: 1px solid #adedd3;
-            border-left: 4px solid #006948;
+            background: color-mix(in srgb, var(--color-rol-light) 35%, white);
+            border: 1px solid var(--color-rol-light);
+            border-left: 4px solid var(--color-rol);
             border-radius: 8px;
             padding: 16px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,.04);
         }
 
         .sugerencia-titulo {
             font-size: 13px;
             font-weight: 700;
-            color: #006948;
+            color: var(--color-rol);
             margin-bottom: 6px;
         }
 
@@ -75,31 +76,32 @@
         }
     </style>
 
-    <h2 class="bienvenida-titulo">Bienvenido al Panel de Administración General</h2>
+    <h2 class="bienvenida-titulo">Bienvenido al Panel de Administración del Local</h2>
 
-    <p class="seccion-titulo">Administrador General</p>
+    <p class="seccion-titulo">Administrador de Local</p>
+
     <p class="texto">
-        El rol de Administrador General tiene acceso completo a la plataforma EatMall.
-        Es el responsable de mantener la estructura del sistema operando correctamente,
-        gestionando los centros comerciales, usuarios, plazoletas y locales registrados.
+        Como administrador de un local, eres el encargado de administrar tu establecimiento dentro de EatMall,
+        manteniendo actualizada su información, el menú de productos y la gestión de los pedidos realizados por los clientes.
     </p>
 
     <ul class="lista-descripcion">
-        <li>Gestionar centros comerciales — crear, editar y desactivar.</li>
-        <li>Administrar los usuarios del sistema y asignar roles.</li>
-        <li>Configurar las plazoletas dentro de cada centro comercial.</li>
-        <li>Supervisar los locales y su estado (Abierto / Cerrado).</li>
-        <li>Visualizar la actividad general de la plataforma.</li>
+        <li>Mantener actualizada la información de tu local.</li>
+        <li>Administrar el menú de productos disponibles para los clientes.</li>
+        <li>Gestionar los pedidos recibidos y hacer seguimiento a su estado.</li>
+        <li>Consultar el historial de pedidos procesados.</li>
+        <li>Actualizar la información de tu perfil y cambiar tu contraseña cuando sea necesario.</li>
     </ul>
 
     <hr class="divider" />
 
     <div class="sugerencia-box">
         <div class="sugerencia-titulo">Sugerencia</div>
+
         <p class="texto" style="margin: 0;">
-            Para comenzar, dirígete a <strong>Centros Comerciales</strong> desde el menú lateral
-            para revisar los registros actuales. Si necesitas agregar nuevos usuarios al sistema,
-            usa la opción <strong>Usuarios</strong> del menú lateral.
+            Para comenzar, revisa la información de <strong>Mi Local</strong> y verifica que los datos de tu establecimiento
+            estén actualizados. Después puedes administrar tu <strong>Menú</strong> y gestionar los
+            <strong>Pedidos</strong> desde las opciones disponibles en el menú lateral.
         </p>
     </div>
 

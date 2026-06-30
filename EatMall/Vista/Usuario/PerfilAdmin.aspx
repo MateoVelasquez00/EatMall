@@ -9,7 +9,7 @@
         .page-titulo {
             font-size: 26px;
             font-weight: 700;
-            color: #006948;
+            color: var(--color-rol);
             margin-bottom: 28px;
             display: flex;
             align-items: center;
@@ -21,25 +21,23 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            color: #006948;
+            color: var(--color-rol);
             margin: 0 0 14px;
         }
 
         .perfil-card {
             background: white;
-            border: 1px solid #bccac0;
+            border: 1px solid var(--color-rol-light);
             border-radius: 16px;
             padding: 32px;
-            max-width: 700px;
             width: 100%;
-            max-width: 100%;
         }
 
         .avatar-perfil {
             width: 72px;
             height: 72px;
             border-radius: 50%;
-            background: #006948;
+            background: var(--color-rol);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -56,8 +54,8 @@
         }
 
             .form-control:focus {
-                border-color: #006948;
-                box-shadow: 0 0 0 3px rgba(0,105,72,0.15);
+                border-color: var(--color-rol);
+                box-shadow: none;
                 outline: none;
             }
 
@@ -75,21 +73,22 @@
         }
 
         .btn-guardar {
-            background: #006948;
-            color: white;
-            border: none;
+            background: var(--color-rol) !important;
+            color: white !important;
+            border: none !important;
             border-radius: 8px;
             padding: 11px 32px;
             font-weight: 600;
             font-size: 1rem;
-            transition: background 0.2s ease, transform 0.1s ease;
+            transition: opacity 0.2s ease, transform 0.1s ease;
             cursor: pointer;
         }
 
             .btn-guardar:hover {
-                background: #005137;
+                background: var(--color-rol) !important;
+                color: white !important;
+                opacity: .9;
                 transform: translateY(-1px);
-                color: white;
             }
     </style>
 

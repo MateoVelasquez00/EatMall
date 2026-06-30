@@ -4,7 +4,7 @@
 <html>
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>EatMall Admin</title>
+    <title>EatMall</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -207,7 +207,7 @@
 
                 <!-- Brand -->
                 <div class="sidebar-brand">
-                    <h1>EatMall Admin</h1>
+                    <h1>EatMall</h1>
                 </div>
 
                 <!-- Menú dinámico -->

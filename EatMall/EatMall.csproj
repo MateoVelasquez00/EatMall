@@ -81,15 +81,21 @@
     <Content Include="Vista\Pago\Recibo.aspx" />
     <Content Include="Vista\Plazoleta\Plazoleta.aspx" />
     <Content Include="Vista\Local\Tienda.aspx" />
-    <Content Include="Vista\Usuario\Administrador.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\Administrador.aspx" />
     <Content Include="Vista\Usuario\AdministradorCC.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
-    <Content Include="Vista\Usuario\AdminLocal.aspx" />
-    <Content Include="Vista\Usuario\Cajero.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\AdminLocal.aspx" />
+    <Content Include="Vista\Usuario\GestionCajero\Cajero.aspx" />
     <Content Include="Vista\Usuario\DetallesPedidos.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\Categoria.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\MiLocal.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\Pedidos.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\PromocionLocal.aspx" />
     <Content Include="Vista\Usuario\Perfil.aspx" />
     <Content Include="Vista\Usuario\PerfilAdmin.aspx" />
     <Content Include="Web.config" />
@@ -248,11 +254,11 @@
     <Compile Include="Vista\Local\Tienda.aspx.designer.cs">
       <DependentUpon>Tienda.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\Administrador.aspx.cs">
+    <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\Administrador.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.designer.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\AdministradorCC.aspx.cs">
@@ -283,18 +289,18 @@
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.designer.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\AdminLocal.aspx.cs">
+    <Compile Include="Vista\Usuario\GestionLocal\AdminLocal.aspx.cs">
       <DependentUpon>AdminLocal.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\AdminLocal.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionLocal\AdminLocal.aspx.designer.cs">
       <DependentUpon>AdminLocal.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\Cajero.aspx.cs">
+    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.cs">
       <DependentUpon>Cajero.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\Cajero.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.designer.cs">
       <DependentUpon>Cajero.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\DetallesPedidos.aspx.cs">
@@ -310,6 +316,48 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx.designer.cs">
       <DependentUpon>ListarCentroComercial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx.cs">
+      <DependentUpon>CajeroLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx.designer.cs">
+      <DependentUpon>CajeroLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\Categoria.aspx.cs">
+      <DependentUpon>Categoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\Categoria.aspx.designer.cs">
+      <DependentUpon>Categoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\MiLocal.aspx.cs">
+      <DependentUpon>MiLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\MiLocal.aspx.designer.cs">
+      <DependentUpon>MiLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\Pedidos.aspx.cs">
+      <DependentUpon>Pedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\Pedidos.aspx.designer.cs">
+      <DependentUpon>Pedidos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx.cs">
+      <DependentUpon>ProductosLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx.designer.cs">
+      <DependentUpon>ProductosLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\PromocionLocal.aspx.cs">
+      <DependentUpon>PromocionLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\PromocionLocal.aspx.designer.cs">
+      <DependentUpon>PromocionLocal.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\Perfil.aspx.cs">
       <DependentUpon>Perfil.aspx</DependentUpon>
