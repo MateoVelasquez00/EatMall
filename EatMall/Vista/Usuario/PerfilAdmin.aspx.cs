@@ -1,10 +1,15 @@
 ﻿using EatMall.Logica;
 using EatMall.Modelo;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace EatMall.Vista.Usuario
 {
-    public partial class Perfil : System.Web.UI.Page
+    public partial class PerfilAdmin : System.Web.UI.Page
     {
         ClienteL logica = new ClienteL();
 
@@ -19,6 +24,10 @@ namespace EatMall.Vista.Usuario
             if (!IsPostBack)
             {
                 CargarDatos();
+                if (Request.QueryString["guardado"] == "1")
+                lblMensaje.Text = "✅ Cambios guardados correctamente";
+                lblMensaje.CssClass = "text-success fw-semibold d-block mb-3";
+                
             }
         }
 
@@ -36,23 +45,14 @@ namespace EatMall.Vista.Usuario
                 txtApellido.Text = oCliente.Apellido;
                 txtTelefono.Text = oCliente.Telefono;
             }
-
-            var pedidos = logica.ObtenerPedidosPorCliente(idCliente);
-            if (pedidos.Count > 0)
-            {
-                rptPedidos.DataSource = pedidos;
-                rptPedidos.DataBind();
-            }
-            else
-            {
-                lblSinPedidos.Visible = true;
-            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             UsuarioLogin usuario = (UsuarioLogin)Session["Usuario"];
             int idCliente = usuario.Id;
+
+            // Primero obtienes el cliente
             Cliente oCliente = logica.ObtenerClientePorId(idCliente);
 
             oCliente.Nombre = txtNombre.Text;
@@ -68,14 +68,21 @@ namespace EatMall.Vista.Usuario
 
             if (resultado)
             {
-                Session["NombreCliente"] = oCliente.Nombre;
+                // Actualiza el nombre en Session para que el sidebar lo refleje
+                usuario.Nombre = oCliente.Nombre;
+                Session["Usuario"] = usuario;
+
+                Response.Redirect(Request.Url.AbsolutePath + "?guardado=1");
+                return;
+
                 lblMensaje.Text = "✅ Cambios guardados correctamente";
+                lblMensaje.CssClass = "text-success fw-semibold d-block mb-3";
                 CargarDatos();
             }
             else
             {
                 lblMensaje.Text = "❌ Error al guardar los cambios";
-                lblMensaje.CssClass = "text-danger fw-semibold";
+                lblMensaje.CssClass = "text-danger fw-semibold d-block mb-3";
             }
         }
     }

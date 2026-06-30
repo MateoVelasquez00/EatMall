@@ -11,10 +11,11 @@ namespace EatMall.Modelo
         public string Nombre { get; set; }
         public string UbicacionUrl { get; set; }
         public string Imagen { get; set; }
-        public string Estado { get; set; }
+        public bool Estado { get; set; }
         public string Descripcion { get; set; }
         public int IdCiudad { get; set; }
         public int idAdminCC { get; set; }
+        public string Administrador { get; set; }
         public string Ubicacion { get; set; }
         public string Direccion { get; set; }
         public decimal Longitud { get; set; }

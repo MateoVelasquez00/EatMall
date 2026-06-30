@@ -15,18 +15,27 @@ namespace EatMall.Vista.Pago
         {
             if (!IsPostBack)
             {
-                //Si la URL trae el idCC y no está vacío, guárdalo en la variable de sesión
                 if (!string.IsNullOrEmpty(Request.QueryString["idCC"]))
                     Session["IdCC"] = Request.QueryString["idCC"];
 
                 if (!string.IsNullOrEmpty(Request.QueryString["idPlazoleta"]))
                     Session["IdPlazoleta"] = Request.QueryString["idPlazoleta"];
 
-                //si lo de la izquierda es null, usa lo de la derecha
                 string idCC = Request.QueryString["idCC"] ?? Session["IdCC"]?.ToString();
 
-                btnVolverPlazoleta.NavigateUrl =
-                    "~/Vista/Plazoleta/Plazoleta.aspx?id=" + idCC;
+                btnVolverPlazoleta.NavigateUrl = "~/Vista/Plazoleta/Plazoleta.aspx?id=" + idCC;
+
+                if (!string.IsNullOrEmpty(idCC))
+                {
+                    CentroComercialL logicaCC = new CentroComercialL();
+                    CentroComercial cc = logicaCC.MtObtenerCentroComercialPorId(Convert.ToInt32(idCC));
+
+                    if (cc == null)
+                    {
+                        Response.Redirect("~/Index.aspx");
+                        return;
+                    }
+                }
 
                 CargarLocales();
             }

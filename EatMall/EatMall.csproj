@@ -88,17 +88,22 @@
     <Content Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\MiPlazoleta.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\AdminLocal.aspx" />
     <Content Include="Vista\Usuario\Cajero.aspx" />
     <Content Include="Vista\Usuario\DetallesPedidos.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
     <Content Include="Vista\Usuario\Perfil.aspx" />
+    <Content Include="Vista\Usuario\PerfilAdmin.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
+    <Compile Include="Datos\CiudadD.cs" />
     <Compile Include="Datos\ClienteD.cs" />
     <Compile Include="Datos\ConexionDB.cs" />
     <Compile Include="Datos\DetallePedidoD.cs" />
@@ -123,6 +128,7 @@
     <Compile Include="Logica\CarritoL.cs" />
     <Compile Include="Logica\CategoriaProductoL.cs" />
     <Compile Include="Logica\CentroComercialL.cs" />
+    <Compile Include="Logica\CiudadL.cs" />
     <Compile Include="Logica\ClienteL.cs" />
     <Compile Include="Logica\CodigoVerificacionL.cs" />
     <Compile Include="Logica\DetallePedidoL.cs" />
@@ -295,6 +301,19 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
       <DependentUpon>Plazoletas.aspx</DependentUpon>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.cs">
+      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.designer.cs">
+      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>
@@ -324,12 +343,26 @@
     <Compile Include="Vista\Usuario\DetallesPedidos.aspx.designer.cs">
       <DependentUpon>DetallesPedidos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx.cs">
+      <DependentUpon>ListarCentroComercial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx.designer.cs">
+      <DependentUpon>ListarCentroComercial.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\Perfil.aspx.cs">
       <DependentUpon>Perfil.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Vista\Usuario\Perfil.aspx.designer.cs">
       <DependentUpon>Perfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\PerfilAdmin.aspx.cs">
+      <DependentUpon>PerfilAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\PerfilAdmin.aspx.designer.cs">
+      <DependentUpon>PerfilAdmin.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
