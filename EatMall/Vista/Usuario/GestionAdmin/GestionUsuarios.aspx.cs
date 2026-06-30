@@ -1,71 +1,92 @@
 ﻿using EatMall.Datos;
+using EatMall.Logica;
+using EatMall.Modelo;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace EatMall.Vista.Usuario.GestionAdmin
 {
     public partial class GestionUsuarios : System.Web.UI.Page
     {
+        ClienteL datos = new ClienteL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                //Cargar Primeros 25 usuarios
-                CargarUsuarios(1);
+                if (Request.QueryString["estado"] != null)
+                {
+                    int idUsuario =
+                        Convert.ToInt32(Request.QueryString["estado"]);
+
+                    bool nuevoEstado =
+                        Convert.ToBoolean(Request.QueryString["valor"]);
+
+                    ClienteL clienteL = new ClienteL();
+
+                    clienteL.MtCambiarEstadoUsuario(idUsuario, nuevoEstado);
+
+                    Response.Redirect("GestionUsuarios.aspx");
+                }
+                CargarUsuarios();
             }
         }
 
-        protected void btnBuscar_Click(object sender, EventArgs e)
+        private void CargarUsuarios()
         {
-            string busqueda = txtBusqueda.Text.Trim();
-
-            if (!string.IsNullOrEmpty(busqueda))
-            {
-                btnAnterior.Visible = false;
-                btnSiguiente.Visible = false;
-
-                BusquedaD datos = new BusquedaD();
-                gvUsuarios.DataSource = datos.MtBuscarUsuario(busqueda);
-                gvUsuarios.DataBind();
-            }
-            else
-            {
-                CargarUsuarios(1);
-
-                ScriptManager.RegisterStartupScript(
-                    this,
-                    this.GetType(), "warning",
-                    "Swal.fire({ icon: 'warning', title: 'Campo vacío', text: 'Ingresa un usuario para buscar.' });",
-                    true
-                );
-            }
-        }
-
-        private void CargarUsuarios(int pagina)
-        {
-            btnSiguiente.Visible = true; 
-            btnAnterior.Visible = pagina > 1; //Visible solo si pagina es mayor a 1
-
-            ClienteD datos = new ClienteD();
-            gvUsuarios.DataSource = datos.MtListarUsuarios(pagina, 25);
+            ClienteL clienteL = new ClienteL();
+            gvUsuarios.DataSource = clienteL.MtListarTodosUsuario();
             gvUsuarios.DataBind();
-
-            //Guarda la pagina actual para que los botones sepan en que pagina estan
-            ViewState["PaginaActual"] = pagina;
         }
 
-        protected void btnSiguiente_Click(object sender, EventArgs e)
+        protected void gvUsuarios_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            //Recupera cual era la pagina
-            int pagina = Convert.ToInt32(ViewState["PaginaActual"]);
-            CargarUsuarios(pagina + 1); //Carga la siguiente
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int idUsuario = Convert.ToInt32(gvUsuarios.DataKeys[e.Row.RowIndex].Value);
+                CheckBoxList chkRoles = (CheckBoxList)e.Row.FindControl("chkRoles");
+
+                List<Rol> todosLosRoles = datos.MtObtenerTodosLosRoles();
+                List<Rol> rolesUsuario = datos.MtObtenerRolesPorUsuario(idUsuario);
+
+                chkRoles.DataSource = todosLosRoles;
+                chkRoles.DataTextField = "Nombre";
+                chkRoles.DataValueField = "Id";
+                chkRoles.DataBind();
+
+                foreach (ListItem item in chkRoles.Items)
+                {
+                    item.Selected = rolesUsuario.Any(r => r.Id.ToString() == item.Value);
+                }
+            }
         }
 
-        protected void btnAnterior_Click(object sender, EventArgs e)
+        protected void btnGuardarRol_Click(object sender, EventArgs e)
         {
-            //Recupera cual era la pagina
-            int pagina = Convert.ToInt32(ViewState["PaginaActual"]);
-            if (pagina > 1) CargarUsuarios(pagina - 1);//Carga la anterior
+            Button btn = (Button)sender;
+            int idUsuario = Convert.ToInt32(btn.CommandArgument);
+
+            GridViewRow fila = (GridViewRow)btn.NamingContainer;
+            CheckBoxList chkRoles = (CheckBoxList)fila.FindControl("chkRoles");
+
+            List<Rol> rolesActuales = datos.MtObtenerRolesPorUsuario(idUsuario);
+
+            foreach (ListItem item in chkRoles.Items)
+            {
+                int idRol = Convert.ToInt32(item.Value);
+                bool yaLoTiene = rolesActuales.Any(r => r.Id == idRol);
+
+                if (item.Selected && !yaLoTiene)
+                    datos.MtCambiarRol(idUsuario, idRol, true);
+
+                if (!item.Selected && yaLoTiene)
+                    datos.MtCambiarRol(idUsuario, idRol, false);
+            }
+
+            CargarUsuarios();
         }
     }
 }

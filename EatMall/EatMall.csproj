@@ -87,6 +87,7 @@
     <Content Include="Vista\Local\Tienda.aspx" />
     <Content Include="Vista\Usuario\Administrador.aspx" />
     <Content Include="Vista\Usuario\AdministradorCC.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\AdminLocal.aspx" />
     <Content Include="Vista\Usuario\Cajero.aspx" />
@@ -261,6 +262,13 @@
     <Compile Include="Vista\Usuario\AdministradorCC.aspx.designer.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -309,7 +317,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Vista\Assets\Js\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -317,13 +327,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

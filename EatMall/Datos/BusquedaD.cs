@@ -216,47 +216,5 @@ namespace EatMall.Datos
             }
             return lista;
         }
-        public List<Cliente> MtBuscarUsuario(string busqueda)
-        {
-            List<Cliente> lista = new List<Cliente>();
-
-            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
-            {
-                cn.Open();
-                string consulta = @"
-                select U.Nombre, U.Apellido, U.Documento, U.Email, STRING_AGG(R.NombreRol, ', ') AS Roles from Usuario U
-                join RolUsuario RU on RU.IdUsuario = U.Id
-                join Rol R on R.id = RU.IdRol
-                WHERE U.Nombre LIKE '%' + @Busqueda + '%' 
-                or U.Apellido like '%' + @Busqueda + '%' 
-                or cast(U.Documento as varchar) LIKE '%' + @Busqueda + '%'
-                or U.Email like '%' + @Busqueda + '%'
-                GROUP BY U.Nombre,U.Apellido,U.Documento,U.Email" ;
-
-                using (SqlCommand cmd = new SqlCommand(consulta, cn))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("@Busqueda", busqueda);
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            lista.Add(new Cliente()
-                            {
-                                Nombre = dr["Nombre"].ToString(),
-                                Apellido = dr["Apellido"].ToString(),
-                                Documento = dr["Documento"].ToString(),
-                                Email = dr["Email"].ToString(),
-                                Rol = new Rol()
-                                {
-                                    Nombre = dr["Roles"].ToString()
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-            return lista;
-        }
     }
 }
