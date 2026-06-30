@@ -299,8 +299,9 @@
       <DependentUpon>Plazoletas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
+   <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
       <DependentUpon>Plazoletas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.cs">
       <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
