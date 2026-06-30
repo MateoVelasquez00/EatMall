@@ -20,7 +20,7 @@ namespace EatMall
                 rptCentrosComerciales.DataSource = oCentroComercial.MtListarCentrosComercial();
                 rptCentrosComerciales.DataBind();
                 MtCargarDatosIndex();
-
+				//Arreglo
 			}
         }
         
