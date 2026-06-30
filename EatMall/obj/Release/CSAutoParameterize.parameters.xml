@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="conexionDB-Web.config Connection String" description="conexionDB Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="Data Source=appeatmallsena.database.windows.net;Initial Catalog=dbEatMall;User ID=eatmall;Password=M4t302006;Encrypt=True;TrustServerCertificate=True;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Proyecto\\EatMall\\EatMall\\EatMall\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='conexionDB']/@connectionString" />
-  </parameter>
-</parameters>

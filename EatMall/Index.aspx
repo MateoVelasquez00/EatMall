@@ -64,7 +64,7 @@
 
                                     <p class="fs-4">
                                         <%# Eval("Ciudad.NombreCiudad") %> -
-                                        <%# Eval("Ubicacion") %>
+                                        <%# Eval("Ubicacion") %>b
                                     </p>
 
                                     <a href='Vista/Plazoleta/Plazoleta.aspx?id=<%# Eval("Id") %>'
