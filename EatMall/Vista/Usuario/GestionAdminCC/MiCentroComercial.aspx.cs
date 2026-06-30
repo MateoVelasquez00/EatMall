@@ -28,9 +28,8 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
 
             lblNombre.Text = cc.Nombre;
             lblDireccion.Text = cc.Ubicacion;
-            bool activo = cc.Estado == "True";
-            lblEstadoBadge.Text = $"<span class='{(activo ? "badge-estado-cc badge-activo" : "badge-estado-cc badge-inactivo")}'>" +
-                                  $"{(activo ? "Activo" : "Inactivo")}</span>";
+            lblEstadoBadge.Text = $"<span class='{(cc.Estado ? "badge-estado-cc badge-activo" : "badge-estado-cc badge-inactivo")}'>" +
+                                  $"{(cc.Estado ? "Activo" : "Inactivo")}</span>";
 
             imgBanner.ImageUrl = cc.Imagen;
             txtDescripcion.Text = cc.Descripcion;
@@ -50,7 +49,7 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
                     Id = usuario.IdCC,
                     Descripcion = txtDescripcion.Text.Trim(),
                     Imagen = txtImagen.Text.Trim(),
-                    Estado = ddlEstado.SelectedValue
+                    Estado = ddlEstado.SelectedValue == "True"
                 };
 
                 ccL.MtActualizarCC(cc);
