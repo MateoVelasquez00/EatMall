@@ -1,6 +1,7 @@
 ﻿using EatMall.Datos;
 using EatMall.Modelo;
 using System.Collections.Generic;
+using System.Data;
 
 namespace EatMall.Logica
 {
@@ -15,6 +16,22 @@ namespace EatMall.Logica
         {
             LocalD oDatosL = new LocalD();
             return oDatosL.ObtenerLocalPorId(id);
+        }
+        public DataTable MtListarTodosLocales(int idCC)
+        {
+            LocalD oDatosL = new LocalD();
+            return oDatosL.MtListarTodosLocales(idCC);
+        }
+
+        public void MtCambiarEstadoLocal(int idLocal, string nuevoEstado)
+        {
+            LocalD oDatosL = new LocalD();
+            oDatosL.MtCambiarEstadoLocal(idLocal, nuevoEstado);
+        }
+        public void MtCrearLocal(Local nuevoLocal)
+        {
+            LocalD oDatosL = new LocalD();
+            oDatosL.MtCrearLocal(nuevoLocal);
         }
     }
 }

@@ -11,14 +11,14 @@ using EatMall.Modelo;
 
 namespace EatMall.Datos
 {
-	public class LoginD
-	{
-		public UsuarioLogin MtLogin(UsuarioLogin oDatosSesion, bool esFuncionario)
-		{
-			UsuarioLogin oUsuario = null;
-			using (SqlConnection cn = ConexionDB.MtAbrirConexion())
-			{
-				cn.Open();
+    public class LoginD
+    {
+        public UsuarioLogin MtLogin(UsuarioLogin oDatosSesion, bool esFuncionario)
+        {
+            UsuarioLogin oUsuario = null;
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
 
 				string consulta = @"
 						SELECT TOP 1 
@@ -40,11 +40,11 @@ namespace EatMall.Datos
 						)
 						ORDER BY RU.IdRol ASC";
 
-				using (SqlCommand cmd = new SqlCommand(consulta, cn))
-				{
-					cmd.Parameters.AddWithValue("@Email", oDatosSesion.Email);
-					cmd.Parameters.AddWithValue("@Clave", oDatosSesion.Contraseña);
-					cmd.Parameters.AddWithValue("@EsFunc", esFuncionario ? 1 : 0);
+                using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", oDatosSesion.Email);
+                    cmd.Parameters.AddWithValue("@Clave", oDatosSesion.Contraseña);
+                    cmd.Parameters.AddWithValue("@EsFunc", esFuncionario ? 1 : 0);
 
 					using (SqlDataReader dr = cmd.ExecuteReader())
 					{

@@ -33,5 +33,17 @@ namespace EatMall.Logica
             return oDatosCC.MtListarCentroComercialAdmin();
         }
 
+        public CentroComercial MtObtenerCCPorId(int idCC)
+        {
+            CentroComercialD oDatosCC = new CentroComercialD();
+            return oDatosCC.MtObtenerCCPorId(idCC);
+        }
+
+        public void MtActualizarCC(CentroComercial cc)
+        {
+            CentroComercialD oDatosCC = new CentroComercialD();
+            oDatosCC.MtActualizarCC(cc);
+        }
     }
+
 }

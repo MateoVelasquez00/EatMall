@@ -85,6 +85,11 @@
     <Content Include="Vista\Usuario\AdministradorCC.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\Locales.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\MiPlazoleta.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\AdminLocal.aspx" />
     <Content Include="Vista\Usuario\GestionCajero\Cajero.aspx" />
@@ -281,6 +286,41 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
       <DependentUpon>CrearUsuario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx.cs">
+      <DependentUpon>CrearLocales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx.designer.cs">
+      <DependentUpon>CrearLocales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\Locales.aspx.cs">
+      <DependentUpon>Locales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\Locales.aspx.designer.cs">
+      <DependentUpon>Locales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx.cs">
+      <DependentUpon>MiCentroComercial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx.designer.cs">
+      <DependentUpon>MiCentroComercial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\MiPlazoleta.aspx.cs">
+      <DependentUpon>MiPlazoleta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\MiPlazoleta.aspx.designer.cs">
+      <DependentUpon>MiPlazoleta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.cs">
+      <DependentUpon>Plazoletas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
+      <DependentUpon>Plazoletas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>
