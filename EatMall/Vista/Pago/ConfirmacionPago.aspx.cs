@@ -105,7 +105,6 @@ namespace EatMall.Vista.Pago
                 Response.Redirect("~/Vista/Pago/Recibo.aspx");
             }
         }
-
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Vista/Pago/MetodosPago.aspx");
