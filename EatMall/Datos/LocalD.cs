@@ -157,19 +157,19 @@ namespace EatMall.Datos
                 cn.Open();
 
                 string query = @"SELECT 
-                            l.Id,
-                            l.Nombre,
-                            l.Descripcion,
-                            l.Telefono,
-                            l.Email,
-                            l.Imagen,
-                            l.Estado,
-                            l.NumeroLocal,
-                            l.IdPlazoleta,
-                            l.IdDueñoLocal
-                        FROM dbo.Local l
-                        INNER JOIN Plazoleta Pl ON Pl.Id = l.IdPlazoleta
-                        WHERE Pl.IdCentroComercial = @IdCC";
+                    l.Id,
+                    l.Nombre,
+                    l.Descripcion,
+                    l.Telefono,
+                    l.Email,
+                    l.Imagen,
+                    l.Estado,
+                    l.NumeroLocal,
+                    l.IdPlazoleta,
+                    l.IdDueñoLocal
+                FROM dbo.Local l
+                INNER JOIN Plazoleta Pl ON Pl.Id = l.IdPlazoleta
+                WHERE Pl.IdCentroComercial = @IdCC";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
