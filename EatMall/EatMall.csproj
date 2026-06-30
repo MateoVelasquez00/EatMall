@@ -83,13 +83,13 @@
     <Content Include="Vista\Local\Tienda.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\Administrador.aspx" />
     <Content Include="Vista\Usuario\AdministradorCC.aspx" />
-    <Content Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx" />
-    <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\Locales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\MiPlazoleta.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\AdminLocal.aspx" />
     <Content Include="Vista\Usuario\GestionCajero\Cajero.aspx" />
@@ -273,20 +273,6 @@
     <Compile Include="Vista\Usuario\AdministradorCC.aspx.designer.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.cs">
-      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.designer.cs">
-      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.cs">
-      <DependentUpon>CrearUsuario.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
-      <DependentUpon>CrearUsuario.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx.cs">
       <DependentUpon>CrearLocales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -319,8 +305,22 @@
       <DependentUpon>Plazoletas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
+   <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
       <DependentUpon>Plazoletas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.cs">
+      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.designer.cs">
+      <DependentUpon>CrearCentroComercial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>

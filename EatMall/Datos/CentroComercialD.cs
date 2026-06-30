@@ -80,6 +80,7 @@ namespace EatMall.Datos
 
             return resultado;
         }
+
         public CentroComercial MtObtenerCentroComercialPorId(int id)
         {
             CentroComercial cc = null;
@@ -156,6 +157,13 @@ namespace EatMall.Datos
                 }
             }
         }
+
+        // Alias para mantener compatibilidad con código que usa el nombre anterior
+        public void MtActualizarCC(CentroComercial cc)
+        {
+            MtActualizarCentroComercial(cc);
+        }
+
         public bool MtCrearCentroComercial(CentroComercial cc)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
@@ -184,6 +192,7 @@ namespace EatMall.Datos
                 }
             }
         }
+
         public List<CentroComercial> MtListarCentroComercialAdmin()
         {
             List<CentroComercial> listaCC = new List<CentroComercial>();

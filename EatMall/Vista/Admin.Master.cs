@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 using EatMall.Datos;
 using EatMall.Modelo;
 
-
 namespace EatMall.Vista
 {
     public partial class Admin : System.Web.UI.MasterPage
@@ -63,7 +62,6 @@ namespace EatMall.Vista
                     lblRolSidebar.InnerText = nombreRol.ToUpper();
                     avatarInicial.InnerText = iniciales.ToUpper();
 
-                    // Aplica colores del rol via CSS variable
                     Page.ClientScript.RegisterStartupScript(
                         this.GetType(), "colorRol",
                         $@"document.documentElement.style.setProperty('--color-rol', '{colorRol}');
@@ -122,6 +120,7 @@ namespace EatMall.Vista
                 case "Centros Comerciales": return "store";
                 case "Usuarios": return "group";
                 case "Mi Perfil": return "person";
+                case "Menu Administrador": return "admin_panel_settings";
                 case "Menu AdministradorCC": return "business";
                 case "Menu Local": return "storefront";
                 case "Menu Cajero": return "point_of_sale";
@@ -129,6 +128,7 @@ namespace EatMall.Vista
                 default: return "circle";
             }
         }
+
         protected void lbCerrar_Click(object sender, EventArgs e)
         {
             Session.Clear();
@@ -137,4 +137,3 @@ namespace EatMall.Vista
         }
     }
 }
-

@@ -7,6 +7,7 @@ namespace EatMall.Logica
     public class CentroComercialL
     {
         CentroComercialD oDatosCC = new CentroComercialD();
+
         public List<CentroComercial> MtListarCentrosComercial()
         {
             return oDatosCC.MtListarCentroComercial();
@@ -15,6 +16,7 @@ namespace EatMall.Logica
         {
             return oDatosCC.MtCambiarEstadoCentroComercial(idCentroComercial, estado);
         }
+
         public CentroComercial MtObtenerCentroComercialPorId(int id)
         {
             return oDatosCC.MtObtenerCentroComercialPorId(id);
@@ -24,10 +26,12 @@ namespace EatMall.Logica
         {
             return oDatosCC.MtActualizarCentroComercial(cc);
         }
+
         public bool MtCrearCentroComercial(CentroComercial cc)
         {
             return oDatosCC.MtCrearCentroComercial(cc);
         }
+
         public List<CentroComercial> MtListarCentroComercialAdmin()
         {
             return oDatosCC.MtListarCentroComercialAdmin();
@@ -45,5 +49,4 @@ namespace EatMall.Logica
             oDatosCC.MtActualizarCC(cc);
         }
     }
-
 }
