@@ -15,6 +15,8 @@ namespace EatMall.Modelo
         public string Imagen { get; set; }
         public string Estado { get; set; }
         public double Promedio { get; set; }
+        public int IdDueñoLocal { get; set; }
+        public int NumeroLocal { get; set; }
         public int IdPlazoleta { get; set; }
         public int IdCC { get; set; }
         public string HorarioLocal { get; set; }

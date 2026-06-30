@@ -5,27 +5,39 @@ using EatMall.Vista.Auth;
 
 namespace EatMall.Logica
 {
-	public class RegistroL
-	{
-		RegistroD oRegistroD = new RegistroD();
-		public bool MtValidarDatosProspecto(Cliente oCliente)
-		{
-			if (string.IsNullOrEmpty(oCliente.Nombre) || string.IsNullOrEmpty(oCliente.Apellido) || string.IsNullOrEmpty(oCliente.Documento))
-				throw new Exception("El Documento, el nombre y el apellido son obligatorios.");
+    public class RegistroL
+    {
+        RegistroD oRegistroD = new RegistroD();
+        public bool MtValidarDatosProspecto(Cliente oCliente)
+        {
+            if (string.IsNullOrWhiteSpace(oCliente.Nombre))
+                throw new Exception("El nombre es obligatorio");
 
-			if (string.IsNullOrEmpty(oCliente.Email) || !oCliente.Email.Contains("@"))
-				throw new Exception("Por favor, ingrese un correo electrónico válido.");
+            if (string.IsNullOrWhiteSpace(oCliente.Apellido))
+                throw new Exception("El apellido es obligatorio");
 
-			if (oCliente.Contraseña.Length < 6)
-				throw new Exception("La contraseña debe tener al menos 6 caracteres.");
+            if (string.IsNullOrWhiteSpace(oCliente.Documento))
+                throw new Exception("El documento es obligatorio");
 
-			return true;
-		}
-		public bool MtInsertarClienteFinal(Cliente oCliente)
-		{
+            if (string.IsNullOrWhiteSpace(oCliente.Email))
+                throw new Exception("El correo es obligatorio");
 
-			int resultado = oRegistroD.MtRegistrarUsuarioFinal(oCliente);
-			return resultado > 0;
-		}
-	}
+            if (!oCliente.Email.Contains("@"))
+                throw new Exception("El correo ingresado no es válido");
+
+            if (string.IsNullOrWhiteSpace(oCliente.Contraseña))
+                throw new Exception("La contraseña es obligatoria");
+
+            if (oCliente.Contraseña.Length < 6)
+                throw new Exception("La contraseña debe tener al menos 6 caracteres");
+
+            return true;
+        }
+        public bool MtInsertarClienteFinal(Cliente oCliente)
+        {
+
+            int resultado = oRegistroD.MtRegistrarUsuarioFinal(oCliente);
+            return resultado > 0;
+        }
+    }
 }
