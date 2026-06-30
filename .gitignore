@@ -17,3 +17,8 @@ packages/
 
 # Logs
 *.log
+/EatMall/Vista/Admin.Master.cs
+/EatMall/Vista/Auth/Login.aspx.cs
+/EatMall/Vista/Usuario/GestionAdmin/CrearUsuario.aspx
+/EatMall/Vista/Usuario/GestionAdmin/CrearUsuario.aspx.designer.cs
+/EatMall/Index.aspx

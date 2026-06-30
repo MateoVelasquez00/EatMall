@@ -17,14 +17,28 @@ namespace EatMall.Vista.Usuario.GestionAdmin
         {
             if (!IsPostBack)
             {
+                if (Request.QueryString["estado"] != null)
+                {
+                    int idUsuario =
+                        Convert.ToInt32(Request.QueryString["estado"]);
+
+                    bool nuevoEstado =
+                        Convert.ToBoolean(Request.QueryString["valor"]);
+
+                    ClienteL clienteL = new ClienteL();
+
+                    clienteL.MtCambiarEstadoUsuario(idUsuario, nuevoEstado);
+
+                    Response.Redirect("GestionUsuarios.aspx");
+                }
                 CargarUsuarios();
             }
         }
 
         private void CargarUsuarios()
         {
-            ClienteD clienteD = new ClienteD();
-            gvUsuarios.DataSource = clienteD.MtListarTodosUsuarios();
+            ClienteL clienteL = new ClienteL();
+            gvUsuarios.DataSource = clienteL.MtListarTodosUsuario();
             gvUsuarios.DataBind();
         }
 

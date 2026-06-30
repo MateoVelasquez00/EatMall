@@ -162,7 +162,7 @@
 </div>
 
     <!-- PRODUCTOS -->
-    <div id="productosContainer" class="productos-container">
+<div id="productosContainer" class="productos-container">
 
         <div class="d-flex align-items-center gap-2 mb-4">
             <asp:HyperLink ID="btnVolverLocal"
@@ -173,8 +173,7 @@
         </div>
 
         <div class="row" id="rowProductos">
-            <asp:Repeater ID="rptProductos" runat="server"
-                OnItemCommand="rptProductos_ItemCommand">
+            <asp:Repeater ID="rptProductos" runat="server">
                 <ItemTemplate>
                     <div class="col-md-3 col-producto mb-4">
                         <div class="producto-card">
@@ -188,15 +187,17 @@
                                 <h6 class="fw-bold"><%# Eval("Nombre") %></h6>
                                 <small class="text-muted d-block mb-2"><%# Eval("Descripcion") %></small>
                                 <strong class="text-success">$<%# Eval("Precio", "{0:N2}") %></strong>
+                                
                                 <div class="d-flex align-items-center mt-3 gap-2">
-                                    <asp:TextBox ID="txtCantidad" runat="server" Text="1"
-                                        CssClass="form-control form-control-sm"
-                                        Style="width: 60px" TextMode="Number" min="1" />
-                                    <asp:Button runat="server" Text="Agregar"
-                                        CssClass="btn btn-primary btn-sm"
-                                        Style="background-color: #FFA94D; color: white; border: none;"
-                                        CommandName="AgregarCarrito"
-                                        CommandArgument='<%# Eval("Id") %>' />
+                                    <input type="number" id='txtCant-<%# Eval("Id") %>' value="1" min="1" class="form-control form-control-sm" style="width: 60px" />
+                                    
+                                    <button type="button" class="btn btn-primary btn-sm btn-agregar-mall"
+                                        style="background-color: #FFA94D; color: white; border: none;"
+                                        data-id='<%# Eval("Id") %>'
+                                        data-nombre='<%# Eval("Nombre") %>'
+                                        data-precio='<%# Eval("Precio") %>'>
+                                        Agregar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -207,9 +208,72 @@
 
     </div>
 
-    <script>
-        var sidebarVisible = true;
-        /*recordar el estado del sidebar visible o no */
+   <script src="../../Js/Carrito.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        MtActualizarContador();
+
+        document.addEventListener('click', function (e) {
+            const boton = e.target.closest('.btn-agregar-mall');
+
+            if (boton) {
+
+                const idProducto = boton.getAttribute('data-id');
+
+
+                const inputCantidad = document.getElementById('txtCant-' + idProducto);
+                const cantidadSeleccionada = inputCantidad ? parseInt(inputCantidad.value) : 1;
+
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const idLocalActual = parseInt(urlParams.get('idLocal')) || 0;
+
+
+                const producto = {
+                    Id: parseInt(idProducto),
+                    Nombre: boton.getAttribute('data-nombre'),
+                    Precio: parseFloat(boton.getAttribute('data-precio')),
+                    Cantidad: cantidadSeleccionada > 0 ? cantidadSeleccionada : 1,
+                    IdLocal: idLocalActual
+                };
+
+                MtAgregarAlCarrito(producto);
+            }
+        });
+    });
+
+    function MtAgregarAlCarrito(nuevoProducto) {
+       
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+        const existe = carrito.find(p => p.Id == nuevoProducto.Id);
+
+        if (existe) {
+            existe.Cantidad += nuevoProducto.Cantidad;
+        } else {
+            carrito.push(nuevoProducto);
+        }
+
+       
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        MtActualizarContador();
+    }
+
+    function MtActualizarContador() {
+   
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    
+        const total = carrito.reduce((acc, p) => acc + (p.Cantidad || 0), 0);
+
+        const badge = document.getElementById('ContentPlaceHolder1_lblCantidadCarrito') || document.getElementById('lblCantidadCarrito');
+        if (badge) {
+            badge.innerText = total;
+        }
+    }
+
+
+       
         window.onload = function () {
             var estado = sessionStorage.getItem('sidebarVisible');
 
@@ -227,12 +291,11 @@
                 document.getElementById('barraCategorias').style.marginLeft = '340px';
                 document.querySelectorAll('.col-producto').forEach(function (col) {
                     col.className = 'col-md-4 col-producto mb-4';
-
                 });
                 sidebarVisible = true;
             }
         };
-        /*visibilidad del sidebar, cuando el sidebar este oculto caben mas productos en la fila*/
+
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebarLocal');
             var container = document.getElementById('productosContainer');
@@ -262,5 +325,4 @@
             sidebarVisible = !sidebarVisible;
         }
     </script>
-
-</asp:Content>
+    </asp:Content>

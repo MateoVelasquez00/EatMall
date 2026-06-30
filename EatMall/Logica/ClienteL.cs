@@ -33,5 +33,17 @@ namespace EatMall.Logica
         {
             datos.MtCambiarRol(idUsuario, idRol, asignar);
         }
+        public int MtCrearUsuario(Cliente oCliente)
+        {
+            return datos.MtCrearUsuario(oCliente);
+        }
+        public bool MtCambiarEstadoUsuario(int idUsuario, bool estado)
+        {
+            return datos.MtCambiarEstadoUsuario(idUsuario, estado);
+        }
+        public List<Cliente> MtListarTodosUsuario()
+        {
+            return datos.MtListarTodosUsuarios();
+        }
     }
 }

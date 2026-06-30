@@ -59,7 +59,7 @@ namespace EatMall.Vista.Pago
 
                 MetodoPagoL metodoL = new MetodoPagoL();
 
-                // ← Tipos explícitos para evitar ambigüedad con la página MetodoPago.aspx
+                
                 List<EatMall.Modelo.MetodoPago> metodos = metodoL.ObtenerMetodos(idLocal);
                 EatMall.Modelo.MetodoPago seleccionado = metodos.Find(m => m.Id == idMetodo);
 

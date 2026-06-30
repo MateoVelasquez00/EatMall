@@ -2,7 +2,8 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using EatMall.Modelo; 
+using EatMall.Modelo;
+using System.Web.Script.Serialization;
 
 namespace EatMall.Vista
 {

@@ -50,6 +50,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -73,6 +76,7 @@
     <Content Include="Vista\Assets\Img\CCDefault.png" />
     <Content Include="Vista\Assets\Img\HeroPlazoleta.png" />
     <Content Include="Vista\Assets\Img\LogoEatMall.png" />
+    <Content Include="Vista\Assets\Js\Carrito.js" />
     <Content Include="Vista\Auth\Login.aspx" />
     <Content Include="Vista\Auth\Registro.aspx" />
     <Content Include="Vista\Auth\VerificarCuenta.aspx" />
@@ -86,6 +90,7 @@
     <Content Include="Vista\Local\Tienda.aspx" />
     <Content Include="Vista\Usuario\Administrador.aspx" />
     <Content Include="Vista\Usuario\AdministradorCC.aspx" />
+    <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\AdminLocal.aspx" />
     <Content Include="Vista\Usuario\Cajero.aspx" />
@@ -95,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
+    <Compile Include="Datos\CarritoD.cs" />
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
     <Compile Include="Datos\ClienteD.cs" />
@@ -259,6 +265,13 @@
     <Compile Include="Vista\Usuario\AdministradorCC.aspx.designer.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx.designer.cs">
+      <DependentUpon>CrearUsuario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx.cs">
       <DependentUpon>GestionUsuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -298,8 +311,8 @@
   <ItemGroup>
     <Content Include="Site.Master" />
     <None Include="packages.config" />
-    <Content Include="Vista\Admin.Master" />
     <None Include="Properties\PublishProfiles\EatMall3 - Web Deploy.pubxml" />
+    <Content Include="Vista\Admin.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -307,9 +320,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Vista\Assets\Js\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -317,13 +328,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
