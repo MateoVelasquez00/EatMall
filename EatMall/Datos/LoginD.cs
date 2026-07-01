@@ -19,24 +19,32 @@ namespace EatMall.Datos
             {
                 cn.Open();
                 string consulta = @"
-                        SELECT TOP 1 
-                            U.Id, 
-                            U.Nombre, 
-                            U.Email, 
+                        SELECT TOP 1
+                            U.Id,
+                            U.Nombre,
+                            U.Email,
                             U.Estado,
-                            RU.IdRol, 
+                            RU.IdRol,
                             M.Ruta AS RutaInicio,
-                            ISNULL(CC.Id, 0) AS IdCC
+                            ISNULL(CC.Id,0) AS IdCC,
+                            ISNULL(L.Id,0) AS IdLocal
                         FROM Usuario U
-                        INNER JOIN RolUsuario RU ON RU.IdUsuario = U.Id
-                        INNER JOIN MenuRol MR ON RU.IdRol = MR.IdRol 
-                        INNER JOIN Menu M ON MR.IdMenu = M.Id       
-                        LEFT JOIN CentroComercial CC ON CC.IdAdminCC = U.Id
-                        WHERE U.Email = @Email AND U.Contraseña = @Clave  
+                        INNER JOIN RolUsuario RU
+                            ON RU.IdUsuario = U.Id
+                        INNER JOIN MenuRol MR
+                            ON RU.IdRol = MR.IdRol
+                        INNER JOIN Menu M
+                            ON MR.IdMenu = M.Id
+                        LEFT JOIN CentroComercial CC
+                            ON CC.IdAdminCC = U.Id
+                        LEFT JOIN Local L
+                            ON L.IdDueñoLocal = U.Id
+                        WHERE U.Email=@Email
+                        AND U.Contraseña=@Clave
                         AND (
-                            (@EsFunc = 1 AND RU.IdRol IN (1, 2)) 
-                            OR 
-                            (@EsFunc = 0 AND RU.IdRol IN (3, 4, 5, 6))
+                        (@EsFunc=1 AND RU.IdRol IN (1,2))
+                        OR
+                        (@EsFunc=0 AND RU.IdRol IN (3,4,5,6))
                         )
                         ORDER BY RU.IdRol ASC";
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
@@ -55,7 +63,8 @@ namespace EatMall.Datos
                                 IdRol = Convert.ToInt32(dr["IdRol"]),
                                 UrlInicio = dr["RutaInicio"].ToString(),
                                 Estado = Convert.ToBoolean(dr["Estado"]),
-                                IdCC = Convert.ToInt32(dr["IdCC"])
+                                IdCC = Convert.ToInt32(dr["IdCC"]),
+                                IdLocal = Convert.ToInt32(dr["IdLocal"])
                             };
                         }
                     }

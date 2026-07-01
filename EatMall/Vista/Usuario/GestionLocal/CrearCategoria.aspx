@@ -1,6 +1,7 @@
-﻿ <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CrearCentroComercial.aspx.cs"
-    Inherits="EatMall.Vista.Usuario.GestionAdmin.CrearCentroComercial"
-    MasterPageFile="~/Vista/Admin.Master" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master"
+    AutoEventWireup="true"
+    CodeBehind="CrearCategoria.aspx.cs"
+    Inherits="EatMall.Vista.Usuario.GestionLocal.CrearCategoria" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentBody" runat="server">
 
@@ -43,10 +44,20 @@
                 outline: none;
             }
 
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
+        .form-select {
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 12px 14px;
+            min-height: 48px;
+            width: 100%;
+            transition: all .2s ease;
         }
+
+            .form-select:focus {
+                border-color: var(--color-rol);
+                box-shadow: 0 0 0 4px rgba(0,105,72,.12);
+                outline: none;
+            }
 
         .seccion-titulo {
             font-size: .78rem;
@@ -114,56 +125,23 @@
     </style>
 
     <h4 class="page-titulo" id="lblTituloPagina" runat="server">
-        <span class="material-symbols-outlined">store</span>
-        Crear Centro Comercial
+        <span class="material-symbols-outlined">category</span>
+        Crear Categoría
     </h4>
 
     <div class="card-form">
 
-        <p class="seccion-titulo" style="margin-top: 0;">Información general</p>
-
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Ciudad</label>
-                <asp:DropDownList ID="ddlCiudad" runat="server" CssClass="form-control">
-                </asp:DropDownList>
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label">Nombre</label>
-                <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"
-                    placeholder="Ej. Centro Comercial El Tesoro" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Dirección</label>
-                <asp:TextBox ID="txtDireccion" runat="server" CssClass="form-control"
-                    placeholder="Ej. Calle 123 # 45-67" />
-            </div>
-            <div class="col-12">
-                <label class="form-label">Descripción</label>
-                <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control"
-                    TextMode="MultiLine" placeholder="Descripción del centro comercial..." />
-            </div>
-        </div>
-
-        <p class="seccion-titulo">Ubicación</p>
+        <p class="seccion-titulo" style="margin-top: 0;">
+            Información general
+        </p>
 
         <div class="row g-3">
-            <div class="col-md-12">
-                <label class="form-label">URL de Ubicación (Google Maps)</label>
-                <asp:TextBox ID="txtUbicacionUrl" runat="server" CssClass="form-control"
-                    placeholder="https://maps.google.com/..." />
-            </div>
             <div class="col-md-6">
-                <label class="form-label">Latitud</label>
-                <asp:TextBox ID="txtLatitud" runat="server" CssClass="form-control"
-                    placeholder="Ej. 6.2442" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Longitud</label>
-                <asp:TextBox ID="txtLongitud" runat="server" CssClass="form-control"
-                    placeholder="Ej. -75.5812" />
+                <label class="form-label">Nombre de la categoría</label>
+                <asp:TextBox ID="txtNombre"
+                    runat="server"
+                    CssClass="form-control"
+                    placeholder="Ej. Comida italiana" />
             </div>
         </div>
 
@@ -172,21 +150,40 @@
         <div class="row g-3">
             <div class="col-md-8">
                 <label class="form-label">URL de la imagen</label>
-                <asp:TextBox ID="txtImagen" runat="server" CssClass="form-control"
-                    placeholder="https://..." onchange="previewImagen(this.value)" />
-                <img id="imgPreview" class="preview-imagen" src="" alt="Preview" />
+                <asp:TextBox
+                    ID="txtImagen"
+                    runat="server"
+                    CssClass="form-control"
+                    placeholder="https://..."
+                    onchange="previewImagen(this.value)" />
+                <img id="imgPreview"
+                    class="preview-imagen"
+                    src=""
+                    alt="Preview" />
+            </div>
+        </div>
+
+        <p class="seccion-titulo">Estado</p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
+                    <asp:ListItem Text="Activa" Value="true"></asp:ListItem>
+                    <asp:ListItem Text="Inactiva" Value="false"></asp:ListItem>
+                </asp:DropDownList>
             </div>
         </div>
 
         <hr class="divider" />
 
         <div class="acciones-formulario">
-            <asp:Button ID="btnGuardar" runat="server"
-                Text="Crear Centro Comercial"
+            <asp:Button
+                ID="btnGuardar"
+                runat="server"
+                Text="Crear Categoría"
                 CssClass="btn-guardar"
                 OnClick="btnGuardar_Click" />
-
-            <a href="ListarCentroComercial.aspx" class="btn-cancelar">Cancelar</a>
+            <a href="Categoria.aspx" class="btn-cancelar">Cancelar</a>
         </div>
 
     </div>

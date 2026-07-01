@@ -97,6 +97,7 @@
     <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\Categoria.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\MiLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\Pedidos.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
+    <Compile Include="Datos\CategoriaLocalD.cs" />
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
     <Compile Include="Datos\CiudadD.cs" />
@@ -132,6 +134,7 @@
     </Compile>
     <Compile Include="Logica\BusquedaL.cs" />
     <Compile Include="Logica\CarritoL.cs" />
+    <Compile Include="Logica\CategoriaLocalL.cs" />
     <Compile Include="Logica\CategoriaProductoL.cs" />
     <Compile Include="Logica\CentroComercialL.cs" />
     <Compile Include="Logica\CiudadL.cs" />
@@ -305,7 +308,7 @@
       <DependentUpon>Plazoletas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-   <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionAdminCC\Plazoletas.aspx.designer.cs">
       <DependentUpon>Plazoletas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\CrearCentroComercial.aspx.cs">
@@ -370,6 +373,13 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\Categoria.aspx.designer.cs">
       <DependentUpon>Categoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx.cs">
+      <DependentUpon>CrearCategoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx.designer.cs">
+      <DependentUpon>CrearCategoria.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\MiLocal.aspx.cs">
       <DependentUpon>MiLocal.aspx</DependentUpon>
