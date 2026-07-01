@@ -87,7 +87,7 @@
     <Content Include="Vista\Plazoleta\Plazoleta.aspx" />
     <Content Include="Vista\Local\Tienda.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\Administrador.aspx" />
-    <Content Include="Vista\Usuario\AdministradorCC.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\Locales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx" />
@@ -261,11 +261,11 @@
     <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.designer.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\AdministradorCC.aspx.cs">
+    <Compile Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\AdministradorCC.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx.designer.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx.cs">

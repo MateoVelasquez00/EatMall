@@ -100,8 +100,8 @@
         }
 
         .badge-activo {
-            background: #dcfce7;
-            color: #166534;
+            background: #e6f4ea;
+            color: #2e7d32;
         }
 
         .badge-inactivo {
@@ -162,7 +162,7 @@
 
         .divider {
             border: none;
-            border-top: 1px solid #e5e7eb;
+            border-top: 0px solid #e5e7eb;
             margin: 24px 0;
         }
 
@@ -184,7 +184,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentBody" runat="server">
 
     <h4 class="page-titulo">
-        <i class="bi bi-building me-2"></i>
         Mi Centro Comercial
     </h4>
 

@@ -17,9 +17,40 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
             {
                 CargarPlazoletas();
                 CargarDueños();
+
+                if (!string.IsNullOrEmpty(Request.QueryString["id"]))
+                {
+                    int id = Convert.ToInt32(Request.QueryString["id"]);
+                    CargarDatosLocal(id);
+
+                    btnCrear.Text = "Actualizar Local";
+                    lblTituloPagina.InnerHtml = "<span class='material-symbols-outlined'>edit</span> Editar Local";
+                }
+                else
+                {
+                    btnCrear.Text = "Crear Local";
+                }
             }
         }
 
+        private void CargarDatosLocal(int id)
+        {
+            LocalM local = localL.ObtenerLocalPorId(id);
+
+            if (local != null)
+            {
+                txtNombre.Text = local.Nombre;
+                txtDescripcion.Text = local.Descripcion;
+                txtTelefono.Text = local.Telefono;
+                txtEmail.Text = local.Email;
+                txtImagen.Text = local.Imagen;
+                txtNumeroLocal.Text = local.NumeroLocal.ToString();
+
+                ddlEstado.SelectedValue = local.Estado;
+                ddlPlazoleta.SelectedValue = local.IdPlazoleta.ToString();
+                ddlDueño.SelectedValue = local.IdDueñoLocal.ToString();
+            }
+        }
         private void CargarPlazoletas()
         {
             UsuarioLogin usuario = (UsuarioLogin)Session["Usuario"];
@@ -56,9 +87,11 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
                 return;
             }
 
+            bool esEdicion = !string.IsNullOrEmpty(Request.QueryString["id"]);
+
             try
             {
-                LocalM nuevoLocal = new LocalM()
+                LocalM local = new LocalM()
                 {
                     Nombre = txtNombre.Text.Trim(),
                     Descripcion = txtDescripcion.Text.Trim(),
@@ -71,16 +104,30 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
                     IdDueñoLocal = Convert.ToInt32(ddlDueño.SelectedValue)
                 };
 
-                localL.MtCrearLocal(nuevoLocal);
+                string tituloExito, textoExito;
 
-                string script = @"Swal.fire({
-                    title: 'Local creado!',
-                    text: 'El local se registro correctamente.',
-                    icon: 'success',
-                    confirmButtonColor: '#006948'
-                }).then(() => {
-                    window.location.href = 'Locales.aspx';
-                });";
+                if (esEdicion)
+                {
+                    local.Id = Convert.ToInt32(Request.QueryString["id"]);
+                    localL.MtActualizarLocal(local);
+                    tituloExito = "Local actualizado!";
+                    textoExito = "El local se actualizo correctamente.";
+                }
+                else
+                {
+                    localL.MtCrearLocal(local);
+                    tituloExito = "Local creado!";
+                    textoExito = "El local se registro correctamente.";
+                }
+
+                string script = $@"Swal.fire({{
+                        title: '{tituloExito}',
+                        text: '{textoExito}',
+                        icon: 'success',
+                        confirmButtonColor: '#006948'
+                    }}).then(() => {{
+                        window.location.href = 'Locales.aspx';
+                    }});";
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "exito", script, true);
             }
@@ -88,7 +135,7 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
             {
                 string mensaje = ex.Message.Contains("UNIQUE KEY") || ex.Message.Contains("duplicate")
                     ? "El numero de local ya esta registrado."
-                    : "Error al crear el local. Intenta de nuevo.";
+                    : (esEdicion ? "Error al actualizar el local. Intenta de nuevo." : "Error al crear el local. Intenta de nuevo.");
 
                 MostrarAlerta(mensaje, "warning");
             }
