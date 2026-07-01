@@ -12,7 +12,7 @@
 	<title></title>
 </head>
 <body>
-	<form id="form1" runat="server">
+	<form id="form2" runat="server">
 		<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
 		<div class="login-page">

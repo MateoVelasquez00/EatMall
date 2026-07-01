@@ -41,6 +41,10 @@ namespace EatMall.Logica
 
             return oPedidoD.CambiarEstadoPedido(idPedido, nuevoEstado);
         }
+        public int MtGuardarPedido(Pedido oPedido)
+        {
+            return new PedidoD().GuardarPedido(oPedido);
+        }
     }
 }
 	

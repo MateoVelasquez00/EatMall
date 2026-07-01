@@ -207,7 +207,7 @@
 
                 <!-- Brand -->
                 <div class="sidebar-brand">
-                    <h1>EatMall Admin</h1>
+                    <h1 id="lblBrand" runat="server">EatMall Admin</h1>
                 </div>
 
                 <!-- Menú dinámico -->

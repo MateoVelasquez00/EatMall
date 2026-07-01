@@ -55,11 +55,11 @@ namespace EatMall.Datos
 
 				using (SqlCommand cmd = new SqlCommand(query, cn))
 				{
-					cmd.Parameters.AddWithValue("@CodigoPedido", pedido.CodigoPedido);
+					cmd.Parameters.AddWithValue("@CodigoPedido", (object)pedido.CodigoPedido ?? DBNull.Value);
 					cmd.Parameters.AddWithValue("@FechaPedido", pedido.FechaPedido);
-					cmd.Parameters.AddWithValue("@Estado", pedido.Estado);
+					cmd.Parameters.AddWithValue("@Estado", pedido.Estado ?? "Pendiente");
 					cmd.Parameters.AddWithValue("@Total", pedido.Total);
-					cmd.Parameters.AddWithValue("@TipoEntrega", pedido.TipoEntrega);
+					cmd.Parameters.AddWithValue("@TipoEntrega", (object)pedido.TipoEntrega ?? DBNull.Value);
 					cmd.Parameters.AddWithValue("@IdCliente", pedido.IdCliente);
 					cmd.Parameters.AddWithValue("@HoraEntrega", pedido.HoraEntrega);
 
@@ -191,8 +191,13 @@ namespace EatMall.Datos
             }
         }
 
-            }
+ public int MtGuardarPedido(Pedido oPedido)
+        {
+       return new PedidoD().GuardarPedido(oPedido);
         }
+    }
+}
+       
     
 		
 	
