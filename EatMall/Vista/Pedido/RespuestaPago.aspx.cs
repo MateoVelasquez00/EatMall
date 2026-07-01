@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EatMall.Datos;
 using EatMall.Logica;
+using EatMall.Modelo;
 
 namespace EatMall.Vista.Pedido
 {

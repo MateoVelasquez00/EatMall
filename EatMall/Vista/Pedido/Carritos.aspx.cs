@@ -83,22 +83,8 @@ namespace EatMall.Vista.Pedido
 				{
 					montoAPagar = Convert.ToDecimal(Session["Total"]);
 				}
-
-				Modelo.Pedido oPedido = new Modelo.Pedido()
-				{
-					IdCliente = oUsuarioLogin.Id,
-					CodigoPedido = codigoPedido,
-					FechaPedido = DateTime.Now,
-					Total = montoAPagar,
-					Estado = "Pendiente",
-					TipoEntrega = "A domicilio",
-					HoraEntrega = TimeSpan.Parse(horaSeleccionadaUser)
-				};
-
-				idPedido = pedidoL.MtGuardarPedido(oPedido);
 			}
 
-			
 			Session["IdPedido"] = idPedido;
 			Session["Total"] = montoAPagar.ToString("N2");
 			
