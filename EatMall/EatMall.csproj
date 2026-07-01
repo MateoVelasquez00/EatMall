@@ -83,9 +83,7 @@
     <Content Include="Vista\Busqueda\Resultados.aspx" />
     <Content Include="Vista\Pedido\Carritos.aspx" />
     <Content Include="Vista\Local\Local.aspx" />
-    <Content Include="Vista\Pago\ConfirmacionPago.aspx" />
-    <Content Include="Vista\Pago\MetodosPago.aspx" />
-    <Content Include="Vista\Pago\Recibo.aspx" />
+    <Content Include="Vista\Pedido\RespuestaPago.aspx" />
     <Content Include="Vista\Plazoleta\Plazoleta.aspx" />
     <Content Include="Vista\Local\Tienda.aspx" />
     <Content Include="Vista\Usuario\Administrador.aspx" />
@@ -209,26 +207,12 @@
     <Compile Include="Vista\Local\Local.aspx.designer.cs">
       <DependentUpon>Local.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Pago\ConfirmacionPago.aspx.cs">
-      <DependentUpon>ConfirmacionPago.aspx</DependentUpon>
+    <Compile Include="Vista\Pedido\RespuestaPago.aspx.cs">
+      <DependentUpon>RespuestaPago.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Pago\ConfirmacionPago.aspx.designer.cs">
-      <DependentUpon>ConfirmacionPago.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Pago\MetodosPago.aspx.cs">
-      <DependentUpon>MetodosPago.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Pago\MetodosPago.aspx.designer.cs">
-      <DependentUpon>MetodosPago.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Pago\Recibo.aspx.cs">
-      <DependentUpon>Recibo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Pago\Recibo.aspx.designer.cs">
-      <DependentUpon>Recibo.aspx</DependentUpon>
+    <Compile Include="Vista\Pedido\RespuestaPago.aspx.designer.cs">
+      <DependentUpon>RespuestaPago.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Plazoleta\Plazoleta.aspx.cs">
       <DependentUpon>Plazoleta.aspx</DependentUpon>

@@ -11,5 +11,10 @@ namespace EatMall.Logica
 		{
 			return new PedidoD().ConfirmarPedido(carrito, idCliente, horaEntrega);
 		}
+
+		public int MtGuardarPedido(Pedido oPedido)
+		{
+			return new PedidoD().GuardarPedido(oPedido);
+		}
 	}
 }
