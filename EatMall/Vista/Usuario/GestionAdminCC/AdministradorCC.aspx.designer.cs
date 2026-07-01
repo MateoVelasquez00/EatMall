@@ -7,7 +7,7 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace EatMall.Vista.Usuario
+namespace EatMall.Vista.Usuario.GestionAdminCC
 {
 
 

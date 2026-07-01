@@ -1,7 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="AdministradorCC.aspx.cs" Inherits="EatMall.Vista.Usuario.AdministradorCC" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="AdministradorCC.aspx.cs" Inherits="EatMall.Vista.Usuario.GestionAdminCC.AdministradorCC" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head2" runat="server">
-    <%-- Este va vacío o con meta tags si necesitas --%>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentBody" runat="server">
@@ -9,7 +8,7 @@
         .bienvenida-titulo {
             font-size: 26px;
             font-weight: 700;
-            color: #006948;
+            color: #1d4ed8;
             margin-bottom: 28px;
         }
 
@@ -48,15 +47,15 @@
                     width: 6px;
                     height: 6px;
                     border-radius: 50%;
-                    background: #006948;
+                    background: #1d4ed8;
                     flex-shrink: 0;
                     margin-top: 8px;
                 }
 
         .sugerencia-box {
-            background: #f0fdf4;
-            border: 1px solid #adedd3;
-            border-left: 4px solid #006948;
+            background: #f0f4fd;
+            border: 1px solid #9bcfff;
+            border-left: 4px solid #1d4ed8;
             border-radius: 8px;
             padding: 16px 20px;
         }
@@ -64,7 +63,7 @@
         .sugerencia-titulo {
             font-size: 13px;
             font-weight: 700;
-            color: #006948;
+            color: #1d4ed8;
             margin-bottom: 6px;
         }
 

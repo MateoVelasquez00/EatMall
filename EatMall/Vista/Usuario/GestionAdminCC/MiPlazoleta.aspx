@@ -63,8 +63,8 @@
         }
 
         .badge-activo {
-            background: #dcfce7;
-            color: #166534;
+            background: #e6f4ea;
+            color: #2e7d32;
         }
 
         .badge-inactivo {
@@ -153,7 +153,7 @@
 
         .divider {
             border: none;
-            border-top: 1px solid #e5e7eb;
+            border-top: 0px solid #e5e7eb;
             margin: 24px 0;
         }
 
@@ -171,23 +171,102 @@
             border: 1px solid #e5e7eb;
             margin-top: 10px;
         }
+
+        .plazoletas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .plazoleta-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            cursor: pointer;
+            transition: box-shadow .15s, border .15s;
+            text-decoration: none;
+            color: #333;
+            display: block;
+            background: white;
+        }
+
+            .plazoleta-card:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,.08);
+                border-color: var(--color-rol);
+                color: #333;
+            }
+
+            .plazoleta-card.seleccionada {
+                border: 2px solid var(--color-rol);
+                background: var(--color-rol-light);
+            }
+
+        .plazoleta-nombre {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0b1c30;
+            margin-bottom: 6px;
+        }
+
+        .plazoleta-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+            .plazoleta-badge.activa {
+                background: #e6f4ea;
+                color: #2e7d32;
+            }
+
+            .plazoleta-badge.inactiva {
+                background: #fce8e6;
+                color: #c62828;
+            }
     </style>
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentBody" runat="server">
 
     <h4 class="page-titulo">
-        <i class="bi bi-grid-3x3-gap me-2"></i>
         Mi Plazoleta
     </h4>
 
-    <%-- SELECTOR DE PLAZOLETA --%>
-    <div class="selector-plazoleta">
-        <label>Selecciona una plazoleta</label>
-        <asp:DropDownList ID="ddlPlazoletaSelector" runat="server"
-            AutoPostBack="true"
-            OnSelectedIndexChanged="ddlPlazoletaSelector_SelectedIndexChanged" />
+    <div class="card-title" style="font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--color-rol); margin-bottom: 12px;">
+        Selecciona una plazoleta
     </div>
+
+    <asp:Repeater ID="rptPlazoletas" runat="server" OnItemCommand="rptPlazoletas_ItemCommand">
+
+        <HeaderTemplate>
+            <div class="plazoletas-grid">
+        </HeaderTemplate>
+
+        <ItemTemplate>
+            <asp:LinkButton runat="server"
+                CssClass='<%# "plazoleta-card " + (Eval("Id").ToString() == (ViewState["IdPlazoletaActual"] ?? "").ToString() ? "seleccionada" : "") %>'
+                CommandName="VerPlazoleta"
+                CommandArgument='<%# Eval("Id") %>'>
+
+    <div class="plazoleta-nombre"><%# Eval("Nombre") %></div>
+
+    <span class='plazoleta-badge <%# Eval("Estado").ToString() == "True" ? "activa" : "inactiva" %>'>
+        <%# Eval("Estado").ToString() == "True" ? "Activa" : "Inactiva" %>
+    </span>
+
+            </asp:LinkButton>
+        </ItemTemplate>
+
+        <FooterTemplate>
+            </div>
+        </FooterTemplate>
+
+    </asp:Repeater>
 
     <div class="card-perfil">
 

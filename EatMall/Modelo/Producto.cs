@@ -19,11 +19,5 @@ namespace EatMall.Modelo
         public int IdCategoria { get; set; }
         public CentroComercial CentroComercial { get; set; }
 
-
-
-
-
-
-
     }
 }

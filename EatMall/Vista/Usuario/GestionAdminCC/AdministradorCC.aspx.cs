@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EatMall.Vista.Usuario
+namespace EatMall.Vista.Usuario.GestionAdminCC
 {
     public partial class AdministradorCC : System.Web.UI.Page
     {

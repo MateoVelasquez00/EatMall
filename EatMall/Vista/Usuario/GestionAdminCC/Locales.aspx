@@ -196,7 +196,6 @@
 
     <div class="cabecera-locales">
         <h4 class="page-titulo mb-0">
-            <i class="bi bi-shop me-2"></i>
             Gestión de Locales
         </h4>
         <a href="CrearLocales.aspx" class="btn-nuevo-local">
