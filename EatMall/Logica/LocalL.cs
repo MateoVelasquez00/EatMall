@@ -33,5 +33,10 @@ namespace EatMall.Logica
             LocalD oDatosL = new LocalD();
             oDatosL.MtCrearLocal(nuevoLocal);
         }
+        public void MtActualizarLocal(Local local)
+        {
+            LocalD oDatosL = new LocalD();
+            oDatosL.MtActualizarLocal(local);
+        }
     }
 }

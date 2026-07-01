@@ -124,6 +124,9 @@ namespace EatMall.Vista
                 case "Menu Local": return "storefront";
                 case "Menu Cajero": return "point_of_sale";
                 case "Index": return "home";
+                case "Locales": return "storefront";
+                case "PerfilCC": return "store";
+                case "PerfiPlazoleta": return "award";
                 default: return "circle";
             }
         }

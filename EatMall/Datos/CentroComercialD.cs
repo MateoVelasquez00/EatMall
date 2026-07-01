@@ -124,13 +124,6 @@ namespace EatMall.Datos
             }
             return cc;
         }
-
-        // Alias para mantener compatibilidad con código que usa el nombre anterior
-        public CentroComercial MtObtenerCCPorId(int idCC)
-        {
-            return MtObtenerCentroComercialPorId(idCC);
-        }
-
         public bool MtActualizarCentroComercial(CentroComercial cc)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
@@ -164,7 +157,6 @@ namespace EatMall.Datos
             }
         }
 
-        // Alias para mantener compatibilidad con código que usa el nombre anterior
         public void MtActualizarCC(CentroComercial cc)
         {
             MtActualizarCentroComercial(cc);
@@ -197,6 +189,40 @@ namespace EatMall.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+        }
+        public CentroComercial MtObtenerCCPorId(int idCC)
+        {
+            CentroComercial cc = null;
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"SELECT Id, Nombre, Direccion, Imagen, 
+                        Estado, Descripcion
+                 FROM CentroComercial 
+                 WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", idCC);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            cc = new CentroComercial()
+                            {
+                                Id = Convert.ToInt32(dr["Id"]),
+                                Nombre = dr["Nombre"].ToString(),
+                                Ubicacion = dr["Direccion"].ToString(),
+                                Imagen = dr["Imagen"].ToString(),
+                                Estado = Convert.ToBoolean(dr["Estado"]),
+                                Descripcion = dr["Descripcion"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return cc;
         }
 
         public List<CentroComercial> MtListarCentroComercialAdmin()
