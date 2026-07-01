@@ -1,6 +1,7 @@
 ﻿using EatMall.Modelo;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace EatMall.Datos
@@ -146,6 +147,80 @@ namespace EatMall.Datos
             }
 
             return local;
+        }
+        public DataTable MtListarTodosLocales(int idCC)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = @"SELECT 
+                    l.Id,
+                    l.Nombre,
+                    l.Descripcion,
+                    l.Telefono,
+                    l.Email,
+                    l.Imagen,
+                    l.Estado,
+                    l.NumeroLocal,
+                    l.IdPlazoleta,
+                    l.IdDueñoLocal
+                FROM dbo.Local l
+                INNER JOIN Plazoleta Pl ON Pl.Id = l.IdPlazoleta
+                WHERE Pl.IdCentroComercial = @IdCC";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdCC", idCC);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+            return dt;
+        }
+
+        public void MtCambiarEstadoLocal(int idLocal, string nuevoEstado)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = "UPDATE dbo.Local SET Estado = @Estado WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                    cmd.Parameters.AddWithValue("@Id", idLocal);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void MtCrearLocal(Local local)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"INSERT INTO dbo.Local 
+                        (Nombre, Descripcion, Telefono, Email, Imagen, Estado, IdPlazoleta, IdDueñoLocal, NumeroLocal)
+                        VALUES 
+                        (@Nombre, @Descripcion, @Telefono, @Email, @Imagen, @Estado, @IdPlazoleta, @IdDueñoLocal, @NumeroLocal)";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", local.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", local.Descripcion);
+                    cmd.Parameters.AddWithValue("@Telefono", local.Telefono);
+                    cmd.Parameters.AddWithValue("@Email", local.Email);
+                    cmd.Parameters.AddWithValue("@Imagen", local.Imagen);
+                    cmd.Parameters.AddWithValue("@Estado", local.Estado);
+                    cmd.Parameters.AddWithValue("@IdPlazoleta", local.IdPlazoleta);
+                    cmd.Parameters.AddWithValue("@IdDueñoLocal", local.IdDueñoLocal);
+                    cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

@@ -60,6 +60,9 @@ namespace EatMall.Vista.Pedido
 					lblTituloEstado.Text = "¡Pago Aprobado!";
 					lblMensajeDetalle.Text = "Tu transacción fue exitosa. En un momento iniciaremos la preparación de tu pedido en el Food Court de EatMall.";
 					oCarritoL.VaciarCarritoDespuesDePedido();
+
+					string scriptBorrarStorage = "localStorage.removeItem('carrito'); if(typeof ActualizarBadge === 'function') { ActualizarBadge(); }";
+					ScriptManager.RegisterStartupScript(this, this.GetType(), "LimpiarCarritoExitoso", scriptBorrarStorage, true);
 					break;
 
 				case "Pendiente":

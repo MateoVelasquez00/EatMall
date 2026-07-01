@@ -14,6 +14,6 @@ namespace EatMall.Modelo
         public string Nombre { get; set; }
         public string UrlInicio { get; set; }
         public bool Estado { get; set; }
-
+        public int IdCC { get; set; }
     }
 }

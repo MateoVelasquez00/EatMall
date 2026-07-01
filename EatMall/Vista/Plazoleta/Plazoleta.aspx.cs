@@ -15,10 +15,15 @@ namespace EatMall.Vista
                 btnVolverIndex.NavigateUrl = "~/Index.aspx";
 
                 int idCC = 0;
+                int.TryParse(Request.QueryString["id"], out idCC);
 
-                if (Request.QueryString["id"] != null)
+                CentroComercialL logicaCC = new CentroComercialL();
+                CentroComercial cc = logicaCC.MtObtenerCentroComercialPorId(idCC);
+
+                if (cc == null)
                 {
-                    int.TryParse(Request.QueryString["id"], out idCC);
+                    Response.Redirect("~/Index.aspx");
+                    return;
                 }
 
                 PlazoletaL logica = new PlazoletaL();
@@ -42,5 +47,6 @@ namespace EatMall.Vista
                 idPlazoleta + "&idCC=" + idCC);
 
         }
+
     }
 }

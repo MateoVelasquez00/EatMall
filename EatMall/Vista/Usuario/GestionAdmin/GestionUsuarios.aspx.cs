@@ -19,11 +19,9 @@ namespace EatMall.Vista.Usuario.GestionAdmin
             {
                 if (Request.QueryString["estado"] != null)
                 {
-                    int idUsuario =
-                        Convert.ToInt32(Request.QueryString["estado"]);
+                    int idUsuario = Convert.ToInt32(Request.QueryString["estado"]);
 
-                    bool nuevoEstado =
-                        Convert.ToBoolean(Request.QueryString["valor"]);
+                    bool nuevoEstado = Convert.ToBoolean(Request.QueryString["valor"]);
 
                     ClienteL clienteL = new ClienteL();
 

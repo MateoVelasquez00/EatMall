@@ -8,7 +8,7 @@ namespace EatMall.Vista.Usuario
     {
         ClienteL logica = new ClienteL();
 
-        protected void Page_Load(object sender, EventArgs e) 
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Usuario"] == null)
             {

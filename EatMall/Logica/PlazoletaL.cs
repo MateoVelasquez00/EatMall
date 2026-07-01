@@ -14,5 +14,17 @@ namespace EatMall.Logica
             PlazoletaD oDatosP = new PlazoletaD();
             return oDatosP.MtListarPlazoletas(IdCC);
         }
+        public Plazoleta MtObtenerPlazoletaPorId(int idPlazoleta)
+        {
+            PlazoletaD oDatosP = new PlazoletaD();
+            return oDatosP.MtObtenerPlazoletaPorId(idPlazoleta);
+        }
+
+        public void MtActualizarPlazoleta(Plazoleta plazoleta)
+        {
+            PlazoletaD oDatosP = new PlazoletaD();
+            oDatosP.MtActualizarPlazoleta(plazoleta);
+        }
     }
 }
+
