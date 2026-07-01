@@ -43,6 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -97,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
+    <Compile Include="Datos\CajeroD.cs" />
     <Compile Include="Datos\CarritoD.cs" />
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
@@ -121,6 +125,7 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Logica\BusquedaL.cs" />
+    <Compile Include="Logica\CajeroL.cs" />
     <Compile Include="Logica\CarritoL.cs" />
     <Compile Include="Logica\CategoriaProductoL.cs" />
     <Compile Include="Logica\CentroComercialL.cs" />
@@ -136,6 +141,7 @@
     <Compile Include="Logica\PromocionL.cs" />
     <Compile Include="Logica\RegistroL.cs" />
     <Compile Include="Logica\TransaccionL.cs" />
+    <Compile Include="Modelo\Cajero.cs" />
     <Compile Include="Modelo\Calificacion.cs" />
     <Compile Include="Modelo\Carrito.cs" />
     <Compile Include="Modelo\CategoriaProducto.cs" />
@@ -317,9 +323,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Vista\Assets\Js\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

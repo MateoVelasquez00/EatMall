@@ -60,9 +60,52 @@ namespace EatMall.Datos
                             };
 						}
 					}
-				}
+                    // Si no encontró en Usuario Y es modo administrador
+                    // busca en CajeroLocal
+                    if (oUsuario == null && esFuncionario)
+                    {
+                        string consultaCajero = @"
+    SELECT CL.Id, CL.Gmail, CL.Estado, CL.IdLocal, L.Nombre AS NombreLocal
+    FROM CajeroLocal CL
+    INNER JOIN Local L ON CL.IdLocal = L.Id
+    WHERE CL.Gmail = @Email AND CL.Contraseña = @Clave AND CL.Estado = 1";
+
+                        using (SqlCommand cmdCajero = new SqlCommand(consultaCajero, cn))
+                        {
+                            cmdCajero.Parameters.AddWithValue("@Email", oDatosSesion.Email);
+                            cmdCajero.Parameters.AddWithValue("@Clave", oDatosSesion.Contraseña);
+
+                            using (SqlDataReader drCajero = cmdCajero.ExecuteReader())
+                            {
+                                if (drCajero.Read())
+                                {
+                                    // Guardamos el cajero en Session aparte
+                                    HttpContext.Current.Session["Cajero"] = new Cajero
+                                    {
+                                        Id = Convert.ToInt32(drCajero["Id"]),
+                                        Gmail = drCajero["Gmail"].ToString(),
+                                        Estado = Convert.ToBoolean(drCajero["Estado"]),
+                                        IdLocal = Convert.ToInt32(drCajero["IdLocal"]),
+                                        NombreLocal = drCajero["NombreLocal"].ToString()
+                                    };
+
+
+                                    oUsuario = new UsuarioLogin()
+                                    {
+                                        Id = Convert.ToInt32(drCajero["Id"]),
+                                        Nombre = drCajero["Gmail"].ToString(),
+                                        IdRol = 0, // 0 = cajero, no exis
+                                        UrlInicio = "~/Vista/Cajero/Panel.aspx",
+                                        Estado = Convert.ToBoolean(drCajero["Estado"])
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+                return oUsuario;
+            }
 			}
-			return oUsuario;
+			
 		}
 	}
-}
