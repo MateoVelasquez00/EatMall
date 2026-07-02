@@ -75,8 +75,8 @@ namespace EatMall.Datos
 			using (SqlConnection cn = ConexionDB.MtAbrirConexion())
 			{
 				cn.Open();
-				string query = @"INSERT INTO DetallePedido (IdPedido, IdProducto, IdLocal, Cantidad, PrecioUnitario, Subtotal)
-                                 VALUES (@IdPedido, @IdProducto, @IdLocal, @Cantidad, @PrecioUnitario, @Subtotal)";
+				string query = @"INSERT INTO DetallePedido (IdPedido, IdProducto, IdLocal, Cantidad, PrecioUnitario, Subtotal, EstadoProducto)
+                           VALUES (@IdPedido, @IdProducto, @IdLocal, @Cantidad, @PrecioUnitario, @Subtotal, @EstadoProducto)";
 
 				using (SqlCommand cmd = new SqlCommand(query, cn))
 				{
@@ -86,6 +86,7 @@ namespace EatMall.Datos
 					cmd.Parameters.AddWithValue("@Cantidad", detalle.Cantidad);
 					cmd.Parameters.AddWithValue("@PrecioUnitario", detalle.PrecioUnitario);
 					cmd.Parameters.AddWithValue("@Subtotal", detalle.Subtotal);
+					cmd.Parameters.AddWithValue("@EstadoProducto", string.IsNullOrEmpty(detalle.EstadoProducto) ? "En Preparación" : detalle.EstadoProducto);
 					cmd.ExecuteNonQuery();
 				}
 			}
