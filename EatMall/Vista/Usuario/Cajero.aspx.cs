@@ -1,72 +1,195 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using EatMall.Logica;
+using EatMall.Modelo;
 
 namespace EatMall.Vista.Usuario
 {
-    public partial class Cajero : System.Web.UI.Page<%@ Page Title="" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="Cajero.aspx.cs" Inherits="EatMall.Vista.Usuario.Cajero" %>
-<asp:Content ID = "Content1" ContentPlaceHolderID="head2" runat="server">
-</asp:Content>
-<asp:Content ID = "Content2" ContentPlaceHolderID="ContentBody" runat="server">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Pedidos de Hoy</h3>
-        <span class="badge bg-info fs-6">
-            <%= DateTime.Now.ToString("dd/MM/yyyy") %>
-        </span>
-    </div>
-
-    <asp:GridView ID = "gvPedidos" runat="server" 
-        CssClass="table table-hover table-bordered"
-        AutoGenerateColumns="false"
-        EmptyDataText="No hay pedidos para hoy."
-        OnSelectedIndexChanged="gvPedidos_SelectedIndexChanged">
-        <Columns>
-            <asp:BoundField DataField = "CodigoPedido"   HeaderText="Código"   />
-            <asp:BoundField DataField = "NombreCliente"  HeaderText="Cliente"  />
-            <asp:BoundField DataField = "TelefonoCliente" HeaderText="Teléfono" />
-            <asp:BoundField DataField = "HoraEntrega"    HeaderText="Hora"     DataFormatString="{0:hh\\:mm}" />
-            <asp:BoundField DataField = "TipoEntrega"    HeaderText="Tipo"     />
-            <asp:BoundField DataField = "Total"          HeaderText="Total"    DataFormatString="{0:C}" />
-            <asp:BoundField DataField = "Estado"         HeaderText="Estado"   />
-            <asp:ButtonField Text = "Ver detalle" CommandName="Select" 
-                ButtonType="Button" ControlStyle-CssClass="btn btn-sm btn-outline-info" />
-        </Columns>
-    </asp:GridView>
-
-    <!-- Panel detalle del pedido -->
-    <asp:Panel ID = "pnlDetalle" runat="server" Visible="false" CssClass="mt-4">
-        <h5>Detalle del pedido: <asp:Label ID = "lblCodigoPedido" runat="server" /></h5>
-        <asp:GridView ID = "gvDetalle" runat="server"
-            CssClass="table table-sm table-bordered"
-            AutoGenerateColumns="false">
-            <Columns>
-                <asp:BoundField DataField = "NombreProducto" HeaderText="Producto"  />
-                <asp:BoundField DataField = "Cantidad"       HeaderText="Cantidad"  />
-                <asp:BoundField DataField = "PrecioUnitario" HeaderText="Precio"    DataFormatString="{0:C}" />
-                <asp:BoundField DataField = "Subtotal"       HeaderText="Subtotal"  DataFormatString="{0:C}" />
-            </Columns>
-        </asp:GridView>
-
-        <!-- Cambiar estado -->
-        <div class="d-flex gap-2 mt-3">
-            <asp:HiddenField ID = "hfIdPedido" runat="server" />
-            <asp:Button ID = "btnEnPreparacion" runat="server" Text="En Preparación" 
-                CssClass="btn btn-warning" OnClick="btnEnPreparacion_Click" />
-            <asp:Button ID = "btnListo" runat="server" Text="Listo" 
-                CssClass="btn btn-success" OnClick="btnListo_Click" />
-        </div>
-    </asp:Panel>
-
-</asp:Content>
+    public partial class Cajero : System.Web.UI.Page
     {
+        PedidoL opedidoL = new PedidoL();
+        DetallePedidoL odetallepedidoL = new DetallePedidoL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["Cajero"] == null)
+            {
+                Response.Redirect("~/Vista/Auth/Login.aspx");
+                return;
+            }
 
+            if (!IsPostBack)
+                CargarPedidos();
+        }
+
+        private void CargarPedidos()
+        {
+            EatMall.Modelo.Cajero cajero = (EatMall.Modelo.Cajero)Session["Cajero"];
+
+            List<EatMall.Modelo.Pedido> pedidos = opedidoL.ListarPedidosPorLocal(cajero.IdLocal);
+
+            List<EatMall.Modelo.Pedido> pedidosHoy = pedidos.FindAll(p =>
+                p.FechaPedido.Date == DateTime.Today);
+
+            foreach (var pedido in pedidosHoy)
+            {
+                List<DetallePedido> detallesDelPedido = odetallepedidoL.MtObtenerDetalles(pedido.Id);
+
+                decimal totalLocal = 0;
+                string estadoDelLocal = "Pendiente"; 
+
+                foreach (var item in detallesDelPedido)
+                {
+                    if (item.NombreLocal.Trim().ToUpper() == cajero.NombreLocal.Trim().ToUpper())
+                    {
+                        totalLocal += item.Subtotal;
+
+                        
+                        estadoDelLocal = item.EstadoProducto;
+                    }
+                }
+
+               
+                pedido.Total = totalLocal;
+                pedido.Estado = estadoDelLocal;
+            }
+
+            gvPedidos.DataSource = pedidosHoy;
+            gvPedidos.DataBind();
+        }
+
+        protected void gvPedidos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EatMall.Modelo.Cajero cajero = (EatMall.Modelo.Cajero)Session["Cajero"];
+
+            int idPedido = Convert.ToInt32(gvPedidos.SelectedDataKey?.Value
+                ?? gvPedidos.SelectedRow.Cells[0].Text);
+
+            string codigo = gvPedidos.SelectedRow.Cells[0].Text;
+
+            List<DetallePedido> detalle = odetallepedidoL.ObtenerDetallePedido(idPedido, cajero.IdLocal);
+
+            decimal montoTotal = 0;
+            string estadoProductoActual = ""; 
+
+            foreach (var item in detalle)
+            {
+                montoTotal += item.Subtotal;
+                estadoProductoActual = item.EstadoProducto.Trim().ToUpper();
+            }
+
+            lblCodigoPedido.Text = codigo;
+            hfIdPedido.Value = idPedido.ToString();
+            lblMontoTotal.Text = montoTotal.ToString("C");
+
+            rptDetalle.DataSource = detalle;
+            rptDetalle.DataBind();
+
+            rptResumenPrecios.DataSource = detalle;
+            rptResumenPrecios.DataBind();
+
+            if (estadoProductoActual == "ENTREGADO")
+            {
+                btnEnPreparacion.Enabled = false;
+                btnEnPreparacion.CssClass = "btn btn-secondary fw-bold text-white";
+
+                btnEntregado.Enabled = false;
+                btnEntregado.CssClass = "btn btn-secondary fw-bold text-white";
+            }
+            else if (estadoProductoActual == "EN PREPARACIÓN" || estadoProductoActual == "EN PREPARACION")
+            {
+                btnEnPreparacion.Enabled = false;
+                btnEnPreparacion.CssClass = "btn btn-secondary fw-bold text-white";
+
+                btnEntregado.Enabled = true;
+                btnEntregado.CssClass = "btn btn-success fw-bold";
+            }
+            else
+            {
+                btnEnPreparacion.Enabled = true;
+                btnEnPreparacion.CssClass = "btn btn-warning fw-bold text-white";
+
+                btnEntregado.Enabled = true;
+                btnEntregado.CssClass = "btn btn-success fw-bold";
+            }
+
+            Transaccion transaccion = opedidoL.ObtenerTransaccionPorPedido(idPedido);
+            if (transaccion != null)
+            {
+                lblPayuRef.Text = transaccion.PayuCodigoReferencia;
+                lblFechaTrans.Text = transaccion.FechaTransaccion.ToString("dd/MM/yyyy hh:mm tt");
+                lblEstadoPago.Text = transaccion.Estado;
+                lblMedioPago.Text = "PayU (Online)";
+
+                string estadoUpper = transaccion.Estado.ToUpper();
+                if (estadoUpper == "APROBADA" || estadoUpper == "CAPTURADA" || estadoUpper == "APPROVED")
+                {
+                    lblEstadoPago.CssClass = "badge bg-success text-white fw-bold";
+                }
+                else if (estadoUpper == "RECHAZADA" || estadoUpper == "FALLIDA" || estadoUpper == "DECLINED")
+                {
+                    lblEstadoPago.CssClass = "badge bg-danger text-white fw-bold";
+                }
+                else
+                {
+                    lblEstadoPago.CssClass = "badge bg-warning text-dark fw-bold";
+                }
+            }
+            else
+            {
+                lblPayuRef.Text = "N/A";
+                lblFechaTrans.Text = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+                lblEstadoPago.Text = "Pendiente";
+                lblEstadoPago.CssClass = "badge bg-warning text-dark fw-bold";
+                lblMedioPago.Text = "Efectivo";
+            }
+
+            lblMontoTotal.Text = montoTotal.ToString("C");
+
+            pnlPedidosLista.Visible = false;
+            pnlDetalle.Visible = true;
+        }
+
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            pnlPedidosLista.Visible = true;
+            pnlDetalle.Visible = false;
+            CargarPedidos();
+        }
+
+        protected void btnEnPreparacion_Click(object sender, EventArgs e)
+        {
+            int idPedido = Convert.ToInt32(hfIdPedido.Value);
+            EatMall.Modelo.Cajero cajero = (EatMall.Modelo.Cajero)Session["Cajero"];
+
+            odetallepedidoL.CambiarEstadoProductoPorLocal(idPedido, cajero.IdLocal, "En preparación");
+
+ 
+            opedidoL.CambiarEstadoPedido(idPedido, "En preparación");
+
+            pnlPedidosLista.Visible = true;
+            pnlDetalle.Visible = false;
+            CargarPedidos();
+        }
+
+        protected void btnEntregado_Click(object sender, EventArgs e)
+        {
+            int idPedido = Convert.ToInt32(hfIdPedido.Value);
+            EatMall.Modelo.Cajero cajero = (EatMall.Modelo.Cajero)Session["Cajero"];
+
+            odetallepedidoL.CambiarEstadoProductoPorLocal(idPedido, cajero.IdLocal, "Entregado");
+
+            int pendientes = odetallepedidoL.ContarProductosPendientes(idPedido);
+
+            if (pendientes == 0)
+            {
+                opedidoL.CambiarEstadoPedido(idPedido, "Entregado");
+            }
+
+            pnlPedidosLista.Visible = true;
+            pnlDetalle.Visible = false;
+            CargarPedidos();
         }
     }
 }

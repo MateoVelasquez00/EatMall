@@ -81,6 +81,8 @@
     <Content Include="Vista\Auth\Registro.aspx" />
     <Content Include="Vista\Auth\VerificarCuenta.aspx" />
     <Content Include="Vista\Busqueda\Resultados.aspx" />
+    <Content Include="Vista\GestionCajero\MenuLocal.aspx" />
+    <Content Include="Vista\GestionCajero\Promociones.aspx" />
     <Content Include="Vista\Pedido\Carritos.aspx" />
     <Content Include="Vista\Local\Local.aspx" />
     <Content Include="Vista\Pedido\RespuestaPago.aspx" />
@@ -195,6 +197,20 @@
     </Compile>
     <Compile Include="Vista\Busqueda\Resultados.aspx.designer.cs">
       <DependentUpon>Resultados.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\MenuLocal.aspx.cs">
+      <DependentUpon>MenuLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\MenuLocal.aspx.designer.cs">
+      <DependentUpon>MenuLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Promociones.aspx.cs">
+      <DependentUpon>Promociones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Promociones.aspx.designer.cs">
+      <DependentUpon>Promociones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Pedido\Carritos.aspx.cs">
       <DependentUpon>Carritos.aspx</DependentUpon>
