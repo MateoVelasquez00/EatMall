@@ -88,6 +88,7 @@
     <Content Include="Vista\Pedido\RespuestaPago.aspx" />
     <Content Include="Vista\Plazoleta\Plazoleta.aspx" />
     <Content Include="Vista\Local\Tienda.aspx" />
+    <Content Include="Vista\Usuario\Cajero.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\Administrador.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx" />
@@ -99,7 +100,6 @@
     <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\AdminLocal.aspx" />
-    <Content Include="Vista\Usuario\GestionCajero\Cajero.aspx" />
     <Content Include="Vista\Usuario\DetallesPedidos.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx" />
@@ -115,12 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
-
     <Compile Include="Datos\CajeroD.cs" />
     <Compile Include="Datos\CarritoD.cs" />
-
     <Compile Include="Datos\CategoriaLocalD.cs" />
-
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
     <Compile Include="Datos\CiudadD.cs" />
@@ -276,6 +273,13 @@
     <Compile Include="Vista\Local\Tienda.aspx.designer.cs">
       <DependentUpon>Tienda.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Usuario\Cajero.aspx.cs">
+      <DependentUpon>Cajero.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\Cajero.aspx.designer.cs">
+      <DependentUpon>Cajero.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -352,13 +356,6 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\AdminLocal.aspx.designer.cs">
       <DependentUpon>AdminLocal.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.cs">
-      <DependentUpon>Cajero.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.designer.cs">
-      <DependentUpon>Cajero.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\DetallesPedidos.aspx.cs">
       <DependentUpon>DetallesPedidos.aspx</DependentUpon>
@@ -450,7 +447,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Vista\Usuario\GestionCajero\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -99,7 +99,6 @@ namespace EatMall.Datos
 									Id = Convert.ToInt32(drCajero["Id"]),
 									Nombre = drCajero["Gmail"].ToString(),
 									IdRol = 0,
-									UrlInicio = "~/Vista/Usuario/GestionCajero/Cajero.aspx",
 									Estado = Convert.ToBoolean(drCajero["Estado"])
 								};
 							}
