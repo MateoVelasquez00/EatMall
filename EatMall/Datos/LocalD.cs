@@ -84,6 +84,7 @@ namespace EatMall.Datos
                             CAST(L.Telefono AS NVARCHAR(50)) AS Telefono,
                             L.Email,
                             L.Estado,
+                            L.NumeroLocal,
                             HL.Dia,
                             HL.HorarioApertura,
                             HL.HorarioCierre,
@@ -100,6 +101,7 @@ namespace EatMall.Datos
                             CAST(L.Telefono AS NVARCHAR(50)),
                             L.Email,
                             L.Estado,
+                            L.NumeroLocal,
                             HL.Dia,
                             HL.HorarioApertura,
                             HL.HorarioCierre";
@@ -124,6 +126,7 @@ namespace EatMall.Datos
                             Telefono = dr["Telefono"].ToString(),
                             Email = dr["Email"].ToString(),
                             Estado = dr["Estado"].ToString(),
+                            NumeroLocal = Convert.ToInt32(dr["NumeroLocal"]),
                             Calificacion = new Calificacion()
                             {
                                 Puntaje = Convert.ToDecimal(dr["PromedioCalificacionLocal"])
@@ -219,6 +222,35 @@ namespace EatMall.Datos
                     cmd.Parameters.AddWithValue("@IdDueñoLocal", local.IdDueñoLocal);
                     cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public bool MtActualizarLocal(Local local)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"UPDATE dbo.Local SET
+            Nombre      = @Nombre,
+            Descripcion = @Descripcion,
+            Telefono    = @Telefono,
+            Email       = @Email,
+            Imagen      = @Imagen,
+            Estado      = @Estado,
+            NumeroLocal = @NumeroLocal
+        WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", local.Id);
+                    cmd.Parameters.AddWithValue("@Nombre", local.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", local.Descripcion);
+                    cmd.Parameters.AddWithValue("@Telefono", local.Telefono);
+                    cmd.Parameters.AddWithValue("@Email", local.Email);
+                    cmd.Parameters.AddWithValue("@Imagen", local.Imagen);
+                    cmd.Parameters.AddWithValue("@Estado", local.Estado);
+                    cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }

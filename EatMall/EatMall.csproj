@@ -99,6 +99,7 @@
     <Content Include="Vista\Usuario\GestionLocal\Categoria.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CrearProducto.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\EditarLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\MiLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\Pedidos.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx" />
@@ -388,6 +389,13 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\CrearProducto.aspx.designer.cs">
       <DependentUpon>CrearProducto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\EditarLocal.aspx.cs">
+      <DependentUpon>EditarLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\EditarLocal.aspx.designer.cs">
+      <DependentUpon>EditarLocal.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\MiLocal.aspx.cs">
       <DependentUpon>MiLocal.aspx</DependentUpon>

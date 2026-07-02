@@ -124,7 +124,14 @@ namespace EatMall.Vista
                 case "Menu AdministradorCC": return "business";
                 case "Menu Local": return "storefront";
                 case "Menu Cajero": return "point_of_sale";
+                case "Mi Local": return "storefront";
+                case "Productos": return "inventory_2";
+                case "Categorías": return "category";
+                case "Pedidos": return "receipt_long";
+                case "Cajero": return "badge";
+                case "Promociones": return "local_offer";
                 case "Index": return "home";
+
                 default: return "circle";
             }
         }
