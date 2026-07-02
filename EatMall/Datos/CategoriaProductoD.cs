@@ -17,10 +17,15 @@ namespace EatMall.Datos
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
-                string query = @"SELECT DISTINCT cp.Id, cp.Nombre, cp.Imagen
-                                 FROM dbo.CategoriaProducto cp
-                                 INNER JOIN dbo.Producto p ON cp.Id = p.IdCategoria
-                                 WHERE p.IdLocal = @IdLocal";
+                string query = @"
+                    SELECT DISTINCT
+                        cp.Id,
+                        cp.Nombre,
+                        cp.Imagen
+                    FROM CategoriaProducto cp
+                    INNER JOIN Producto p
+                        ON cp.Id = p.IdCategoria
+                    WHERE p.IdLocal = @IdLocal";
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
                     cmd.Parameters.AddWithValue("@IdLocal", idLocal);
