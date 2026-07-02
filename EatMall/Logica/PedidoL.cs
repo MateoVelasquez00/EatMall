@@ -51,7 +51,22 @@ namespace EatMall.Logica
 		{
 			return oPedidoD.MtListarPedidoLocal(idLocal);
 		}
+		public Transaccion ObtenerTransaccionPorPedido(int idPedido)
+		{
+			PedidoD datos = new PedidoD();
+			return datos.ObtenerTransaccionPorPedido(idPedido);
+		}
+		private PedidoD datos = new PedidoD();
 
+		public bool CambiarEstadoProductoPorLocal(int idPedido, int idLocal, string nuevoEstado)
+		{
+			return datos.CambiarEstadoProductoPorLocal(idPedido, idLocal, nuevoEstado);
+		}
+
+		public int ObtenerProductosPendientes(int idPedido)
+		{
+			return datos.ObtenerProductosPendientes(idPedido);
+		}
 	}
 }
 

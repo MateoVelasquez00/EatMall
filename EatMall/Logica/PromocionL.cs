@@ -14,6 +14,13 @@ namespace EatMall.Logica
         {
             return promocionD.MtListarPromocionesPorPlazoleta(idPlazoleta);
         }
-
+        public List<Modelo.Promocion> MtListarPromocionesPorLocal(int idLocal)
+        {
+            return promocionD.MtListarPromocionesPorLocal(idLocal);
+        }
+        public bool MtCambiarEstadoPromocion(int idPromocion)
+        {
+            return promocionD.MtCambiarEstadoPromocion(idPromocion);
+        }
     }
 }

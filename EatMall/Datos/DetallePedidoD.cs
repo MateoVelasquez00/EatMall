@@ -20,23 +20,25 @@ namespace EatMall.Datos
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
-                string consulta = @"SELECT DP.Id,
-                                          DP.Cantidad,
-                                          DP.Subtotal,
-                                          P.Id AS IdProducto,
-                                          P.Nombre AS NombreProducto,
-                                          P.Imagen AS ImagenProducto,
-                                          P.Precio AS PrecioProducto,
-                                          P.Descripcion AS Descripcion,
-                                          L.Nombre AS NombreLocal,
-                                          CC.Nombre AS NombreCC
-                                   FROM DetallePedido DP
-                                   INNER JOIN Producto P ON DP.IdProducto = P.Id
-                                   INNER JOIN Local L ON DP.IdLocal = L.Id
-                                   INNER JOIN Plazoleta PL ON L.IdPlazoleta = PL.Id
-                                   INNER JOIN CentroComercial CC ON PL.IdCentroComercial = CC.Id
-                                   WHERE DP.IdPedido = @IdPedido";
 
+      string consulta = @"SELECT DP.Id,
+                                  DP.Cantidad,
+                                  DP.Subtotal,
+                                  DP.EstadoProducto, 
+                                  DP.IdLocal, -- <-- AQUÍ FALTABA
+                                  P.Id AS IdProducto,
+                                  P.Nombre AS NombreProducto,
+                                  P.Imagen AS Imagen,
+                                  P.Precio AS PrecioProducto,
+                                  P.Descripcion AS Descripcion,
+                                  L.Nombre AS NombreLocal,
+                                  CC.Nombre AS NombreCC
+                           FROM DetallePedido DP
+                           INNER JOIN Producto P ON DP.IdProducto = P.Id
+                           INNER JOIN Local L ON DP.IdLocal = L.Id
+                           INNER JOIN Plazoleta PL ON L.IdPlazoleta = PL.Id
+                           INNER JOIN CentroComercial CC ON PL.IdCentroComercial = CC.Id
+                           WHERE DP.IdPedido = @IdPedido";
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
                     cmd.CommandType = CommandType.Text;
@@ -53,10 +55,13 @@ namespace EatMall.Datos
                                 Subtotal = Convert.ToDecimal(dr["Subtotal"]),
                                 Descripcion = dr["Descripcion"].ToString(),
                                 NombreProducto = dr["NombreProducto"].ToString(),
-                                ImagenProducto = dr["ImagenProducto"].ToString(),
+                                Imagen = dr["Imagen"].ToString(),
                                 PrecioProducto = Convert.ToDecimal(dr["PrecioProducto"]),
                                 NombreLocal = dr["NombreLocal"].ToString(),
-                                NombreCC = dr["NombreCC"].ToString()
+                                NombreCC = dr["NombreCC"].ToString(),
+                                EstadoProducto = dr["EstadoProducto"].ToString(),
+                                IdLocal = Convert.ToInt32(dr["IdLocal"])
+
                             });
                         }
                     }
@@ -64,5 +69,99 @@ namespace EatMall.Datos
             }
             return lista;
         }
+        public List<DetallePedido> ObtenerDetallePorLocal(int idPedido, int idLocal)
+        {
+            List<DetallePedido> lista = new List<DetallePedido>();
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                if (cn.State == ConnectionState.Closed) cn.Open();
+
+                string consulta = @"SELECT DP.Id, DP.Cantidad, DP.Subtotal, DP.EstadoProducto, 
+                                           DP.IdLocal, -- <-- AQUÍ TAMBIÉN FALTABA
+                                           P.Id AS IdProducto, P.Nombre AS NombreProducto, P.Imagen AS Imagen,
+                                           P.Precio AS PrecioProducto, P.Descripcion AS Descripcion,
+                                           L.Nombre AS NombreLocal, CC.Nombre AS NombreCC
+                                    FROM DetallePedido DP
+                                    INNER JOIN Producto P ON DP.IdProducto = P.Id
+                                    INNER JOIN Local L ON DP.IdLocal = L.Id
+                                    INNER JOIN Plazoleta PL ON L.IdPlazoleta = PL.Id
+                                    INNER JOIN CentroComercial CC ON PL.IdCentroComercial = CC.Id
+                                    WHERE DP.IdPedido = @IdPedido AND DP.IdLocal = @IdLocal";
+
+                using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(MapearDetalle(dr));
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+        public void ActualizarEstadoProductoLocal(int idPedido, int idLocal, string estado)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                if (cn.State == ConnectionState.Closed) cn.Open();
+
+                string consulta = @"UPDATE DetallePedido 
+                                    SET EstadoProducto = @Estado 
+                                    WHERE IdPedido = @IdPedido AND IdLocal = @IdLocal";
+
+                using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", estado);
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+            public int ContarProductosPendientes(int idPedido)
+        {
+            int pendientes = 0;
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                if (cn.State == ConnectionState.Closed) cn.Open();
+
+                string consulta = @"SELECT COUNT(*) FROM DetallePedido 
+                                    WHERE IdPedido = @IdPedido AND EstadoProducto <> 'Listo'";
+
+                using (SqlCommand cmd = new SqlCommand(consulta, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    pendientes = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            return pendientes;
+        }
+        private DetallePedido MapearDetalle(SqlDataReader dr)
+        {
+            return new DetallePedido
+            {
+                Id = Convert.ToInt32(dr["Id"]),
+                Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                Subtotal = Convert.ToDecimal(dr["Subtotal"]),
+                Descripcion = dr["Descripcion"].ToString(),
+                NombreProducto = dr["NombreProducto"].ToString(),
+                Imagen = dr["Imagen"].ToString(),
+                PrecioProducto = Convert.ToDecimal(dr["PrecioProducto"]),
+                NombreLocal = dr["NombreLocal"].ToString(),
+                NombreCC = dr["NombreCC"].ToString(),
+                EstadoProducto = dr["EstadoProducto"].ToString(),
+                IdLocal = Convert.ToInt32(dr["IdLocal"]),
+            };
+        }
     }
 }
+    
+    

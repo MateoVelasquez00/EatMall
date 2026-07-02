@@ -78,5 +78,26 @@ namespace EatMall.Datos
             }
             return lista;
         }
+        public bool CambiarEstadoProducto(int idProducto)
+        {
+            bool actualizado = false;
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = "UPDATE Producto SET Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", idProducto);
+
+                    int filasAfectadas = cmd.ExecuteNonQuery();
+                    actualizado = filasAfectadas > 0;
+                }
+            }
+
+            return actualizado;
+        }
     }
 }

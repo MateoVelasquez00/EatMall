@@ -76,12 +76,14 @@ namespace EatMall.Vista.Local
             if (idCategoria == 99)
             {
                 var promociones = productoL.ObtenerPromocionesPorLocal(idLocal);
+                var promosActivas = promociones.FindAll(p => p.Estado == true);
                 rptProductos.DataSource = promociones;
                 rptProductos.DataBind();
             }
             else
             {
                 var productos = productoL.ObtenerProductos(idLocal);
+                productos = productos.FindAll(p => p.Estado == true);
                 if (idCategoria > 0)
                     productos = productos.FindAll(p => p.IdCategoria == idCategoria);
                 rptProductos.DataSource = productos;

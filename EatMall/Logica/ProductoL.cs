@@ -16,6 +16,10 @@ namespace EatMall.Logica
         {
             return new ProductoD().ObtenerPromocionesPorLocal(idLocal); 
         }
+        public bool CambiarEstadoProducto(int idProducto)
+        {
+            ProductoD datos = new ProductoD();
+            return datos.CambiarEstadoProducto(idProducto);
+        }
     }
-
 }
