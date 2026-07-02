@@ -13,7 +13,7 @@ namespace EatMall.Modelo
         public int IdCliente { get; set; }
         public  string NombreCliente { get; set; }
         public string TelefonoCliente { get; set; }
-
         public TimeSpan HoraEntrega { get; set; }
+
     }
 }

@@ -102,6 +102,7 @@
     <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\Categoria.aspx" />
+    <Content Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\MiLocal.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\Pedidos.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\ProductosLocal.aspx" />
@@ -112,8 +113,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
+
     <Compile Include="Datos\CajeroD.cs" />
     <Compile Include="Datos\CarritoD.cs" />
+
+    <Compile Include="Datos\CategoriaLocalD.cs" />
+
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
     <Compile Include="Datos\CiudadD.cs" />
@@ -140,6 +145,7 @@
     <Compile Include="Logica\BusquedaL.cs" />
     <Compile Include="Logica\CajeroL.cs" />
     <Compile Include="Logica\CarritoL.cs" />
+    <Compile Include="Logica\CategoriaLocalL.cs" />
     <Compile Include="Logica\CategoriaProductoL.cs" />
     <Compile Include="Logica\CentroComercialL.cs" />
     <Compile Include="Logica\CiudadL.cs" />
@@ -365,6 +371,13 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\Categoria.aspx.designer.cs">
       <DependentUpon>Categoria.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx.cs">
+      <DependentUpon>CrearCategoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\GestionLocal\CrearCategoria.aspx.designer.cs">
+      <DependentUpon>CrearCategoria.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\MiLocal.aspx.cs">
       <DependentUpon>MiLocal.aspx</DependentUpon>
