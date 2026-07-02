@@ -100,17 +100,22 @@ namespace EatMall.Datos
             {
                 cn.Open();
                 string query = @"
-            SELECT DISTINCT 
-                P.Id, P.CodigoPedido, P.FechaPedido, P.Estado, 
-                P.Total, P.TipoEntrega, P.HoraEntrega, 
-                CONCAT(U.Nombre, ' ', U.Apellido) AS NombreCliente, 
-                U.Telefono AS TelefonoCliente
-            FROM Pedido P
-            INNER JOIN DetallePedido DP ON P.Id = DP.IdPedido
-            INNER JOIN Usuario U ON P.IdCliente = U.Id
-            WHERE DP.IdLocal = @IdLocal
-            AND CAST(P.FechaPedido AS DATE) = CAST(GETDATE() AS DATE)
-            ORDER BY P.FechaPedido DESC";
+                                    SELECT DISTINCT 
+                                        P.Id, 
+                                        P.CodigoPedido, 
+                                        P.FechaPedido, 
+                                        P.Estado, 
+                                        P.Total,        
+                                        P.TipoEntrega, 
+                                        P.HoraEntrega, 
+                                        CONCAT(U.Nombre, ' ', U.Apellido) AS NombreCliente, 
+                                        U.Telefono AS TelefonoCliente
+                                    FROM Pedido P
+                                    INNER JOIN DetallePedido DP ON P.Id = DP.IdPedido
+                                    INNER JOIN Usuario U ON P.IdCliente = U.Id
+                                    WHERE DP.IdLocal = @IdLocal
+                                    AND CAST(P.FechaPedido AS DATE) = CAST(GETDATE() AS DATE)
+                                    ORDER BY P.FechaPedido DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -177,7 +182,6 @@ namespace EatMall.Datos
             return lista;
         }
 
-        // Cajero cambia el estado del pedido
         public bool CambiarEstadoPedido(int idPedido, string nuevoEstado)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
