@@ -28,7 +28,6 @@ namespace EatMall.Vista.GestionCajero
         private void CargarPromociones()
         {
             Modelo.Cajero cajero = (Modelo.Cajero)Session["Cajero"];
-
             List<Promocion> listaPromos = opromocionL.MtListarPromocionesPorLocal(cajero.IdLocal);
 
             gvPromociones.DataSource = listaPromos;
@@ -40,12 +39,10 @@ namespace EatMall.Vista.GestionCajero
             if (e.CommandName == "CambiarEstado")
             {
                 int idPromocion = Convert.ToInt32(e.CommandArgument);
-
                 bool exito = opromocionL.MtCambiarEstadoPromocion(idPromocion);
 
                 if (exito)
                 {
-
                     CargarPromociones();
                 }
             }

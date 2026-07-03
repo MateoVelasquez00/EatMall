@@ -54,7 +54,7 @@ namespace EatMall.Datos
                 cn.Open();
                 string query = @"SELECT Id, Nombre, Imagen, Total AS Precio
                          FROM dbo.Promocion
-                         WHERE IdLocal = @IdLocal";
+                         WHERE IdLocal = @IdLocal AND Estado = 1";
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
                     

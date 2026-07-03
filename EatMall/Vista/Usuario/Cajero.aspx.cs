@@ -191,5 +191,6 @@ namespace EatMall.Vista.Usuario
 			pnlDetalle.Visible = false;
 			CargarPedidos();
 		}
-	}
+		
+    }
 }

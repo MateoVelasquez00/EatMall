@@ -11,25 +11,16 @@ namespace EatMall.Vista.GestionCajero
 {
 
 
-    public partial class Promociones
+    public partial class Reportes
     {
 
         /// <summary>
-        /// Control btnIrANuevaPromo.
+        /// Control gvHistorialPedidos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnIrANuevaPromo;
-
-        /// <summary>
-        /// Control gvPromociones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvPromociones;
+        protected global::System.Web.UI.WebControls.GridView gvHistorialPedidos;
     }
 }

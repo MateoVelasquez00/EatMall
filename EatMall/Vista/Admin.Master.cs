@@ -118,17 +118,11 @@ namespace EatMall.Vista
 								<span class='material-symbols-outlined'>local_offer</span>
 								<span>Promociones</span>
 							</a>
-							<a href='{root}Vista/Usuario/Reportes.aspx' class='menu-link'>
+							<a href='{root}Vista/GestionCajero/Reportes.aspx' class='menu-link'>
 								<span class='material-symbols-outlined'>bar_chart</span>
 								<span>Reportes</span>
-							</a>
-							<a href='{root}Vista/Usuario/Ajustes.aspx' class='menu-link'>
-								<span class='material-symbols-outlined'>settings</span>
-								<span>Ajustes</span>
-							</a>
-							<a href='{root}Vista/Usuario/Soporte.aspx' class='menu-link'>
-								<span class='material-symbols-outlined'>support_agent</span>
-								<span>Soporte</span>
+							</a>	
+					
 							</a>";
 
 			MenuRol.InnerHtml = html;
