@@ -82,32 +82,6 @@ namespace EatMall.Datos
                 return null;
             }
         }
-
-        public List<Cajero> ListarPorLocal(int idLocal)
-        {
-            List<Cajero> lista = new List<Cajero>();
-            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
-            {
-                cn.Open();
-                string query = "SELECT Id, Gmail, Estado, IdLocal FROM CajeroLocal WHERE IdLocal = @IdLocal";
-                SqlCommand cmd = new SqlCommand(query, cn);
-                cmd.Parameters.AddWithValue("@IdLocal", idLocal);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    lista.Add(new Cajero
-                    {
-                        Id = (int)reader["Id"],
-                        Gmail = reader["Gmail"].ToString(),
-                        Estado = (bool)reader["Estado"],
-                        IdLocal = (int)reader["IdLocal"]
-                    });
-                }
-                return lista;
-            }
-        }
-
         public bool CambiarEstado(int idCajero, bool estado)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
@@ -121,5 +95,42 @@ namespace EatMall.Datos
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
+        public List<Cajero> ListarPorLocal(int IdDuenoLocal)
+        {
+            List<Cajero> oCajero = new List<Cajero>();
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string consulta = @"  SELECT CL.Id, CL.Gmail, CL.Estado, CL.IdLocal, L.Nombre, L.IdDueñoLocal 
+                            FROM CajeroLocal AS CL 
+                            INNER JOIN Local AS L 
+                                ON CL.IdLocal = L.Id
+                            WHERE L.IdDueñoLocal = @IdDueñoLocal";
+
+                using (SqlCommand cmd = new SqlCommand(consulta,cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdDueñoLocal", IdDuenoLocal);
+
+                    using (SqlDataReader rd = cmd.ExecuteReader())
+                    {
+                        while (rd.Read())
+                        {
+                            oCajero.Add(new Cajero
+                            {
+                                Id = Convert.ToInt32(rd["Id"]),
+                                Gmail = rd["Gmail"].ToString(),
+                                Estado = Convert.ToBoolean(rd["Estado"]),
+                                IdLocal = Convert.ToInt32(rd["IdLocal"]),
+                                NombreLocal = rd["Nombre"].ToString(),
+                                IdDuenoLocal = Convert.ToInt32(rd["IdDueñoLocal"])
+							});
+                        }
+                    }
+                }
+			}
+			return oCajero;
+		}
     }
 }

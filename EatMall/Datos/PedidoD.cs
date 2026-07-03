@@ -237,7 +237,7 @@ namespace EatMall.Datos
 								Total = Convert.ToDecimal(rd["Total"]),
 								TipoEntrega = rd["TipoEntrega"].ToString(),
 								IdCliente = Convert.ToInt32(rd["IdCliente"]),
-								HoraEntrega = (TimeSpan)rd["HoraEntrega"],
+								HoraEntrega = TimeSpan.Parse(rd["HoraEntrega"].ToString()),
 								NombreCliente = rd["NombreCliente"].ToString()
 							};
 							pedidos.Add(pedido);

@@ -186,7 +186,7 @@ namespace EatMall.Vista
 		{
 			Session.Clear();
 			Session.Abandon();
-			Response.Redirect("~/Vista/Auth/Login.aspx");
+			Response.Redirect("/Index.aspx");
 		}
 	}
 }

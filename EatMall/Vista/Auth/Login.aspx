@@ -41,7 +41,7 @@
 						<input class="form-check-input" type="checkbox" id="remember" />
 						<label class="form-check-label small text-muted" for="remember">Recuérdame</label>
 					</div>
-					<a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+					<a href="RecuperarContraseña.aspx" class="forgot-link">¿Olvidaste tu contraseña?</a>
 				</div>
 
 				<div class="form-check form-switch d-flex align-items-center justify-content-center gap-2 mb-4">

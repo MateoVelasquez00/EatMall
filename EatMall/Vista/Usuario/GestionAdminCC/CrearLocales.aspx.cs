@@ -68,7 +68,7 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
         {
             ClienteL clienteL = new ClienteL();
             ddlDueño.DataSource = clienteL.MtListarTodosUsuario();
-            ddlDueño.DataTextField = "Nombre";
+            ddlDueño.DataTextField = "Email";
             ddlDueño.DataValueField = "Id";
             ddlDueño.DataBind();
             ddlDueño.Items.Insert(0, new ListItem("-- Selecciona --", "0"));

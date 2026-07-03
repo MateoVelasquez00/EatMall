@@ -12,7 +12,7 @@ namespace EatMall.Modelo
         public string Contraseña { get; set; }
         public bool Estado { get; set; }
         public int IdLocal { get; set; }
-
         public string NombreLocal { get; set; }
+        public int IdDuenoLocal { get; set; }
     }
 }

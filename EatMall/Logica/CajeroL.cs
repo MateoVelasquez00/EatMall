@@ -9,7 +9,7 @@ namespace EatMall.Logica
 {
     public class CajeroL
     {
-        CajeroD dao = new CajeroD();
+        CajeroD oCajeroD = new CajeroD();
 
         public bool CrearCajero(Cajero cajero, int idDuenoLocal)
         {
@@ -22,13 +22,13 @@ namespace EatMall.Logica
             if (cajero.IdLocal <= 0)
                 throw new Exception("Debe seleccionar un local.");
 
-            if (!dao.LocalPerteneceADueno(cajero.IdLocal, idDuenoLocal))
+            if (!oCajeroD.LocalPerteneceADueno(cajero.IdLocal, idDuenoLocal))
                 throw new Exception("No tienes permiso para gestionar este local.");
 
-            if (dao.ExisteGmail(cajero.Gmail))
+            if (oCajeroD.ExisteGmail(cajero.Gmail))
                 throw new Exception("Este Gmail ya está registrado.");
 
-            return dao.Insertar(cajero);
+            return oCajeroD.Insertar(cajero);
         }
 
         public Cajero LoginCajero(string gmail, string contraseña)
@@ -39,7 +39,7 @@ namespace EatMall.Logica
             if (string.IsNullOrEmpty(contraseña))
                 throw new Exception("La contraseña es obligatoria.");
 
-            Cajero cajero = dao.Login(gmail, contraseña);
+            Cajero cajero = oCajeroD.Login(gmail, contraseña);
 
             if (cajero == null)
                 throw new Exception("Credenciales incorrectas o cajero inactivo.");
@@ -47,20 +47,17 @@ namespace EatMall.Logica
             return cajero;
         }
 
-        public List<Cajero> ListarCajerosPorLocal(int idLocal, int idDuenoLocal)
+        public List<Cajero> ListarCajerosPorLocal(int IdDuenoLocal)
         {
-            if (!dao.LocalPerteneceADueno(idLocal, idDuenoLocal))
-                throw new Exception("No tienes permiso para ver los cajeros de este local.");
-
-            return dao.ListarPorLocal(idLocal);
+            return oCajeroD.ListarPorLocal(IdDuenoLocal);
         }
 
         public bool CambiarEstadoCajero(int idCajero, int idLocal, int idDuenoLocal, bool nuevoEstado)
         {
-            if (!dao.LocalPerteneceADueno(idLocal, idDuenoLocal))
+            if (!oCajeroD.LocalPerteneceADueno(idLocal, idDuenoLocal))
                 throw new Exception("No tienes permiso para gestionar este cajero.");
 
-            return dao.CambiarEstado(idCajero, nuevoEstado);
+            return oCajeroD.CambiarEstado(idCajero, nuevoEstado);
         }
     }
 }

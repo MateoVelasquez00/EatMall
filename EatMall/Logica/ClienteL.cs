@@ -45,5 +45,9 @@ namespace EatMall.Logica
         {
             return datos.MtListarTodosUsuarios();
         }
-    }
+		public bool MtActualizarContraseña(Cliente cliente)
+		{
+			return datos.MtActualizarContraseña(cliente);
+		}
+	}
 }
