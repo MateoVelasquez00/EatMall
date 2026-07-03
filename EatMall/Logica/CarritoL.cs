@@ -1,87 +1,77 @@
-﻿using System.Collections.Generic;
-using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using EatMall.Datos;
 using EatMall.Modelo;
 
 namespace EatMall.Logica
 {
     public class CarritoL
     {
-        private const string SESSION_KEY = "Carrito";
-        private const string MODIFICADO_KEY = "CarritoModificado";
+        private CarritoD carritoD = new CarritoD();
 
         public List<Carrito> ObtenerCarrito()
         {
-            if (HttpContext.Current.Session[SESSION_KEY] == null)
-                HttpContext.Current.Session[SESSION_KEY] = new List<Carrito>();
-            return (List<Carrito>)HttpContext.Current.Session[SESSION_KEY];
+            return carritoD.ObtenerCarrito();
         }
 
-        public void AgregarProducto(Producto producto, int cantidad = 1, int IdLocal = 0)
+        public void AgregarProducto(Producto producto, int cantidad = 1, int idLocal = 0)
         {
-            var carrito = ObtenerCarrito();
-            var item = carrito.Find(c => c.Id == producto.Id);
+            List<Carrito> carrito = carritoD.ObtenerCarrito();
+            Carrito item = carrito.Find(c => c.Id == producto.Id);
 
-            if (item != null)
-                item.Cantidad += cantidad;
-            else
-                carrito.Add(new Carrito
-                {
-                    Id       = producto.Id,
-                    Nombre   = producto.Nombre,
-                    Precio   = producto.Precio,
-                    Cantidad = cantidad,
-                    IdLocal  = IdLocal
-                   
-                });
-
-            // Marcar que hubo movimiento
-            HttpContext.Current.Session[MODIFICADO_KEY] = true;
-            HttpContext.Current.Session[SESSION_KEY] = carrito;
-        }
-
-        public void ActualizarCantidad(int id, int cantidad)
-        {
-            var carrito = ObtenerCarrito();
-            var item = carrito.Find(c => c.Id == id);
             if (item != null)
             {
-                item.Cantidad = cantidad;
-                HttpContext.Current.Session[MODIFICADO_KEY] = true;
-                HttpContext.Current.Session[SESSION_KEY] = carrito;
+                item.Cantidad += cantidad;
             }
-        }
-
-        
-        // REEMPLAZA EL MÉTODO LimpiarSiNoHuboMovimiento POR ESTE:
-        public void VaciarCarritoDespuesDePedido()
-        {
-            // Solo vaciamos la lista y el flag cuando el pedido sea REAL
-            HttpContext.Current.Session[SESSION_KEY] = new List<Carrito>();
-            HttpContext.Current.Session[MODIFICADO_KEY] = false;
-        }
-
-        public void EliminarProducto(int id)
-        {
-            var carrito = ObtenerCarrito();
-            carrito.RemoveAll(c => c.Id == id);
-            HttpContext.Current.Session[MODIFICADO_KEY] = true;
-            HttpContext.Current.Session[SESSION_KEY] = carrito;
-        }
-
-        public int ObtenerCantidadTotal()
-        {
-            int total = 0;
-            foreach (var item in ObtenerCarrito())
-                total += item.Cantidad;
-            return total;
+            else
+            {
+                carrito.Add(new Carrito
+                {
+                    Id = producto.Id,
+                    Nombre = producto.Nombre,
+                    Precio = producto.Precio,
+                    Cantidad = cantidad,
+                    IdLocal = idLocal
+                });
+            }
+            carritoD.GuardarCarrito(carrito);
         }
 
         public decimal ObtenerTotal()
         {
+            List<Carrito> carrito = carritoD.ObtenerCarrito();
             decimal total = 0;
-            foreach (var item in ObtenerCarrito())
-                total += item.Subtotal;
+            foreach (var item in carrito)
+            {
+                total += item.Precio * item.Cantidad;
+            }
             return total;
+        }
+
+      
+        public int ObtenerCantidadTotal()
+        {
+            List<Carrito> carrito = carritoD.ObtenerCarrito();
+            int totalUnidades = 0;
+            foreach (var item in carrito)
+            {
+                totalUnidades += item.Cantidad;
+            }
+            return totalUnidades;
+        }
+
+
+        public void EliminarProducto(int idProducto)
+        {
+            List<Carrito> carrito = carritoD.ObtenerCarrito();
+            carrito.RemoveAll(c => c.Id == idProducto);
+            carritoD.GuardarCarrito(carrito);
+        }
+
+
+        public void VaciarCarritoDespuesDePedido()
+        {
+            carritoD.VaciarCarrito();
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EatMall.Datos;
+using EatMall.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using EatMall.Modelo;
 
 namespace EatMall.Datos
 {
@@ -35,7 +36,8 @@ namespace EatMall.Datos
                     IdLocal = item.IdLocal,
                     Cantidad = item.Cantidad,
                     PrecioUnitario = item.Precio,
-                    Subtotal = item.Subtotal
+                    Subtotal = item.Subtotal,
+                    EstadoProducto = "En Preparación"
                 };
                 GuardarDetalle(detalle);
             }
@@ -55,11 +57,11 @@ namespace EatMall.Datos
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
-                    cmd.Parameters.AddWithValue("@CodigoPedido", pedido.CodigoPedido);
+                    cmd.Parameters.AddWithValue("@CodigoPedido", (object)pedido.CodigoPedido ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@FechaPedido", pedido.FechaPedido);
-                    cmd.Parameters.AddWithValue("@Estado", pedido.Estado);
+                    cmd.Parameters.AddWithValue("@Estado", pedido.Estado ?? "Pendiente");
                     cmd.Parameters.AddWithValue("@Total", pedido.Total);
-                    cmd.Parameters.AddWithValue("@TipoEntrega", pedido.TipoEntrega);
+                    cmd.Parameters.AddWithValue("@TipoEntrega", (object)pedido.TipoEntrega ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@IdCliente", pedido.IdCliente);
                     cmd.Parameters.AddWithValue("@HoraEntrega", pedido.HoraEntrega);
 
@@ -74,8 +76,8 @@ namespace EatMall.Datos
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
-                string query = @"INSERT INTO DetallePedido (IdPedido, IdProducto, IdLocal, Cantidad, PrecioUnitario, Subtotal)
-                                 VALUES (@IdPedido, @IdProducto, @IdLocal, @Cantidad, @PrecioUnitario, @Subtotal)";
+                string query = @"INSERT INTO DetallePedido (IdPedido, IdProducto, IdLocal, Cantidad, PrecioUnitario, Subtotal, EstadoProducto)
+                                 VALUES (@IdPedido, @IdProducto, @IdLocal, @Cantidad, @PrecioUnitario, @Subtotal, @EstadoProducto)";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -85,7 +87,112 @@ namespace EatMall.Datos
                     cmd.Parameters.AddWithValue("@Cantidad", detalle.Cantidad);
                     cmd.Parameters.AddWithValue("@PrecioUnitario", detalle.PrecioUnitario);
                     cmd.Parameters.AddWithValue("@Subtotal", detalle.Subtotal);
+                    cmd.Parameters.AddWithValue("@EstadoProducto", string.IsNullOrEmpty(detalle.EstadoProducto) ? "En Preparación" : detalle.EstadoProducto);
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public List<Pedido> ListarPedidosPorLocal(int idLocal)
+        {
+            List<Pedido> lista = new List<Pedido>();
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"
+                             SELECT DISTINCT 
+                                 P.Id, 
+                                 P.CodigoPedido, 
+                                 P.FechaPedido, 
+                                 P.Estado, 
+                                 P.Total,        
+                                 P.TipoEntrega, 
+                                 P.HoraEntrega, 
+                                 CONCAT(U.Nombre, ' ', U.Apellido) AS NombreCliente, 
+                                 U.Telefono AS TelefonoCliente
+                             FROM Pedido P
+                             INNER JOIN DetallePedido DP ON P.Id = DP.IdPedido
+                             INNER JOIN Usuario U ON P.IdCliente = U.Id
+                             WHERE DP.IdLocal = @IdLocal
+                             AND CAST(P.FechaPedido AS DATE) = CAST(GETDATE() AS DATE)
+                             ORDER BY P.FechaPedido DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(new Pedido
+                            {
+                                Id = Convert.ToInt32(dr["Id"]),
+                                CodigoPedido = dr["CodigoPedido"].ToString(),
+                                FechaPedido = Convert.ToDateTime(dr["FechaPedido"]),
+                                Estado = dr["Estado"].ToString(),
+                                Total = Convert.ToDecimal(dr["Total"]),
+                                TipoEntrega = dr["TipoEntrega"].ToString(),
+                                HoraEntrega = (TimeSpan)dr["HoraEntrega"],
+                                NombreCliente = dr["NombreCliente"].ToString(),
+                                TelefonoCliente = dr["TelefonoCliente"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
+        // Ver detalle de un pedido especifico del local
+        public List<DetallePedido> ObtenerDetallePedido(int idPedido, int idLocal)
+        {
+            List<DetallePedido> lista = new List<DetallePedido>();
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"SELECT DP.Id, DP.IdProducto, PR.Nombre AS NombreProducto, PR.Imagen, DP.Cantidad, DP.PrecioUnitario, DP.Subtotal, DP.EstadoProducto 
+								 FROM DetallePedido DP 
+								 INNER JOIN Producto PR ON DP.IdProducto = PR.Id 
+								 WHERE DP.IdPedido = @IdPedido AND DP.IdLocal = @IdLocal";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(new DetallePedido
+                            {
+                                Id = Convert.ToInt32(dr["Id"]),
+                                IdProducto = Convert.ToInt32(dr["IdProducto"]),
+                                NombreProducto = dr["NombreProducto"].ToString(),
+                                Imagen = dr["Imagen"].ToString(),
+                                Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                                PrecioUnitario = Convert.ToDecimal(dr["PrecioUnitario"]),
+                                Subtotal = Convert.ToDecimal(dr["Subtotal"]),
+                                EstadoProducto = "En Preparacion"
+                            });
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
+        // Cajero cambia el estado del pedido
+        public bool CambiarEstadoPedido(int idPedido, string nuevoEstado)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = "UPDATE Pedido SET Estado = @Estado WHERE Id = @IdPedido";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }
@@ -95,22 +202,23 @@ namespace EatMall.Datos
             {
                 cn.Open();
                 string query = @"SELECT DISTINCT
-                P.Id,
-                P.CodigoPedido,
-                P.FechaPedido,
-                P.Estado,
-                P.Total,
-                P.TipoEntrega,
-                P.HoraEntrega,
-                P.IdCliente,
-                CONCAT(U.Nombre,' ',U.Apellido) AS NombreCliente
-            FROM Pedido P
-            INNER JOIN Usuario U
-                ON U.Id = P.IdCliente
-            INNER JOIN DetallePedido DP
-                ON DP.IdPedido = P.Id
-            WHERE DP.IdLocal = @IdLocal
-            ORDER BY P.FechaPedido DESC";
+							P.Id,
+							P.CodigoPedido,
+							P.FechaPedido,
+							P.Estado,
+							P.Total,
+							P.TipoEntrega,
+							P.HoraEntrega,
+							P.IdCliente,
+							CONCAT(U.Nombre,' ',U.Apellido) AS NombreCliente
+						FROM Pedido P
+						INNER JOIN Usuario U
+							ON U.Id = P.IdCliente
+						INNER JOIN DetallePedido DP
+							ON DP.IdPedido = P.Id
+						WHERE DP.IdLocal = @IdLocal OR P.Estado = 'Entregado'
+						ORDER BY P.FechaPedido DESC";
+
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
                     cmd.Parameters.AddWithValue("@IdLocal", idLocal);
@@ -129,10 +237,9 @@ namespace EatMall.Datos
                                 Total = Convert.ToDecimal(rd["Total"]),
                                 TipoEntrega = rd["TipoEntrega"].ToString(),
                                 IdCliente = Convert.ToInt32(rd["IdCliente"]),
-                                HoraEntrega = (TimeSpan)rd["HoraEntrega"],
+                                HoraEntrega = TimeSpan.Parse(rd["HoraEntrega"].ToString()),
                                 NombreCliente = rd["NombreCliente"].ToString()
-                            }
-                        ;
+                            };
                             pedidos.Add(pedido);
                         }
                         return pedidos;
@@ -141,5 +248,77 @@ namespace EatMall.Datos
             }
         }
 
+        public Transaccion ObtenerTransaccionPorPedido(int idPedido)
+        {
+            Transaccion transaccion = null;
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = @"SELECT Id, Monto, Estado, FechaTransaccion, PayuCodigoReferencia 
+                   FROM Transaccion 
+                   WHERE IdPedido = @IdPedido";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            transaccion = new Transaccion
+                            {
+                                Id = Convert.ToInt32(dr["Id"]),
+                                Monto = Convert.ToDecimal(dr["Monto"]),
+                                Estado = dr["Estado"].ToString(),
+                                FechaTransaccion = Convert.ToDateTime(dr["FechaTransaccion"]),
+                                PayuCodigoReferencia = dr["PayuCodigoReferencia"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return transaccion;
+        }
+
+        public bool CambiarEstadoProductoPorLocal(int idPedido, int idLocal, string nuevoEstado)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"UPDATE DetallePedido 
+                    SET EstadoProducto = @Estado 
+                    WHERE IdPedido = @IdPedido AND IdLocal = @IdLocal";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public int ObtenerProductosPendientes(int idPedido)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"SELECT COUNT(*) 
+                  FROM DetallePedido 
+                  WHERE IdPedido = @IdPedido AND EstadoProducto = 'En preparación'";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPedido", idPedido);
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+        }
     }
 }
+
+
+
+

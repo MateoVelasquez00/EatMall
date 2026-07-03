@@ -7,21 +7,48 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace EatMall.Vista.Pago
+namespace EatMall.Vista.Usuario
 {
 
 
-    public partial class Recibo
+    public partial class Cajero
     {
 
         /// <summary>
-        /// Control form1.
+        /// Control pnlPedidosLista.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Panel pnlPedidosLista;
+
+        /// <summary>
+        /// Control gvPedidos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPedidos;
+
+        /// <summary>
+        /// Control pnlDetalle.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDetalle;
+
+        /// <summary>
+        /// Control btnVolver.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnVolver;
 
         /// <summary>
         /// Control lblCodigoPedido.
@@ -33,75 +60,93 @@ namespace EatMall.Vista.Pago
         protected global::System.Web.UI.WebControls.Label lblCodigoPedido;
 
         /// <summary>
-        /// Control lblIdTransaccion.
+        /// Control rptDetalle.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIdTransaccion;
+        protected global::System.Web.UI.WebControls.Repeater rptDetalle;
 
         /// <summary>
-        /// Control lblMetodo.
+        /// Control rptResumenPrecios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMetodo;
+        protected global::System.Web.UI.WebControls.Repeater rptResumenPrecios;
 
         /// <summary>
-        /// Control lblFecha.
+        /// Control lblMontoTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFecha;
+        protected global::System.Web.UI.WebControls.Label lblMontoTotal;
 
         /// <summary>
-        /// Control lblEstado.
+        /// Control lblMedioPago.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEstado;
+        protected global::System.Web.UI.WebControls.Label lblMedioPago;
 
         /// <summary>
-        /// Control lblSubtotal.
+        /// Control lblPayuRef.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSubtotal;
+        protected global::System.Web.UI.WebControls.Label lblPayuRef;
 
         /// <summary>
-        /// Control lblDomicilio.
+        /// Control lblFechaTrans.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDomicilio;
+        protected global::System.Web.UI.WebControls.Label lblFechaTrans;
 
         /// <summary>
-        /// Control lblTotal.
+        /// Control lblEstadoPago.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotal;
+        protected global::System.Web.UI.WebControls.Label lblEstadoPago;
 
         /// <summary>
-        /// Control btnInicio.
+        /// Control hfIdPedido.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInicio;
+        protected global::System.Web.UI.WebControls.HiddenField hfIdPedido;
+
+        /// <summary>
+        /// Control btnEnPreparacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEnPreparacion;
+
+        /// <summary>
+        /// Control btnEntregado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEntregado;
     }
 }

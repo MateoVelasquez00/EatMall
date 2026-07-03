@@ -40,13 +40,13 @@ namespace EatMall.Vista.Usuario.GestionLocal
             }
 
             imgLocal.ImageUrl = local.Imagen;
-            lblNombre.Text = local.Nombre;
+			lblNombre.Text = local.Nombre;
             lblEmail.Text = local.Email;
             lblTelefono.Text = local.Telefono;
             lblDescripcion.Text = local.Descripcion;
             lblHorario.Text = local.HorarioLocal;
-            lblCalificacion.Text = local.Calificacion.Puntaje.ToString("0.0");
-            lblNumeroLocal.Text = local.NumeroLocal.ToString();
+			lblCalificacion.Text = local.Calificacion != null ? local.Calificacion.Puntaje.ToString("0.0") : "0.0";
+			lblNumeroLocal.Text = local.NumeroLocal.ToString();
             lblEstado.Text = local.Estado == "Abierto"
                 ? "<span class='badge-estado badge-abierto'>Abierto</span>"
                 : "<span class='badge-estado badge-cerrado'>Cerrado</span>";

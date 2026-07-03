@@ -7,9 +7,9 @@ using System.Web.UI;
 
 namespace EatMall.Vista.Usuario.GestionAdmin
 {
-    public partial class CrearUsuario : System.Web.UI.Page
-    {
-        ClienteL datos = new ClienteL();
+	public partial class CrearUsuario : System.Web.UI.Page
+	{
+		ClienteL datos = new ClienteL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -80,11 +80,11 @@ namespace EatMall.Vista.Usuario.GestionAdmin
                 if (item.Selected) { tieneAlgunRol = true; break; }
             }
 
-            if (!tieneAlgunRol)
-            {
-                MostrarAlerta("Debes asignar al menos un rol al usuario.", "warning");
-                return;
-            }
+			if (!tieneAlgunRol)
+			{
+				MostrarAlerta("Debes asignar al menos un rol al usuario.", "warning");
+				return;
+			}
 
             if (esEditar)
             {
@@ -197,13 +197,13 @@ namespace EatMall.Vista.Usuario.GestionAdmin
             }
         }
 
-        private void MostrarAlerta(string mensaje, string icono)
-        {
-            mensaje = mensaje.Replace("'", "").Replace("\"", "").Replace("\n", " ")
-                             .Replace("á", "a").Replace("é", "e").Replace("í", "i")
-                             .Replace("ó", "o").Replace("ú", "u").Replace("ñ", "n")
-                             .Replace("Á", "A").Replace("É", "E").Replace("Í", "I")
-                             .Replace("Ó", "O").Replace("Ú", "U").Replace("Ñ", "N");
+		private void MostrarAlerta(string mensaje, string icono)
+		{
+			mensaje = mensaje.Replace("'", "").Replace("\"", "").Replace("\n", " ")
+							 .Replace("á", "a").Replace("é", "e").Replace("í", "i")
+							 .Replace("ó", "o").Replace("ú", "u").Replace("ñ", "n")
+							 .Replace("Á", "A").Replace("É", "E").Replace("Í", "I")
+							 .Replace("Ó", "O").Replace("Ú", "U").Replace("Ñ", "N");
 
             string script = $"Swal.fire({{ title: 'Atencion', text: '{mensaje}', icon: '{icono}', confirmButtonColor: '#006948' }});";
             ScriptManager.RegisterStartupScript(this, GetType(), "alerta", script, true);

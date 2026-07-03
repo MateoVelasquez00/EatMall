@@ -95,7 +95,7 @@ namespace EatMall.Datos
                 cn.Open();
                 string query = @"SELECT Id, Nombre, Imagen, Total AS Precio
                          FROM dbo.Promocion
-                         WHERE IdLocal = @IdLocal";
+                         WHERE IdLocal = @IdLocal AND Estado = 1";
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
 
@@ -125,18 +125,17 @@ namespace EatMall.Datos
             {
                 cn.Open();
 
-                string query = @"
-            SELECT
-                Id,
-                Nombre,
-                Descripcion,
-                Imagen,
-                Precio,
-                Estado,
-                IdCategoria
-            FROM Producto
-            WHERE IdLocal = @IdLocal
-            ORDER BY Nombre";
+                string query = @"SELECT
+                                    Id,
+                                    Nombre,
+                                    Descripcion,
+                                    Imagen,
+                                    Precio,
+                                    Estado,
+                                    IdCategoria
+                                FROM Producto
+                                WHERE IdLocal = @IdLocal
+                                ORDER BY Nombre";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -258,5 +257,27 @@ namespace EatMall.Datos
             }
         }
 
-    }
+		public bool CambiarEstadoProducto(int idProducto)
+		{
+			bool actualizado = false;
+
+			using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+			{
+				cn.Open();
+
+				string query = "UPDATE Producto SET Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END WHERE Id = @Id";
+
+				using (SqlCommand cmd = new SqlCommand(query, cn))
+				{
+					cmd.Parameters.AddWithValue("@Id", idProducto);
+
+					int filasAfectadas = cmd.ExecuteNonQuery();
+					actualizado = filasAfectadas > 0;
+				}
+			}
+
+			return actualizado;
+		}
+
+	}
 }

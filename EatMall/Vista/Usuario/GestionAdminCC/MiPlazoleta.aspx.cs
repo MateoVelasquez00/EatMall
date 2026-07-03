@@ -12,29 +12,45 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
     public partial class MiPlazoleta : System.Web.UI.Page
     {
         PlazoletaL plazoletaL = new PlazoletaL();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                CargarSelectorPlazoletas();
-                if (ddlPlazoletaSelector.Items.Count > 0)
-                    CargarDatosPlazoleta(Convert.ToInt32(ddlPlazoletaSelector.SelectedValue));
+                CargarPlazoletas();
             }
         }
 
-        private void CargarSelectorPlazoletas()
+        private void CargarPlazoletas()
         {
             UsuarioLogin usuario = (UsuarioLogin)Session["Usuario"];
 
-            ddlPlazoletaSelector.DataSource = plazoletaL.MtListarPlazoletas(usuario.IdCC);
-            ddlPlazoletaSelector.DataTextField = "Nombre";
-            ddlPlazoletaSelector.DataValueField = "Id";
-            ddlPlazoletaSelector.DataBind();
+            List<Plazoleta> plazoletas = plazoletaL.MtListarPlazoletas(usuario.IdCC);
+
+            rptPlazoletas.DataSource = plazoletas;
+            rptPlazoletas.DataBind();
+
+            if (plazoletas.Count == 0) return;
+
+            int idPlazoleta;
+
+            if (ViewState["IdPlazoletaActual"] != null)
+                idPlazoleta = Convert.ToInt32(ViewState["IdPlazoletaActual"]);
+            else
+                idPlazoleta = plazoletas[0].Id;
+
+            ViewState["IdPlazoletaActual"] = idPlazoleta;
+            CargarDatosPlazoleta(idPlazoleta);
         }
 
-        protected void ddlPlazoletaSelector_SelectedIndexChanged(object sender, EventArgs e)
+        protected void rptPlazoletas_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            CargarDatosPlazoleta(Convert.ToInt32(ddlPlazoletaSelector.SelectedValue));
+            if (e.CommandName == "VerPlazoleta")
+            {
+                int idPlazoleta = Convert.ToInt32(e.CommandArgument);
+                ViewState["IdPlazoletaActual"] = idPlazoleta;
+                CargarPlazoletas();
+            }
         }
 
         private void CargarDatosPlazoleta(int idPlazoleta)
@@ -61,7 +77,7 @@ namespace EatMall.Vista.Usuario.GestionAdminCC
         {
             try
             {
-                int idPlazoleta = Convert.ToInt32(ddlPlazoletaSelector.SelectedValue);
+                int idPlazoleta = Convert.ToInt32(ViewState["IdPlazoletaActual"]);
 
                 Plazoleta plazoleta = new Plazoleta()
                 {

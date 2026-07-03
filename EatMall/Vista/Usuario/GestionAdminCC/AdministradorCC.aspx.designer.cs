@@ -7,11 +7,11 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace EatMall.Vista.Usuario
+namespace EatMall.Vista.Usuario.GestionAdminCC
 {
 
 
-    public partial class Cajero
+    public partial class AdministradorCC
     {
     }
 }

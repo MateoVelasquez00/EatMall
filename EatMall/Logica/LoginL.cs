@@ -9,9 +9,9 @@ namespace EatMall.Logica
 {
 	public class LoginL
 	{
+		LoginD oLoginD = new LoginD();
 		public UsuarioLogin MtLogin(UsuarioLogin oDatos, bool esFuncionario)
 		{
-			LoginD oLoginD = new LoginD();
 			return oLoginD.MtLogin(oDatos, esFuncionario);
 		}
 	}

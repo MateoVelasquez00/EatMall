@@ -11,9 +11,10 @@
         public decimal Subtotal { get; set; }
         public string NombreProducto { get; set; }
         public string Descripcion { get; set; }
-        public string ImagenProducto { get; set; }
+        public string Imagen { get; set; }
         public decimal PrecioProducto { get; set; }
         public string NombreLocal { get; set; }
         public string NombreCC { get; set; }
+        public string EstadoProducto { get; set; }
     }
 }

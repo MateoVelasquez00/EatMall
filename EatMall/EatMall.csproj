@@ -43,10 +43,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -70,19 +76,24 @@
     <Content Include="Vista\Assets\Img\CCDefault.png" />
     <Content Include="Vista\Assets\Img\HeroPlazoleta.png" />
     <Content Include="Vista\Assets\Img\LogoEatMall.png" />
+    <Content Include="Vista\Assets\Js\Carrito.js" />
     <Content Include="Vista\Auth\Login.aspx" />
+    <Content Include="Vista\Auth\RecuperarContraseña.aspx" />
     <Content Include="Vista\Auth\Registro.aspx" />
     <Content Include="Vista\Auth\VerificarCuenta.aspx" />
     <Content Include="Vista\Busqueda\Resultados.aspx" />
+    <Content Include="Vista\GestionCajero\MenuLocal.aspx" />
+    <Content Include="Vista\GestionCajero\NuevaPromocion.aspx" />
+    <Content Include="Vista\GestionCajero\Promociones.aspx" />
+    <Content Include="Vista\GestionCajero\Reportes.aspx" />
     <Content Include="Vista\Pedido\Carritos.aspx" />
     <Content Include="Vista\Local\Local.aspx" />
-    <Content Include="Vista\Pago\ConfirmacionPago.aspx" />
-    <Content Include="Vista\Pago\MetodosPago.aspx" />
-    <Content Include="Vista\Pago\Recibo.aspx" />
+    <Content Include="Vista\Pedido\RespuestaPago.aspx" />
     <Content Include="Vista\Plazoleta\Plazoleta.aspx" />
     <Content Include="Vista\Local\Tienda.aspx" />
+    <Content Include="Vista\Usuario\Cajero.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\Administrador.aspx" />
-    <Content Include="Vista\Usuario\AdministradorCC.aspx" />
+    <Content Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\Locales.aspx" />
     <Content Include="Vista\Usuario\GestionAdminCC\MiCentroComercial.aspx" />
@@ -92,7 +103,6 @@
     <Content Include="Vista\Usuario\GestionAdmin\CrearUsuario.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\GestionUsuarios.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\AdminLocal.aspx" />
-    <Content Include="Vista\Usuario\GestionCajero\Cajero.aspx" />
     <Content Include="Vista\Usuario\DetallesPedidos.aspx" />
     <Content Include="Vista\Usuario\GestionAdmin\ListarCentroComercial.aspx" />
     <Content Include="Vista\Usuario\GestionLocal\CajeroLocal.aspx" />
@@ -110,6 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Datos\BusquedaD.cs" />
+    <Compile Include="Datos\CajeroD.cs" />
+    <Compile Include="Datos\CarritoD.cs" />
     <Compile Include="Datos\CategoriaLocalD.cs" />
     <Compile Include="Datos\CategoriaProductoD.cs" />
     <Compile Include="Datos\CentroComercialD.cs" />
@@ -135,6 +147,7 @@
       <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Logica\BusquedaL.cs" />
+    <Compile Include="Logica\CajeroL.cs" />
     <Compile Include="Logica\CarritoL.cs" />
     <Compile Include="Logica\CategoriaLocalL.cs" />
     <Compile Include="Logica\CategoriaProductoL.cs" />
@@ -152,6 +165,7 @@
     <Compile Include="Logica\PromocionL.cs" />
     <Compile Include="Logica\RegistroL.cs" />
     <Compile Include="Logica\TransaccionL.cs" />
+    <Compile Include="Modelo\Cajero.cs" />
     <Compile Include="Modelo\Calificacion.cs" />
     <Compile Include="Modelo\Carrito.cs" />
     <Compile Include="Modelo\CategoriaProducto.cs" />
@@ -187,6 +201,13 @@
     <Compile Include="Vista\Auth\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Auth\RecuperarContraseña.aspx.cs">
+      <DependentUpon>RecuperarContraseña.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Auth\RecuperarContraseña.aspx.designer.cs">
+      <DependentUpon>RecuperarContraseña.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Auth\Registro.aspx.cs">
       <DependentUpon>Registro.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,6 +229,34 @@
     <Compile Include="Vista\Busqueda\Resultados.aspx.designer.cs">
       <DependentUpon>Resultados.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\GestionCajero\MenuLocal.aspx.cs">
+      <DependentUpon>MenuLocal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\MenuLocal.aspx.designer.cs">
+      <DependentUpon>MenuLocal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\NuevaPromocion.aspx.cs">
+      <DependentUpon>NuevaPromocion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\NuevaPromocion.aspx.designer.cs">
+      <DependentUpon>NuevaPromocion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Promociones.aspx.cs">
+      <DependentUpon>Promociones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Promociones.aspx.designer.cs">
+      <DependentUpon>Promociones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Reportes.aspx.cs">
+      <DependentUpon>Reportes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\GestionCajero\Reportes.aspx.designer.cs">
+      <DependentUpon>Reportes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Pedido\Carritos.aspx.cs">
       <DependentUpon>Carritos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -222,26 +271,12 @@
     <Compile Include="Vista\Local\Local.aspx.designer.cs">
       <DependentUpon>Local.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Pago\ConfirmacionPago.aspx.cs">
-      <DependentUpon>ConfirmacionPago.aspx</DependentUpon>
+    <Compile Include="Vista\Pedido\RespuestaPago.aspx.cs">
+      <DependentUpon>RespuestaPago.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Pago\ConfirmacionPago.aspx.designer.cs">
-      <DependentUpon>ConfirmacionPago.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Pago\MetodosPago.aspx.cs">
-      <DependentUpon>MetodosPago.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Pago\MetodosPago.aspx.designer.cs">
-      <DependentUpon>MetodosPago.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Pago\Recibo.aspx.cs">
-      <DependentUpon>Recibo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Pago\Recibo.aspx.designer.cs">
-      <DependentUpon>Recibo.aspx</DependentUpon>
+    <Compile Include="Vista\Pedido\RespuestaPago.aspx.designer.cs">
+      <DependentUpon>RespuestaPago.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Plazoleta\Plazoleta.aspx.cs">
       <DependentUpon>Plazoleta.aspx</DependentUpon>
@@ -264,6 +299,13 @@
     <Compile Include="Vista\Local\Tienda.aspx.designer.cs">
       <DependentUpon>Tienda.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Vista\Usuario\Cajero.aspx.cs">
+      <DependentUpon>Cajero.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Vista\Usuario\Cajero.aspx.designer.cs">
+      <DependentUpon>Cajero.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -271,11 +313,11 @@
     <Compile Include="Vista\Usuario\GestionAdmin\Administrador.aspx.designer.cs">
       <DependentUpon>Administrador.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Vista\Usuario\AdministradorCC.aspx.cs">
+    <Compile Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Vista\Usuario\AdministradorCC.aspx.designer.cs">
+    <Compile Include="Vista\Usuario\GestionAdminCC\AdministradorCC.aspx.designer.cs">
       <DependentUpon>AdministradorCC.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\GestionAdminCC\CrearLocales.aspx.cs">
@@ -340,13 +382,6 @@
     </Compile>
     <Compile Include="Vista\Usuario\GestionLocal\AdminLocal.aspx.designer.cs">
       <DependentUpon>AdminLocal.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.cs">
-      <DependentUpon>Cajero.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Vista\Usuario\GestionCajero\Cajero.aspx.designer.cs">
-      <DependentUpon>Cajero.aspx</DependentUpon>
     </Compile>
     <Compile Include="Vista\Usuario\DetallesPedidos.aspx.cs">
       <DependentUpon>DetallesPedidos.aspx</DependentUpon>
@@ -443,8 +478,8 @@
   <ItemGroup>
     <Content Include="Site.Master" />
     <None Include="packages.config" />
-    <Content Include="Vista\Admin.Master" />
     <None Include="Properties\PublishProfiles\EatMall3 - Web Deploy.pubxml" />
+    <Content Include="Vista\Admin.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -452,9 +487,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Vista\Assets\Js\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -462,13 +495,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

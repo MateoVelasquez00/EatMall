@@ -3,7 +3,7 @@ using EatMall.Logica;
 using EatMall.Modelo;
 using EatMall.Vista.Pago;
 using System;
-using System.Security.Cryptography;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace EatMall.Vista.Local
@@ -11,7 +11,6 @@ namespace EatMall.Vista.Local
     public partial class Tienda : System.Web.UI.Page
     {
         private ProductoL productoL = new ProductoL();
-        private CarritoL carritoL = new CarritoL();
         private LocalL localL = new LocalL();
         private CategoriaProductoL categoriaL = new CategoriaProductoL();
 
@@ -66,7 +65,6 @@ namespace EatMall.Vista.Local
 
         private void CargarCategorias()
         {
-            //Si la variable de sesion es nula casteamos a int y si no tiene nada usa por defecto 0
             int idLocal = Session["IdLocal"] != null ? (int)Session["IdLocal"] : 0;
             rptCategorias.DataSource = categoriaL.ObtenerCategoriasPorLocal(idLocal);
             rptCategorias.DataBind();
@@ -78,13 +76,14 @@ namespace EatMall.Vista.Local
             if (idCategoria == 99)
             {
                 var promociones = productoL.ObtenerPromocionesPorLocal(idLocal);
+                var promosActivas = promociones.FindAll(p => p.Estado == true);
                 rptProductos.DataSource = promociones;
                 rptProductos.DataBind();
             }
             else
             {
-
                 var productos = productoL.ObtenerProductos(idLocal);
+                productos = productos.FindAll(p => p.Estado == true);
                 if (idCategoria > 0)
                     productos = productos.FindAll(p => p.IdCategoria == idCategoria);
                 rptProductos.DataSource = productos;
@@ -92,39 +91,9 @@ namespace EatMall.Vista.Local
             }
         }
 
-        protected void rptProductos_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "AgregarCarrito")
-            {
-                int idProducto = Convert.ToInt32(e.CommandArgument);
-                int idLocal = Session["IdLocal"] != null ? (int)Session["IdLocal"] : 0;
-
-                TextBox txtCantidad = (TextBox)e.Item.FindControl("txtCantidad");
-                int cantidad = 1;
-                if (txtCantidad != null && int.TryParse(txtCantidad.Text, out int cant) && cant > 0)
-                    cantidad = cant;
-
-                int idCategoria = 0;
-                int.TryParse(Request.QueryString["idCategoria"], out idCategoria);
-
-                Producto producto = null;
-                if (idCategoria == 99)
-                    producto = productoL.ObtenerPromocionesPorLocal(idLocal).Find(p => p.Id == idProducto);
-                else
-                    producto = productoL.ObtenerProductos(idLocal).Find(p => p.Id == idProducto);
-                if (producto != null)
-                    carritoL.AgregarProducto(producto, cantidad, idLocal);
-                Response.Redirect(Request.RawUrl);
-
-            }
-        }
-
         private void CargarInformacionLocal(int idLocal)
         {
             Modelo.Local local = localL.ObtenerLocalPorId(idLocal);
-
-            if (local == null)
-                Response.Write("LOCAL NULL");
 
             if (local != null)
             {

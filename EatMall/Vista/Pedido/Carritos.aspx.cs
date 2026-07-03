@@ -1,85 +1,180 @@
-﻿using EatMall.Datos;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using EatMall.Datos;
 using EatMall.Logica;
 using EatMall.Modelo;
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 
 namespace EatMall.Vista.Pedido
 {
 	public partial class Carritos : System.Web.UI.Page
 	{
-		CarritoL carritoL = new CarritoL();
-		PedidoL pedidoL = new PedidoL();
+		private PedidoL pedidoL = new PedidoL();
+		private CarritoL carritoL = new CarritoL();
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			if (!IsPostBack)
-				CargarCarrito();
-			for (int i = 8; i <= 20; i++)
 			{
-				string hora = i.ToString("D2") + ":00";
-				ddlHoraEntrega.Items.Add(new ListItem(hora, hora));
+
+				for (int i = 8; i <= 20; i++)
+				{
+					string hora = i.ToString("D2") + ":00";
+					ddlHoraEntrega.Items.Add(new ListItem(hora, hora));
+				}
 			}
 		}
 
-		private void CargarCarrito()
+		protected void btnConfirmar_Click(object sender, EventArgs e)
 		{
-			var items = carritoL.ObtenerCarrito();
 
-			if (items.Count == 0)
+			if (Session["Usuario"] == null)
 			{
-				pnlVacio.Visible = true;
-				rptCarrito.Visible = false;
-				btnConfirmar.Visible = false;
-				lblTotal.Text = "0.00";
-				lblSubtotal.Text = "0.00";
+				Response.Redirect("~/Vista/Auth/Login.aspx");
+				return;
 			}
-			else
+
+			UsuarioLogin oUsuarioLogin = (UsuarioLogin)Session["Usuario"];
+			string horaSeleccionadaUser = ddlHoraEntrega.SelectedValue;
+			decimal montoAPagar = 0;
+			int idPedido = 0;
+			string codigoPedido = "";
+
+			if (Session["IdPedido"] != null && Convert.ToInt32(Session["IdPedido"]) > 0)
 			{
-				pnlVacio.Visible = false;
-				rptCarrito.DataSource = items;
-				rptCarrito.DataBind();
-				lblTotal.Text = string.Format("{0:N2}", carritoL.ObtenerTotal());
-				lblSubtotal.Text = string.Format("{0:N2}", carritoL.ObtenerTotal());
+				idPedido = Convert.ToInt32(Session["IdPedido"]);
+				codigoPedido = Session["CodigoPedido"]?.ToString();
+			}
+
+			try
+			{
+
+				string jsonCarrito = CarritoData.Value;
+
+				if (!string.IsNullOrEmpty(jsonCarrito) && jsonCarrito != "[]")
+				{
+
+					var items = JsonConvert.DeserializeObject<List<EatMall.Modelo.Carrito>>(jsonCarrito);
+
+					if (items != null && items.Count > 0)
+					{
+
+						Modelo.Pedido pedido = pedidoL.ConfirmarPedido(items, oUsuarioLogin.Id, horaSeleccionadaUser);
+						idPedido = pedido.Id;
+						codigoPedido = pedido.CodigoPedido;
+
+						foreach (var item in items)
+						{
+							montoAPagar += (item.Precio * item.Cantidad);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Error al procesar el carrito de EatMall: " + ex.Message);
+			}
+
+			if (idPedido == 0)
+			{
+				montoAPagar = carritoL.ObtenerTotal();
+
+				if (montoAPagar <= 0 && Session["Total"] != null)
+				{
+					montoAPagar = Convert.ToDecimal(Session["Total"]);
+				}
+
+				codigoPedido = "PED-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
+				Modelo.Pedido oPedido = new Modelo.Pedido()
+				{
+					IdCliente = oUsuarioLogin.Id,
+					CodigoPedido = codigoPedido,
+					Total = montoAPagar,
+					Estado = "Pendiente",
+					FechaPedido = DateTime.Now,
+					HoraEntrega = TimeSpan.Parse(horaSeleccionadaUser)
+				};
+				idPedido = pedidoL.MtGuardarPedido(oPedido);
+			}
+
+			Session["IdPedido"] = idPedido;
+			Session["CodigoPedido"] = codigoPedido;
+			Session["Total"] = montoAPagar.ToString("N2");
+
+			if (montoAPagar > 0)
+			{
+				string fechaPedido = DateTime.Now.ToString("yyyyMMddHHmmss");
+				string referenciaUnica = $"EATMALL-ORDEN-{idPedido}-{fechaPedido}";
+
+				Transaccion oTransaccion = new Transaccion()
+				{
+					IdPedido = idPedido,
+					IdMetodoPago = Session["MetodoPago"] != null ? Convert.ToInt32(Session["MetodoPago"]) : 1,
+					Monto = montoAPagar,
+					Estado = "Pendiente",
+					FechaTransaccion = DateTime.Now,
+					PayuCodigoReferencia = referenciaUnica
+				};
+
+				TransaccionL oTransaccionL = new TransaccionL();
+				oTransaccionL.MtCrearPago(oTransaccion);
+
+				string apiKey = ConfigurationManager.AppSettings["PayU_ApiKey"];
+				string merchantId = ConfigurationManager.AppSettings["PayU_MerchantId"];
+				string accountId = ConfigurationManager.AppSettings["PayU_AccountId"];
+				string currency = "COP";
+				string montoFormateado = Math.Round(oTransaccion.Monto, 0).ToString();
+				string cadenaFirma = $"{apiKey}~{merchantId}~{referenciaUnica}~{montoFormateado}~{currency}";
+				string firmaMD5 = GenerarMD5(cadenaFirma);
+
+				string urlCheckout = "https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/";
+
+				StringBuilder script = new StringBuilder();
+				script.Append("var form = document.createElement('form');");
+				script.Append("form.method = 'POST';");
+				script.Append($"form.action = '{urlCheckout}';");
+
+				// Campos obligatorios del formulario WebCheckout de PayU
+				script.Append("function addInput(name, value) { var input = document.createElement('input'); input.type = 'hidden'; input.name = name; input.value = value; form.appendChild(input); }");
+				script.Append($"addInput('merchantId', '{merchantId}');");
+				script.Append($"addInput('accountId', '{accountId}');");
+				script.Append($"addInput('description', 'Pedido EatMall - Entrega: {horaSeleccionadaUser}');");
+				script.Append($"addInput('referenceCode', '{referenciaUnica}');");
+				script.Append($"addInput('amount', '{montoFormateado}');");
+				script.Append($"addInput('currency', '{currency}');");
+				script.Append($"addInput('signature', '{firmaMD5}');");
+				script.Append("addInput('test', '1');");
+				script.Append($"addInput('buyerEmail', '{oUsuarioLogin.Email}');");
+				script.Append("addInput('tax', '0');");
+				script.Append("addInput('taxReturnBase', '0');");
+				script.Append("addInput('responseUrl', 'https://localhost:44377/Vista/Pedido/RespuestaPago.aspx');");
+				script.Append("document.body.appendChild(form);");
+				script.Append("form.submit();");
+
+				ScriptManager.RegisterStartupScript(this, this.GetType(), "PayURedirect", script.ToString(), true);
 			}
 		}
 
-		protected void rptCarrito_ItemCommand(object source, RepeaterCommandEventArgs e)
+		private string GenerarMD5(string input)
 		{
-			if (e.CommandName == "Eliminar")
+			using (MD5 md5 = MD5.Create())
 			{
-				carritoL.EliminarProducto(Convert.ToInt32(e.CommandArgument));
-				CargarCarrito();
+				byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+				byte[] hashBytes = md5.ComputeHash(inputBytes);
+				StringBuilder sb = new StringBuilder();
+
+				for (int i = 0; i < hashBytes.Length; i++)
+				{
+					sb.Append(hashBytes[i].ToString("x2"));
+				}
+				return sb.ToString();
 			}
-		}
-
-        protected void btnConfirmar_Click(object sender, EventArgs e)
-        {
-            if (Session["Usuario"] == null)
-            {
-                
-                string urlRetorno = Request.Url.PathAndQuery;
-                Response.Redirect("~/Vista/Auth/Login.aspx");
-                return;
-            }
-            
-            UsuarioLogin oUser = (UsuarioLogin)Session["Usuario"];
-            List<Carrito> items = carritoL.ObtenerCarrito();
-            string horaSeleccionada = ddlHoraEntrega.SelectedValue;
-
-
-			// Esto guarda en la BD y retorna el objeto pedido con el ID generado
-			Modelo.Pedido pedido = pedidoL.ConfirmarPedido(items, oUser.Id, horaSeleccionada);
-
-           
-            Session["Total"] = carritoL.ObtenerTotal().ToString("N2");
-            Session["IdPedido"] = pedido.Id;
-            Session["CodigoPedido"] = pedido.CodigoPedido;
-            Session["HoraEntrega"] = ddlHoraEntrega.SelectedValue;
-           
-
-			Response.Redirect("~/Vista/Pago/MetodosPago.aspx");
 		}
 	}
 }

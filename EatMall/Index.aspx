@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="EatMall.Index" MasterPageFile="~/Site.Master" %>
+ï»¿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="EatMall.Index" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 	<style>
@@ -196,7 +196,7 @@
 					<i class="bi bi-map-fill text-warning"></i>
 					Explora los Centros Comerciales
 				</h2>
-				<p class="text-muted small m-0">Encuentra la mejor opción para ti</p>
+				<p class="text-muted small m-0">Encuentra la mejor opciÃ³n para ti</p>
 			</div>
 		</div>
 
@@ -232,15 +232,22 @@
 					let lista = resultado.d;
 
 					lista.forEach(CC => {
+
+						let urlDetalles = `/Vista/Plazoleta/Plazoleta.aspx?id=${CC.Id}`;
+
 						L.marker([CC.Latitud, CC.Longitud]).addTo(mapa)
 							.bindPopup(`<div class="card-CC"> 
                  <img src="${CC.Imagen}" class="card-img"/>
                  <div class="card-body">
                  <h3>${CC.Nombre}</h3>
-                 <p><strong>Dirección:</strong>${CC.Ubicacion}</p>
+                 <p><strong>DirecciÃ³n:</strong>${CC.Ubicacion}</p>
 				 <p>
 					<a href="${CC.UbicacionUrl}" target="_blanck" rel="noopener noreferrer" class="btn btn-sm btn-primary text-white">
 						<i class="bi bi-geo-alt-fill"></i> Ver en Google Maps
+					</a>
+					<hr>
+					<a href="${urlDetalles}" class="btn btn-sm text-white text-center fw-semibold" style="displat: block; background-color: #f2811d; font-seze: 0.85rem; padding: 4px; border-radius: 4px; text-decoration: none;">
+					Ver Detalles
 					</a>
 				 </p>
                  </div>
@@ -272,7 +279,7 @@
 
 
 			L.marker([lat, long], { icon: pinRojo }).addTo(mapa)
-				.bindPopup("Tu Ubicación")
+				.bindPopup("Tu UbicaciÃ³n")
 				.openPopup();
 		});
 

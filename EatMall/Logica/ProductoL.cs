@@ -40,7 +40,10 @@ namespace EatMall.Logica
         {
             return datos.MtCambiarEstadoProducto(idProducto, estado);
         }
-    }
-
-
+		public bool CambiarEstadoProducto(int idProducto)
+		{
+			ProductoD datos = new ProductoD();
+			return datos.CambiarEstadoProducto(idProducto);
+		}
+	}
 }

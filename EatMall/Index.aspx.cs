@@ -10,20 +10,20 @@ using EatMall.Modelo;
 
 namespace EatMall
 {
-    public partial class Index : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            if (!IsPostBack)
-            {
-                CentroComercialL oCentroComercial = new CentroComercialL();
-                rptCentrosComerciales.DataSource = oCentroComercial.MtListarCentrosComercial();
-                rptCentrosComerciales.DataBind();
-                MtCargarDatosIndex();
+	public partial class Index : System.Web.UI.Page
+	{
+		protected void Page_Load(object sender, EventArgs e)
+		{
+			if (!IsPostBack)
+			{
+				CentroComercialL oCentroComercial = new CentroComercialL();
+				rptCentrosComerciales.DataSource = oCentroComercial.MtListarCentrosComercial();
+				rptCentrosComerciales.DataBind();
+				MtCargarDatosIndex();
 
 			}
-        }
-        
+		}
+
 
 		private void MtCargarDatosIndex()
 		{

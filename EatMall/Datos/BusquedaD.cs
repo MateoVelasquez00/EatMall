@@ -32,8 +32,9 @@ namespace EatMall.Datos
                                    INNER JOIN Plazoleta Pl ON Pl.Id = L.IdPlazoleta
                                    INNER JOIN CentroComercial CC on Pl.IdCentroComercial = CC.Id
                                    WHERE P.Nombre LIKE '%' + @Busqueda + '%'
-                                   AND P.Estado = 1
-                                   AND CC.Estado = 1";
+                                   AND P.Estado = 'True'
+                                   AND CC.Estado = 'True'
+                                   AND L.Estado = 'Abierto'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -92,7 +93,7 @@ namespace EatMall.Datos
                                   INNER JOIN CentroComercial cc ON p.IdCentroComercial = cc.Id
                                   WHERE l.Nombre LIKE '%' + @Busqueda + '%'
                                   AND l.Estado = 'Abierto'
-                                  AND cc.Estado = 1";
+                                  AND cc.Estado = 'True'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -144,7 +145,7 @@ namespace EatMall.Datos
                     FROM CentroComercial cc
                     INNER JOIN Ciudad c ON cc.IdCiudad = c.Id
                     WHERE c.NombreCiudad LIKE '%' + @Busqueda + '%'
-                    AND cc.Estado = 1"; ;
+                    AND cc.Estado = 'True'"; ;
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -191,7 +192,7 @@ namespace EatMall.Datos
                     FROM CentroComercial cc
                     INNER JOIN Ciudad c ON cc.IdCiudad = c.Id
                     WHERE cc.Nombre LIKE '%' + @Busqueda + '%' 
-                    AND cc.Estado = 1";
+                    AND cc.Estado = 'True'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {

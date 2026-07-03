@@ -196,7 +196,6 @@
 
     <div class="cabecera-locales">
         <h4 class="page-titulo mb-0">
-            <i class="bi bi-shop me-2"></i>
             Gestión de Locales
         </h4>
         <a href="CrearLocales.aspx" class="btn-nuevo-local">
@@ -249,7 +248,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item"
-                                    href='EditarLocal.aspx?id=<%# Eval("Id") %>'>
+                                    href='CrearLocales.aspx?id=<%# Eval("Id") %>'>
                                     <i class="bi bi-pencil-square me-2"></i>
                                     Editar
                                 </a>
@@ -303,10 +302,21 @@ $(document).ready(function () {
     $('#gvLocales').DataTable({
         language: {
             search: "",
-            searchPlaceholder: "Buscar local..."
+            searchPlaceholder: "Buscar centro comercial...",
+            lengthMenu: "Mostrar _MENU_ registros",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ centros comerciales",
+            infoEmpty: "Mostrando 0 a 0 de 0 centros comerciales",
+            infoFiltered: "(filtrado de _MAX_ centros comerciales en total)",
+            zeroRecords: "No se encontraron resultados",
+            paginate: {
+                first: "Primero",
+                last: "Ultimo",
+                next: "Siguiente",
+                previous: "Anterior"
+            }
         }
     });
 });
-</script>
+    </script>
 
 </asp:Content>
