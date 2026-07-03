@@ -17,4 +17,4 @@ packages/
 
 # Logs
 *.log
-/EatMall/Datos/CentroComercialD.cs
+/EatMall/Web.Config
