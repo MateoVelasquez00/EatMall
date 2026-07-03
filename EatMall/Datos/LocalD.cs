@@ -1,6 +1,7 @@
 ﻿using EatMall.Modelo;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace EatMall.Datos
@@ -76,38 +77,43 @@ namespace EatMall.Datos
                 cn.Open();
 
                 string consulta = @"SELECT 
-                            L.Id,
-                            L.Imagen,
-                            L.Nombre,
-                            CAST(L.Descripcion AS NVARCHAR(MAX)) AS Descripcion,
-                            CAST(L.Telefono AS NVARCHAR(50)) AS Telefono,
-                            L.Email,
-                            L.Estado,
-                            HL.Dia,
-                            HL.HorarioApertura,
-                            HL.HorarioCierre,
-                            ISNULL(AVG(CAST(C.Puntaje AS FLOAT)), 0) AS PromedioCalificacionLocal
-                            FROM Local L
-                            LEFT JOIN HorarioLocal HL ON HL.IdLocal = L.Id
-                            LEFT JOIN Calificacion C ON C.IdLocal = L.Id
-                            WHERE L.Id = @IdLocal
-                            GROUP BY 
-                            L.Id,
-                            L.Imagen,
-                            L.Nombre,
-                            CAST(L.Descripcion AS NVARCHAR(MAX)),
-                            CAST(L.Telefono AS NVARCHAR(50)),
-                            L.Email,
-                            L.Estado,
-                            HL.Dia,
-                            HL.HorarioApertura,
-                            HL.HorarioCierre";
+                    L.Id,
+                    L.Imagen,
+                    L.Nombre,
+                    CAST(L.Descripcion AS NVARCHAR(MAX)) AS Descripcion,
+                    CAST(L.Telefono AS NVARCHAR(50)) AS Telefono,
+                    L.Email,
+                    L.Estado,
+                    L.IdPlazoleta,
+                    L.IdDueñoLocal,
+                    L.NumeroLocal,
+                    HL.Dia,
+                    HL.HorarioApertura,
+                    HL.HorarioCierre,
+                    ISNULL(AVG(CAST(C.Puntaje AS FLOAT)), 0) AS PromedioCalificacionLocal
+                    FROM Local L
+                    LEFT JOIN HorarioLocal HL ON HL.IdLocal = L.Id
+                    LEFT JOIN Calificacion C ON C.IdLocal = L.Id
+                    WHERE L.Id = @IdLocal
+                    GROUP BY 
+                    L.Id,
+                    L.Imagen,
+                    L.Nombre,
+                    CAST(L.Descripcion AS NVARCHAR(MAX)),
+                    CAST(L.Telefono AS NVARCHAR(50)),
+                    L.Email,
+                    L.Estado,
+                    L.IdPlazoleta,
+                    L.IdDueñoLocal,
+                    L.NumeroLocal,
+                    HL.Dia,
+                    HL.HorarioApertura,
+                    HL.HorarioCierre";
 
                 SqlCommand cmd = new SqlCommand(consulta, cn);
                 cmd.Parameters.AddWithValue("@IdLocal", idLocal);
                 SqlDataReader dr = cmd.ExecuteReader();
 
-                //Es una lista de strings vacía para ir guardando los horarios del local
                 List<string> horarios = new List<string>();
 
                 while (dr.Read())
@@ -123,6 +129,9 @@ namespace EatMall.Datos
                             Telefono = dr["Telefono"].ToString(),
                             Email = dr["Email"].ToString(),
                             Estado = dr["Estado"].ToString(),
+                            IdPlazoleta = Convert.ToInt32(dr["IdPlazoleta"]),
+                            IdDueñoLocal = Convert.ToInt32(dr["IdDueñoLocal"]),
+                            NumeroLocal = Convert.ToInt32(dr["NumeroLocal"]),
                             Calificacion = new Calificacion()
                             {
                                 Puntaje = Convert.ToDecimal(dr["PromedioCalificacionLocal"])
@@ -141,11 +150,126 @@ namespace EatMall.Datos
                 }
 
                 if (local != null)
-                    //"si hay horarios únalos en un string, si no muestra 'Horario no disponible
                     local.HorarioLocal = horarios.Count > 0 ? string.Join("<br/>", horarios) : "Horario no disponible";
             }
 
             return local;
+        }
+        public DataTable MtListarTodosLocales(int idCC)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = @"SELECT 
+                            l.Id,
+                            l.Nombre,
+                            l.Descripcion,
+                            l.Telefono,
+                            l.Email,
+                            l.Imagen,
+                            l.Estado,
+                            l.NumeroLocal,
+
+                            Pl.Nombre AS NombrePlazoleta,
+                            CC.Nombre AS NombreCentroComercial,
+                            DL.Nombre AS NombreDueño
+
+                        FROM dbo.Local l
+                        INNER JOIN Plazoleta Pl
+                            ON Pl.Id = l.IdPlazoleta
+                        INNER JOIN CentroComercial CC
+                            ON CC.Id = Pl.IdCentroComercial
+                        INNER JOIN Usuario DL
+                            ON DL.Id = l.IdDueñoLocal
+
+                        WHERE CC.Id = @IdCC";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdCC", idCC);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+            return dt;
+        }
+
+        public void MtCambiarEstadoLocal(int idLocal, string nuevoEstado)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+
+                string query = "UPDATE dbo.Local SET Estado = @Estado WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Estado", nuevoEstado);
+                    cmd.Parameters.AddWithValue("@Id", idLocal);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void MtCrearLocal(Local local)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"INSERT INTO dbo.Local 
+                        (Nombre, Descripcion, Telefono, Email, Imagen, Estado, IdPlazoleta, IdDueñoLocal, NumeroLocal)
+                        VALUES 
+                        (@Nombre, @Descripcion, @Telefono, @Email, @Imagen, @Estado, @IdPlazoleta, @IdDueñoLocal, @NumeroLocal)";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", local.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", local.Descripcion);
+                    cmd.Parameters.AddWithValue("@Telefono", local.Telefono);
+                    cmd.Parameters.AddWithValue("@Email", local.Email);
+                    cmd.Parameters.AddWithValue("@Imagen", local.Imagen);
+                    cmd.Parameters.AddWithValue("@Estado", local.Estado);
+                    cmd.Parameters.AddWithValue("@IdPlazoleta", local.IdPlazoleta);
+                    cmd.Parameters.AddWithValue("@IdDueñoLocal", local.IdDueñoLocal);
+                    cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void MtActualizarLocal(Local local)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"UPDATE dbo.Local SET
+                        Nombre = @Nombre,
+                        Descripcion = @Descripcion,
+                        Telefono = @Telefono,
+                        Email = @Email,
+                        Imagen = @Imagen,
+                        Estado = @Estado,
+                        IdPlazoleta = @IdPlazoleta,
+                        IdDueñoLocal = @IdDueñoLocal,
+                        NumeroLocal = @NumeroLocal
+                        WHERE Id = @Id";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", local.Nombre);
+                    cmd.Parameters.AddWithValue("@Descripcion", local.Descripcion);
+                    cmd.Parameters.AddWithValue("@Telefono", local.Telefono);
+                    cmd.Parameters.AddWithValue("@Email", local.Email);
+                    cmd.Parameters.AddWithValue("@Imagen", local.Imagen);
+                    cmd.Parameters.AddWithValue("@Estado", local.Estado);
+                    cmd.Parameters.AddWithValue("@IdPlazoleta", local.IdPlazoleta);
+                    cmd.Parameters.AddWithValue("@IdDueñoLocal", local.IdDueñoLocal);
+                    cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
+                    cmd.Parameters.AddWithValue("@Id", local.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

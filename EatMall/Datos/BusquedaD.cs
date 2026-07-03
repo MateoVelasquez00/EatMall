@@ -32,7 +32,9 @@ namespace EatMall.Datos
                                    INNER JOIN Plazoleta Pl ON Pl.Id = L.IdPlazoleta
                                    INNER JOIN CentroComercial CC on Pl.IdCentroComercial = CC.Id
                                    WHERE P.Nombre LIKE '%' + @Busqueda + '%'
-                                   AND P.Estado = 1";
+                                   AND P.Estado = 'True'
+                                   AND CC.Estado = 'True'
+                                   AND L.Estado = 'Abierto'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -90,7 +92,8 @@ namespace EatMall.Datos
                                   INNER JOIN Plazoleta p ON l.IdPlazoleta = p.Id
                                   INNER JOIN CentroComercial cc ON p.IdCentroComercial = cc.Id
                                   WHERE l.Nombre LIKE '%' + @Busqueda + '%'
-                                  AND l.Estado = 'Abierto'";
+                                  AND l.Estado = 'Abierto'
+                                  AND cc.Estado = 'True'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -137,11 +140,12 @@ namespace EatMall.Datos
                     cc.Nombre,
                     cc.Descripcion,
                     cc.Imagen,
-                    cc.Ubicacion,
+                    cc.Direccion,
                     c.NombreCiudad
                     FROM CentroComercial cc
                     INNER JOIN Ciudad c ON cc.IdCiudad = c.Id
-                    WHERE c.NombreCiudad LIKE '%' + @Busqueda + '%'"; ;
+                    WHERE c.NombreCiudad LIKE '%' + @Busqueda + '%'
+                    AND cc.Estado = 'True'"; ;
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -158,7 +162,7 @@ namespace EatMall.Datos
                                 Nombre = dr["Nombre"].ToString(),
                                 Descripcion = dr["Descripcion"].ToString(),
                                 Imagen = dr["Imagen"].ToString(),
-                                Ubicacion = dr["Ubicacion"].ToString(),
+                                Direccion = dr["Direccion"].ToString(),
                                 Ciudad = new Ciudad()
                                 {
                                     NombreCiudad = dr["NombreCiudad"].ToString()
@@ -182,12 +186,13 @@ namespace EatMall.Datos
                     cc.Nombre,
                     cc.Descripcion,
                     cc.Imagen,
-                    cc.Ubicacion,
+                    cc.Direccion,
                     cc.UbicacionUrl,
                     c.NombreCiudad
                     FROM CentroComercial cc
                     INNER JOIN Ciudad c ON cc.IdCiudad = c.Id
-                    WHERE cc.Nombre LIKE '%' + @Busqueda + '%' ";
+                    WHERE cc.Nombre LIKE '%' + @Busqueda + '%' 
+                    AND cc.Estado = 'True'";
 
                 using (SqlCommand cmd = new SqlCommand(consulta, cn))
                 {
@@ -204,7 +209,7 @@ namespace EatMall.Datos
                                 Nombre = dr["Nombre"].ToString(),
                                 Descripcion = dr["Descripcion"].ToString(),
                                 Imagen = dr["Imagen"].ToString(),
-                                Ubicacion = dr["Ubicacion"].ToString(),
+                                Direccion = dr["Direccion"].ToString(),
                                 Ciudad = new Ciudad()
                                 {
                                     NombreCiudad = dr["NombreCiudad"].ToString()

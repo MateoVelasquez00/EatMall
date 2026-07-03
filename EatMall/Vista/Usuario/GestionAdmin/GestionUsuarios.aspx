@@ -315,7 +315,7 @@
 
                             <li>
                                 <a class="dropdown-item"
-                                    href='EditarUsuario.aspx?id=<%# Eval("Id") %>'>
+                                    href='CrearUsuario.aspx?id=<%# Eval("Id") %>'>
                                     <i class="bi bi-pencil-square me-2"></i>
                                     Editar
                                 </a>
@@ -395,7 +395,18 @@
             $('#gvUsuarios').DataTable({
                 language: {
                     search: "",
-                    searchPlaceholder: "Buscar usuario..."
+                    searchPlaceholder: "Buscar usuario...",
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ usuarios",
+                    infoEmpty: "Mostrando 0 a 0 de 0 usuarios",
+                    infoFiltered: "(filtrado de _MAX_ usuarios en total)",
+                    zeroRecords: "No se encontraron resultados",
+                    paginate: {
+                        first: "Primero",
+                        last: "Ultimo",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    }
                 }
             });
 

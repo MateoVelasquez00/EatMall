@@ -14,7 +14,6 @@ namespace EatMall.Logica
 
         public List<Producto> ObtenerPromocionesPorLocal(int idLocal)
         {
-
             return new ProductoD().ObtenerPromocionesPorLocal(idLocal); 
         }
         public bool CambiarEstadoProducto(int idProducto)

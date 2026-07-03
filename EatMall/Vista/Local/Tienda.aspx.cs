@@ -30,6 +30,19 @@ namespace EatMall.Vista.Local
                 btnVolverLocal.NavigateUrl =
                     "~/Vista/Local/Local.aspx?idPlazoleta=" + idPlazoleta + "&idCC=" + idCC;
 
+                // Valida que el CC esté activo
+                if (!string.IsNullOrEmpty(idCC))
+                {
+                    CentroComercialL logicaCC = new CentroComercialL();
+                    CentroComercial cc = logicaCC.MtObtenerCentroComercialPorId(Convert.ToInt32(idCC));
+
+                    if (cc == null)
+                    {
+                        Response.Redirect("~/Index.aspx");
+                        return;
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(Request.QueryString["idLocal"]))
                 {
                     int idLocal = Convert.ToInt32(Request.QueryString["idLocal"]);

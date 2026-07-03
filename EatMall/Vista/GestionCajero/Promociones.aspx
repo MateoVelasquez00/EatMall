@@ -1,12 +1,21 @@
 ﻿<%@ Page Title="Promociones" Language="C#" MasterPageFile="~/Vista/Admin.Master" AutoEventWireup="true" CodeBehind="Promociones.aspx.cs" Inherits="EatMall.Vista.GestionCajero.Promociones" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head2" runat="server">
-    </asp:Content>
+</asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentBody" runat="server">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Promociones del Local</h3>
+        <h3 class="m-0">Promociones del Local</h3>
+        
+        <asp:LinkButton ID="btnIrANuevaPromo" runat="server" 
+            CssClass="btn btn-primary d-flex align-items-center gap-2 fw-semibold shadow-sm"
+            PostBackUrl="~/Vista/GestionCajero/NuevaPromocion.aspx">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+            Agregar Promoción
+        </asp:LinkButton>
     </div>
 
     <asp:GridView ID="gvPromociones" runat="server"

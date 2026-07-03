@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EatMall.Vista.Usuario
+namespace EatMall.Vista.Usuario.GestionLocal
 {
-    public partial class AdministradorCC : System.Web.UI.Page
+    public partial class CajeroLocal : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EatMall.Datos;
+using EatMall.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using EatMall.Modelo;
 
 namespace EatMall.Datos
 {
@@ -91,8 +92,6 @@ namespace EatMall.Datos
                 }
             }
         }
-
-        // Listar pedidos del local del cajero
         public List<Pedido> ListarPedidosPorLocal(int idLocal)
         {
             List<Pedido> lista = new List<Pedido>();
@@ -100,22 +99,22 @@ namespace EatMall.Datos
             {
                 cn.Open();
                 string query = @"
-                                    SELECT DISTINCT 
-                                        P.Id, 
-                                        P.CodigoPedido, 
-                                        P.FechaPedido, 
-                                        P.Estado, 
-                                        P.Total,        
-                                        P.TipoEntrega, 
-                                        P.HoraEntrega, 
-                                        CONCAT(U.Nombre, ' ', U.Apellido) AS NombreCliente, 
-                                        U.Telefono AS TelefonoCliente
-                                    FROM Pedido P
-                                    INNER JOIN DetallePedido DP ON P.Id = DP.IdPedido
-                                    INNER JOIN Usuario U ON P.IdCliente = U.Id
-                                    WHERE DP.IdLocal = @IdLocal
-                                    AND CAST(P.FechaPedido AS DATE) = CAST(GETDATE() AS DATE)
-                                    ORDER BY P.FechaPedido DESC";
+                             SELECT DISTINCT 
+                                 P.Id, 
+                                 P.CodigoPedido, 
+                                 P.FechaPedido, 
+                                 P.Estado, 
+                                 P.Total,        
+                                 P.TipoEntrega, 
+                                 P.HoraEntrega, 
+                                 CONCAT(U.Nombre, ' ', U.Apellido) AS NombreCliente, 
+                                 U.Telefono AS TelefonoCliente
+                             FROM Pedido P
+                             INNER JOIN DetallePedido DP ON P.Id = DP.IdPedido
+                             INNER JOIN Usuario U ON P.IdCliente = U.Id
+                             WHERE DP.IdLocal = @IdLocal
+                             AND CAST(P.FechaPedido AS DATE) = CAST(GETDATE() AS DATE)
+                             ORDER BY P.FechaPedido DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -150,11 +149,10 @@ namespace EatMall.Datos
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
-
                 string query = @"SELECT DP.Id, DP.IdProducto, PR.Nombre AS NombreProducto, PR.Imagen, DP.Cantidad, DP.PrecioUnitario, DP.Subtotal, DP.EstadoProducto 
-                         FROM DetallePedido DP 
-                         INNER JOIN Producto PR ON DP.IdProducto = PR.Id 
-                         WHERE DP.IdPedido = @IdPedido AND DP.IdLocal = @IdLocal";
+								 FROM DetallePedido DP 
+								 INNER JOIN Producto PR ON DP.IdProducto = PR.Id 
+								 WHERE DP.IdPedido = @IdPedido AND DP.IdLocal = @IdLocal";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -173,7 +171,7 @@ namespace EatMall.Datos
                                 Cantidad = Convert.ToInt32(dr["Cantidad"]),
                                 PrecioUnitario = Convert.ToDecimal(dr["PrecioUnitario"]),
                                 Subtotal = Convert.ToDecimal(dr["Subtotal"]),
-                                EstadoProducto = "En Preparación"
+                                EstadoProducto = "En Preparacion"
                             });
                         }
                     }
@@ -182,6 +180,7 @@ namespace EatMall.Datos
             return lista;
         }
 
+        // Cajero cambia el estado del pedido
         public bool CambiarEstadoPedido(int idPedido, string nuevoEstado)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
@@ -197,7 +196,58 @@ namespace EatMall.Datos
                 }
             }
         }
-        // Obtener la transacción asociada a un pedido específico
+        public List<Pedido> MtListarPedidoLocal(int idLocal)
+        {
+            using (SqlConnection cn = ConexionDB.MtAbrirConexion())
+            {
+                cn.Open();
+                string query = @"SELECT DISTINCT
+							P.Id,
+							P.CodigoPedido,
+							P.FechaPedido,
+							P.Estado,
+							P.Total,
+							P.TipoEntrega,
+							P.HoraEntrega,
+							P.IdCliente,
+							CONCAT(U.Nombre,' ',U.Apellido) AS NombreCliente
+						FROM Pedido P
+						INNER JOIN Usuario U
+							ON U.Id = P.IdCliente
+						INNER JOIN DetallePedido DP
+							ON DP.IdPedido = P.Id
+						WHERE DP.IdLocal = @IdLocal OR P.Estado = 'Entregado'
+						ORDER BY P.FechaPedido DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.AddWithValue("@IdLocal", idLocal);
+
+                    using (SqlDataReader rd = cmd.ExecuteReader())
+                    {
+                        List<Pedido> pedidos = new List<Pedido>();
+                        while (rd.Read())
+                        {
+                            Pedido pedido = new Pedido()
+                            {
+                                Id = Convert.ToInt32(rd["Id"]),
+                                CodigoPedido = rd["CodigoPedido"].ToString(),
+                                FechaPedido = Convert.ToDateTime(rd["FechaPedido"]),
+                                Estado = rd["Estado"].ToString(),
+                                Total = Convert.ToDecimal(rd["Total"]),
+                                TipoEntrega = rd["TipoEntrega"].ToString(),
+                                IdCliente = Convert.ToInt32(rd["IdCliente"]),
+                                HoraEntrega = TimeSpan.Parse(rd["HoraEntrega"].ToString()),
+                                NombreCliente = rd["NombreCliente"].ToString()
+                            };
+                            pedidos.Add(pedido);
+                        }
+                        return pedidos;
+                    }
+                }
+            }
+        }
+
         public Transaccion ObtenerTransaccionPorPedido(int idPedido)
         {
             Transaccion transaccion = null;
@@ -206,8 +256,8 @@ namespace EatMall.Datos
                 cn.Open();
 
                 string query = @"SELECT Id, Monto, Estado, FechaTransaccion, PayuCodigoReferencia 
-                         FROM Transaccion 
-                         WHERE IdPedido = @IdPedido";
+                   FROM Transaccion 
+                   WHERE IdPedido = @IdPedido";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -231,15 +281,14 @@ namespace EatMall.Datos
             return transaccion;
         }
 
-        // Cambia el estado de los productos en DetallePedido que pertenezcan a un local específico
         public bool CambiarEstadoProductoPorLocal(int idPedido, int idLocal, string nuevoEstado)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
                 string query = @"UPDATE DetallePedido 
-                         SET EstadoProducto = @Estado 
-                         WHERE IdPedido = @IdPedido AND IdLocal = @IdLocal";
+                    SET EstadoProducto = @Estado 
+                    WHERE IdPedido = @IdPedido AND IdLocal = @IdLocal";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -251,15 +300,14 @@ namespace EatMall.Datos
             }
         }
 
-        // Cuenta cuántos productos de este pedido siguen "En preparación" en toda la plazoleta
         public int ObtenerProductosPendientes(int idPedido)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
                 cn.Open();
                 string query = @"SELECT COUNT(*) 
-                         FROM DetallePedido 
-                         WHERE IdPedido = @IdPedido AND EstadoProducto = 'En preparación'";
+                  FROM DetallePedido 
+                  WHERE IdPedido = @IdPedido AND EstadoProducto = 'En preparación'";
 
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
@@ -268,14 +316,7 @@ namespace EatMall.Datos
                 }
             }
         }
-
-        public int MtGuardarPedido(Pedido oPedido)
-        {
-            return new PedidoD().GuardarPedido(oPedido);
-        }
-
     }
-
 }
 
 

@@ -43,7 +43,13 @@ namespace EatMall.Vista.Pedido
 			string horaSeleccionadaUser = ddlHoraEntrega.SelectedValue;
 			decimal montoAPagar = 0;
 			int idPedido = 0;
-			string codigoPedido = "PED-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+			string codigoPedido = "";
+
+			if (Session["IdPedido"] != null && Convert.ToInt32(Session["IdPedido"]) > 0)
+			{
+				idPedido = Convert.ToInt32(Session["IdPedido"]);
+				codigoPedido = Session["CodigoPedido"]?.ToString();
+			}
 
 			try
 			{
@@ -59,7 +65,6 @@ namespace EatMall.Vista.Pedido
 					{
 
 						Modelo.Pedido pedido = pedidoL.ConfirmarPedido(items, oUsuarioLogin.Id, horaSeleccionadaUser);
-
 						idPedido = pedido.Id;
 						codigoPedido = pedido.CodigoPedido;
 
@@ -84,24 +89,23 @@ namespace EatMall.Vista.Pedido
 					montoAPagar = Convert.ToDecimal(Session["Total"]);
 				}
 
+				codigoPedido = "PED-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
 				Modelo.Pedido oPedido = new Modelo.Pedido()
 				{
 					IdCliente = oUsuarioLogin.Id,
 					CodigoPedido = codigoPedido,
-					FechaPedido = DateTime.Now,
 					Total = montoAPagar,
 					Estado = "Pendiente",
-					TipoEntrega = "A domicilio",
+					FechaPedido = DateTime.Now,
 					HoraEntrega = TimeSpan.Parse(horaSeleccionadaUser)
 				};
-
 				idPedido = pedidoL.MtGuardarPedido(oPedido);
 			}
 
-			
 			Session["IdPedido"] = idPedido;
+			Session["CodigoPedido"] = codigoPedido;
 			Session["Total"] = montoAPagar.ToString("N2");
-			
 
 			if (montoAPagar > 0)
 			{
