@@ -238,7 +238,7 @@ namespace EatMall.Datos
                 }
             }
         }
-        public void MtActualizarLocal(Local local)
+        public bool MtActualizarLocal(Local local)
         {
             using (SqlConnection cn = ConexionDB.MtAbrirConexion())
             {
@@ -267,7 +267,7 @@ namespace EatMall.Datos
                     cmd.Parameters.AddWithValue("@IdDueñoLocal", local.IdDueñoLocal);
                     cmd.Parameters.AddWithValue("@NumeroLocal", local.NumeroLocal);
                     cmd.Parameters.AddWithValue("@Id", local.Id);
-                    cmd.ExecuteNonQuery();
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }
